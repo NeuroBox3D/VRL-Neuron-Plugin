@@ -1,3 +1,3 @@
 # VRL-Neuron-Plugin
 
-Neuron Plugin Project
+Neuron VRL Plugin Project for NetBeans
