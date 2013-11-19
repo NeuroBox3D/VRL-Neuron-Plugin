@@ -20,7 +20,7 @@ public class NeuronPluginConfigurator extends VPluginConfigurator{
 
     public NeuronPluginConfigurator() {
         //specify the plugin name and version
-       setIdentifier(new PluginIdentifier("Tutorial-Plugin01", "0.1"));
+       setIdentifier(new PluginIdentifier("Neuron-Plugin", "0.1"));
 
        // optionally allow other plugins to use the api of this plugin
        // you can specify packages that shall be
