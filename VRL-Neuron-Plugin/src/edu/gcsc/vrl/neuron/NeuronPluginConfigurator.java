@@ -12,6 +12,7 @@ import eu.mihosoft.vrl.system.VPluginConfigurator;
 
 
 
+
 /**
  *
  * @author Michael Hoffer <info@michaelhoffer.de>
@@ -32,8 +33,8 @@ public class NeuronPluginConfigurator extends VPluginConfigurator{
        setDescription("Plugin Description");
 
        // copyright info
-       setCopyrightInfo("Sample-Plugin",
-               "(c) Your Name",
+       setCopyrightInfo("Neuron-Plugin",
+               "(c) Stephan",
                "www.you.com", "License Name", "License Text...");
 
        // specify dependencies
@@ -66,7 +67,14 @@ public class NeuronPluginConfigurator extends VPluginConfigurator{
            // vapi.addComponent(MyComponent.class);
            // vapi.addTypeRepresentation(MyType.class);
            
-           vapi.addComponent(NeuronComponent01.class);
+ //          vapi.addComponent(NeuronComponent01.class);
+	   vapi.addComponent(AMPA.class);
+	   vapi.addComponent(NMDA.class);
+	   vapi.addComponent(PMCA.class);
+	   vapi.addComponent(NCX.class);
+	   vapi.addComponent(Mapper.class);
+	   vapi.addComponent(HOC.class);
+           vapi.addTypeRepresentation(InterpreterType.class);
        }
    }
 
