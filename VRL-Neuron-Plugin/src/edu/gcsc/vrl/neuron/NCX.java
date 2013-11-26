@@ -71,9 +71,9 @@ public class NCX implements IChannel, Serializable {
          */
         @Override
 	public double flux(
-		@ParamInfo(name="Ca_i") double Ca_i,
-		@ParamInfo(name="Ca_e") double Ca_o,
-		@ParamInfo(name="V_m") double Vm) {
+		@ParamInfo(name="Ca_i", options="value=0") double Ca_i,
+		@ParamInfo(name="Ca_e", options="value=0") double Ca_o,
+		@ParamInfo(name="V_m", options="value=0") double Vm) {
             return this.flux;
 	}
 
