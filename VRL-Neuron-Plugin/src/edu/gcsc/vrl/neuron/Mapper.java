@@ -4,7 +4,12 @@
  */
 package edu.gcsc.vrl.neuron;
 
+import edu.gcsc.vrl.ug.api.AlgebraType;
+import edu.gcsc.vrl.ug.api.F_InitUG;
+import edu.gcsc.vrl.ug.api.I_AlgebraType;
+import edu.gcsc.vrl.userdata.UserDataTuple;
 import eu.mihosoft.vrl.annotation.ComponentInfo;
+import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
 import java.io.Serializable;
 
@@ -41,11 +46,22 @@ public class Mapper implements Serializable {
 		this.interpreter = interpreter;
 	}
 	
+
+	
 	public void init(
-		@ParamInfo(name="interpreter", style="default") Interpreter interpreter
+		@ParamInfo(name="interpreter", style="default") Interpreter interpreter,
+		UserDataTuple[] convDiffData,
+        	@ParamGroupInfo(group="Physical Parameter")
+        	@ParamInfo(name="Dirichlet Boundary", style="array", options="tag=\"TheFile\"; minArraySize=0; type=\"s|n:Subset, Value\"")
+        	UserDataTuple[] dirichletBndValue,
+        	@ParamGroupInfo(group="Physical Parameter")
+       		@ParamInfo(name="Neumann Boundary  ", style="array", options="tag=\"TheFile\"; minArraySize=0; type=\"s|n:Subset, Value\"")
+        	UserDataTuple[] neumannBndValue
 		) {
 		if (interpreter == null) {
 			this.interpreter = interpreter;
+			I_AlgebraType algebraType = new AlgebraType("CPU", 1);
+			 F_InitUG.invoke(3, algebraType);
 		} else {
 			System.out.println("Interpreter already presenet in Mapper!");
 		}

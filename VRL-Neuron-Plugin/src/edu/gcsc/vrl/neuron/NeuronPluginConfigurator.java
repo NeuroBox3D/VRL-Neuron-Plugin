@@ -6,6 +6,7 @@ package edu.gcsc.vrl.neuron;
 
 import eu.mihosoft.vrl.system.InitPluginAPI;
 import eu.mihosoft.vrl.system.PluginAPI;
+import eu.mihosoft.vrl.system.PluginDependency;
 import eu.mihosoft.vrl.system.PluginIdentifier;
 import eu.mihosoft.vrl.system.VPluginAPI;
 import eu.mihosoft.vrl.system.VPluginConfigurator;
@@ -30,15 +31,18 @@ public class NeuronPluginConfigurator extends VPluginConfigurator{
        // exportPackage("com.your.package");
 
        // describe the plugin
-       setDescription("Plugin Description");
+       setDescription("Neuron Plugin for VRL");
 
        // copyright info
        setCopyrightInfo("Neuron-Plugin",
-               "(c) Stephan",
+               "(c) Stephan Grein",
                "www.you.com", "License Name", "License Text...");
 
        // specify dependencies
-       // addDependency(new PluginDependency("VRL", "0.4.0", "0.4.0"));
+       addDependency(new PluginDependency("VRL", "0.4.2", "0.4.2"));
+       addDependency(new PluginDependency("VRL-UG", "0.2", "0.2"));
+       addDependency(new PluginDependency("VRL-UG-API", "0.2", "0.2"));
+       addDependency(new PluginDependency("VRL-UserData", "0.2", "0.2"));
     }
     
     @Override
@@ -75,6 +79,7 @@ public class NeuronPluginConfigurator extends VPluginConfigurator{
 	   vapi.addComponent(Mapper.class);
 	   vapi.addComponent(HOC.class);
            vapi.addTypeRepresentation(InterpreterType.class);
+	  // vapi.addComponent(AdvecetionDiffusion.class);
        }
    }
 
