@@ -1,35 +1,35 @@
 /**
- * Script to perform a Advection-Diffusion Problem
- * 
- * Author: M. Hoffer, A. Vogel
+ * @brief Solver for the VRL-Neuron Plugin
+ * @author stephan grein
+ * @see based on the Advection-Diffusion groovy example from M. Hoffer & A. Vogel
  */
 
+// package's name
 package edu.gcsc.vrl.neuron;
 
-import edu.gcsc.vrl.ug.api.I_ApproximationSpace;
-import edu.gcsc.vrl.ug.api.I_UserNumber;
-import edu.gcsc.vrl.ug.api.I_UserVector;
-import edu.gcsc.vrl.ug.api.*;
+// standard imports
+import java.io.Serializable;
+
+// ug api imports and userdata enhancements for vrl
 import edu.gcsc.vrl.ug.api.*;
 import edu.gcsc.vrl.userdata.*;
 
+// vrl imports 
 import eu.mihosoft.vrl.annotation.ComponentInfo;
 import eu.mihosoft.vrl.annotation.OutputInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 
-@ComponentInfo(name="AdvecetionDiffusion", category="Custom")
-public class AdvecetionDiffusion implements java.io.Serializable {
-    private static final long serialVersionUID=1L;
-
-
-   //   elemTypes = [I_DomainDiscretization.class, I_ApproximationSpace.class, I_UserNumber[].class, I_VTKOutput.class]
- //     elemNames = ["Problem-Setup", "Approximation-Space", "StartValues", "Output-Data"],
-    
+@ComponentInfo(name="Solver", category="UG4/Plugins/NeuroBox3D/Neuron")
+public class Solver implements Serializable {
+    private static final long serialVersionUID=1L;    
     @OutputInfo(
     style="multi-out",
       elemTypes = {I_DomainDiscretization.class, I_ApproximationSpace.class, I_UserNumber[].class, I_VTKOutput.class},
-      elemNames = {"Problem-Setup", "Approximation-Space", "StartValues", "Output-Data"})
+      elemNames = {"Problem-Setup", "Approximation-Space", "StaArtValues", "Output-Data"})
+    /**
+     * @brief invoked when component is added to the main canvas
+     */
     public Object[] invoke(
         @ParamGroupInfo(group="Domain")
         @ParamInfo(name="Grid:", style="ugx-load-dialog", options="tag=\"TheFile\"")
@@ -56,9 +56,8 @@ public class AdvecetionDiffusion implements java.io.Serializable {
         String upwindTypeName
         )
         {
-        String fileName = file.getAbsoluteFile().getAbsolutePath();
-
-        int dim = convDiffData[0].getMatrixData(1).const__get_dim();
+        final String fileName = file.getAbsoluteFile().getAbsolutePath(); /*!< absolute path to grid file */
+        final int dim = convDiffData[0].getMatrixData(1).const__get_dim(); /*!< current world dimension */
         
         //-- Init UG for dimension and algebra
         F_InitUG.invoke(dim,new AlgebraType("CPU", 1));
@@ -71,8 +70,8 @@ public class AdvecetionDiffusion implements java.io.Serializable {
       
         // -- Create, Load, Refine and Distribute Domain
         I_ApproximationSpace approxSpace = new ApproximationSpace(dom);
-        String fctName = "c";
-        approxSpace.add_fct(fctName, "Lagrange",1);
+        final String fctName = "c";
+        approxSpace.add_fct(fctName, "Lagrange", 1);
 
         //--------------------------------------------------------------------------------
         //-- FV Disc setup
@@ -135,7 +134,6 @@ public class AdvecetionDiffusion implements java.io.Serializable {
         }
         domainDisc.add(dirichletBND);
 
-        I_ConvectionDiffusionBase base;
 	
       // I_NeumannBoundary neumannBND = new NeumannBoundary(innerSubset);
 	NeumannBoundaryBase neumannBND = null;
@@ -157,4 +155,5 @@ public class AdvecetionDiffusion implements java.io.Serializable {
 
     private void errorExit(String s){
         eu.mihosoft.vrl.system.VMessage.exception("Setup Error in AdvectionDiffusion: ", s);
-	 }}
+    }
+}

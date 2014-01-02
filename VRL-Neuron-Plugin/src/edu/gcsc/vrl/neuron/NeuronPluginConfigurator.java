@@ -79,6 +79,7 @@ public class NeuronPluginConfigurator extends VPluginConfigurator{
 	   vapi.addComponent(Mapper.class);
 	   vapi.addComponent(HOC.class);
            vapi.addTypeRepresentation(InterpreterType.class);
+           vapi.addComponent(Solver.class);
 	  // vapi.addComponent(AdvecetionDiffusion.class);
        }
    }
