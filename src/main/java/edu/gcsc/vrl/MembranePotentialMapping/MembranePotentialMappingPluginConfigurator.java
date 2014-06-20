@@ -1,9 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+// package name
 package edu.gcsc.vrl.MembranePotentialMapping;
 
+// imports
 import eu.mihosoft.vrl.system.InitPluginAPI;
 import eu.mihosoft.vrl.system.PluginAPI;
 import eu.mihosoft.vrl.system.PluginDependency;
@@ -11,11 +9,9 @@ import eu.mihosoft.vrl.system.PluginIdentifier;
 import eu.mihosoft.vrl.system.VPluginAPI;
 import eu.mihosoft.vrl.system.VPluginConfigurator;
 
-
-
 /**
  *
- * @author mbreit
+ * @author sgrein adapted by mbreit
  */
 public class MembranePotentialMappingPluginConfigurator extends VPluginConfigurator{
 
@@ -23,18 +19,12 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
         //specify the plugin name and version
        setIdentifier(new PluginIdentifier("MembranePotentialMapping-Plugin", "0.1"));
 
-       // optionally allow other plugins to use the api of this plugin
-       // you can specify packages that shall be
-       // exported by using the exportPackage() method:
-       //
-       // exportPackage("com.your.package");
-
        // describe the plugin
-       setDescription("Plugin for calcium dynamics simulations with UG.");
+       setDescription("Plugin for membrane potential mapping simulations with UG.");
 
        // copyright info
        setCopyrightInfo("MembranePotentialMapping-Plugin",
-                        "(c) mbreit",
+                        "(c) sgrein",
                         "www.g-csc.de", "Proprietary", "Proprietary");
 
        // specify dependencies

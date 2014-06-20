@@ -6,12 +6,15 @@
  * @see mbreit's implementation was adapted, thanks.
 **/
 
+// package name
 package edu.gcsc.vrl.MembranePotentialMapping;
 
+// imports
 import edu.gcsc.vrl.ug.api.*;
 import edu.gcsc.vrl.userdata.FunctionDefinition;
 import edu.gcsc.vrl.userdata.UserDataTuple;
 import edu.gcsc.vrl.userdata.UserDependentSubsetModel;
+
 import eu.mihosoft.vrl.annotation.ComponentInfo;
 import eu.mihosoft.vrl.annotation.MethodInfo;
 import eu.mihosoft.vrl.annotation.OutputInfo;
@@ -37,14 +40,6 @@ public class MembranePotentialMapping implements Serializable
      * @param num_prerefs
      * @param problemDefinition
      * @param diffusionData
-     * @param bufferingData
-     * @param ip3rData
-     * @param ryrData
-     * @param sercaData
-     * @param leakERData
-     * @param pmcaData
-     * @param ncxData
-     * @param leakPMData
      * @param vdccData
      * @param vdccChannelType
      * @param vdccFile
@@ -344,7 +339,9 @@ public class MembranePotentialMapping implements Serializable
             throw new RuntimeException("Error while Distributing Grid.");
 	
 	// perform post-refine
-	for (int i=numPreRefs; i<numRefs; i++) refiner.refine();
+	for (int i=numPreRefs; i<numRefs; i++) {
+		refiner.refine();
+	}
 	
 	// loop all subsets and search for them
         // in the SubsetHandler of the domain

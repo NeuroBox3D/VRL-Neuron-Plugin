@@ -1,61 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+// package name
 package edu.gcsc.vrl.MembranePotentialMapping;
 
+// imports
 import edu.gcsc.vrl.ug.api.*;
-import edu.gcsc.vrl.ug.api.AssembledOperator;
-import edu.gcsc.vrl.ug.api.BiCGStab;
-import edu.gcsc.vrl.ug.api.CG;
-import edu.gcsc.vrl.ug.api.CompositeConvCheck;
-import edu.gcsc.vrl.ug.api.ConvCheck;
-import edu.gcsc.vrl.ug.api.F_ComputeVolume;
-import edu.gcsc.vrl.ug.api.F_Interpolate;
-import edu.gcsc.vrl.ug.api.F_Print;
-import edu.gcsc.vrl.ug.api.F_TakeMeasurement;
-import edu.gcsc.vrl.ug.api.F_VecScaleAssign;
-import edu.gcsc.vrl.ug.api.GaussSeidel;
-import edu.gcsc.vrl.ug.api.GeometricMultiGrid;
-import edu.gcsc.vrl.ug.api.GridFunction;
-import edu.gcsc.vrl.ug.api.ILU;
-import edu.gcsc.vrl.ug.api.I_ApproximationSpace;
-import edu.gcsc.vrl.ug.api.I_AssembledOperator;
-import edu.gcsc.vrl.ug.api.I_CompositeConvCheck;
-import edu.gcsc.vrl.ug.api.I_ConvCheck;
-import edu.gcsc.vrl.ug.api.I_CplUserNumber;
-import edu.gcsc.vrl.ug.api.I_DomainDiscretization;
-//import edu.gcsc.vrl.ug.api.I_FV1BorgGrahamWithVM2UG;
-import edu.gcsc.vrl.ug.api.I_GridFunction;
-import edu.gcsc.vrl.ug.api.I_ILinearIterator;
-import edu.gcsc.vrl.ug.api.I_ILinearOperatorInverse;
-import edu.gcsc.vrl.ug.api.I_IPreconditionedLinearOperatorInverse;
-import edu.gcsc.vrl.ug.api.I_MGSubsetHandler;
-import edu.gcsc.vrl.ug.api.I_NewtonSolver;
-import edu.gcsc.vrl.ug.api.I_SolutionTimeSeries;
-//import edu.gcsc.vrl.ug.api.I_Test;
-import edu.gcsc.vrl.ug.api.I_ThetaTimeStep;
-import edu.gcsc.vrl.ug.api.I_VTKOutput;
-//import edu.gcsc.vrl.ug.api.I_VTest;
-import edu.gcsc.vrl.ug.api.I_Vector;
-import edu.gcsc.vrl.ug.api.Jacobi;
-import edu.gcsc.vrl.ug.api.LU;
-import edu.gcsc.vrl.ug.api.LinearSolver;
-import edu.gcsc.vrl.ug.api.NewtonSolver;
-import edu.gcsc.vrl.ug.api.SolutionTimeSeries;
-//import edu.gcsc.vrl.ug.api.Test;
-import edu.gcsc.vrl.ug.api.ThetaTimeStep;
 import edu.gcsc.vrl.ug.api.VTKOutput;
 import edu.gcsc.vrl.userdata.UserDataTuple;
 import edu.gcsc.vrl.userdata.UserDependentSubsetModel;
+
 import eu.mihosoft.vrl.annotation.ComponentInfo;
 import eu.mihosoft.vrl.annotation.MethodInfo;
 import eu.mihosoft.vrl.annotation.OutputInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
 import eu.mihosoft.vrl.math.Trajectory;
+
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -63,7 +21,8 @@ import java.util.List;
 
 /**
  *
- * @author mbreit, adapted from A. Vogel
+ * @author sgrein, modified after the adaption of mbreit from avogel
+ * 
  */
 @ComponentInfo(name="MembranePotentialMappingSolver", category="MembranePotentialMappingPlugin")
 public class MembranePotentialMappingSolver implements Serializable
