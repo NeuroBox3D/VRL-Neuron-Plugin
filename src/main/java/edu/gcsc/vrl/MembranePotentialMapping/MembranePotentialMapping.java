@@ -11,6 +11,10 @@ package edu.gcsc.vrl.MembranePotentialMapping;
 
 // imports
 import edu.gcsc.vrl.ug.api.*;
+// mpm plugin imports
+
+import edu.gcsc.vrl.ug.api.I_MembranePotentialMapper;
+import edu.gcsc.vrl.ug.api.I_Transformator;
 import edu.gcsc.vrl.userdata.FunctionDefinition;
 import edu.gcsc.vrl.userdata.UserDataTuple;
 import edu.gcsc.vrl.userdata.UserDependentSubsetModel;
@@ -54,7 +58,7 @@ public class MembranePotentialMapping implements Serializable
     (
         style="multi-out",
         elemNames = {"Domain Disc", "VDCC Disc", "Approximation Space", "Initial Solution"},
-        elemTypes = {I_DomainDiscretization.class, OneSidedBorgGrahamFV1WithVM2UG.class, I_ApproximationSpace.class, UserDataTuple[].class}
+        elemTypes = {I_DomainDiscretization.class, I_FV1NMDARElemDisc.class, I_ApproximationSpace.class, UserDataTuple[].class}
     )
     public Object[] invoke
     (
@@ -212,7 +216,7 @@ public class MembranePotentialMapping implements Serializable
         I_CplUserNumber vdccDensityFct = (I_CplUserNumber) vdccData.getNumberData(1);
         
 	
-        I_OneSidedBorgGrahamFV1WithVM2UG vdccDisc = new OneSidedBorgGrahamFV1WithVM2UG(vdccFcts,
+        I_FV1NMDARElemDisc vdccDisc = new FV1NMDARElemDisc(vdccFcts,
                 vdccSsString, approxSpace, vdccFile, vdccFileTimeFormatString,
                 vdccFileExtension, false);
         if ("L".equals(vdccChannelType)) vdccDisc.set_channel_type_L();
