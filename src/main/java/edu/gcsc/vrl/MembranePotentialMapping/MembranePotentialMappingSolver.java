@@ -19,6 +19,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: Solver get's input Transformator instance => Transformator get's inserted in discretization constructors for AMPA, NMDA and VGCC for example
+
 /**
  *
  * @author sgrein, modified after the adaption of mbreit from avogel
