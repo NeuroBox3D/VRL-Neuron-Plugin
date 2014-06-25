@@ -13,7 +13,6 @@ package edu.gcsc.vrl.MembranePotentialMapping;
 import edu.gcsc.vrl.ug.api.*;
 // mpm plugin imports
 
-import edu.gcsc.vrl.ug.api.I_MembranePotentialMapper;
 import edu.gcsc.vrl.ug.api.I_Transformator;
 import edu.gcsc.vrl.ug.api.I_FV1InnerBoundaryAMPAR;
 import edu.gcsc.vrl.userdata.FunctionDefinition;
@@ -45,6 +44,8 @@ public class MembranePotentialMapping implements Serializable
      * @param num_prerefs
      * @param problemDefinition
      * @param diffusionData
+     * @param hocGeometry 
+     * @param hocStim 
      * @param vdccData
      * @param vdccChannelType
      * @param vdccFile
@@ -91,12 +92,12 @@ public class MembranePotentialMapping implements Serializable
         @ParamInfo(name="", style="default", options="ugx_tag=\"gridFile\"; fct_tag=\"fctDef\"; type=\"S1|n:cytosolic calcium, density\"")
         UserDataTuple vdccData,
 	
-	@ParamGroupInfo(group="Problem definition|true; NEURON setup|false; NEURON")
-	@ParamInfo(name="geometry")
+	@ParamGroupInfo(group="Problem definition|true; NEURON setup|false; Geometry")
+	@ParamInfo(name="Geometry file", style="load-dialog", options="")
 	String hocGeometry,
 	
-    	@ParamGroupInfo(group="Problem definition|true; NEURON setup|false; NEURON")
-	@ParamInfo(name="stimulation")
+    	@ParamGroupInfo(group="Problem definition|true; NEURON setup|false; Stimulation")
+	@ParamInfo(name="Stimulation file", style="load-dialog", options="")
 	String hocStim,
         
         @ParamGroupInfo(group="Problem definition|true; Pl Membrane|false; VDCC")
