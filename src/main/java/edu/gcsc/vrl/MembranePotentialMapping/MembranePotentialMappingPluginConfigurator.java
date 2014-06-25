@@ -8,7 +8,10 @@ import eu.mihosoft.vrl.system.PluginDependency;
 import eu.mihosoft.vrl.system.PluginIdentifier;
 import eu.mihosoft.vrl.system.VPluginAPI;
 import eu.mihosoft.vrl.system.VPluginConfigurator;
-
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 /**
  *
  * @author sgrein adapted by mbreit
@@ -17,16 +20,26 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
 
     public MembranePotentialMappingPluginConfigurator() {
         //specify the plugin name and version
-       setIdentifier(new PluginIdentifier("MembranePotentialMapping-Plugin", "0.1"));
+       setIdentifier(new PluginIdentifier("VRL-MembranePotentialMapping-Plugin", "0.1"));
 
        // describe the plugin
-       setDescription("Plugin for membrane potential mapping simulations with UG.");
+       setDescription("Plugin for membrane potential mapping simulations with UG in VRL-Studio.");
 
        // copyright info
-       setCopyrightInfo("MembranePotentialMapping-Plugin",
+       setCopyrightInfo("VRL-MembranePotentialMapping-Plugin",
                         "(c) sgrein",
                         "www.g-csc.de", "Proprietary", "Proprietary");
-
+       
+       // set the icon of the plugin
+      /* BufferedImage img = null;
+       try {
+	img = ImageIO.read(new File("img/neuro.jpg"));
+	setIcon(img);
+       } catch (IOException ioe) {
+          eu.mihosoft.vrl.system.VMessage.warning("Error loading icon", ioe.toString());
+       }*/
+       
+       
        // specify dependencies
        addDependency(new PluginDependency("VRL", "0.4.2", "0.4.2"));
        addDependency(new PluginDependency("VRL-UG", "0.2", "0.2"));

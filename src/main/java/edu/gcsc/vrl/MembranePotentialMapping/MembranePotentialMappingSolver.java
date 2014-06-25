@@ -14,6 +14,8 @@ import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
 import eu.mihosoft.vrl.math.Trajectory;
 
+import edu.gcsc.vrl.ug.api.I_FV1InnerBoundaryAMPAR;
+
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import java.util.List;
  * @author sgrein, modified after the adaption of mbreit from avogel
  * 
  */
-@ComponentInfo(name="MembranePotentialMappingSolver", category="MembranePotentialMappingPlugin")
+@ComponentInfo(name="MembranePotentialMappingSolver", category="/UG4/VRL-Plugins/Neuro/MembranePotentialMapping/")
 public class MembranePotentialMappingSolver implements Serializable
 {
     private static final long serialVersionUID = 1L;
@@ -34,7 +36,7 @@ public class MembranePotentialMappingSolver implements Serializable
     private Trajectory[] vEvalTrajectory;
     
     /**
-     *
+     * @param transformator
      * @param domainDisc
      * @param vdccDisc
      * @param approxSpace
@@ -77,14 +79,18 @@ public class MembranePotentialMappingSolver implements Serializable
       elemTypes = {File.class}
     )
     public Object[] invoke
-    (
+    (	
+	@ParamGroupInfo(group="Problem Setup|false")
+	@ParamInfo(name="NEURON Setup", style="default")
+	I_Transformator transformator,
+	
         @ParamGroupInfo(group="Problem Setup|false")
         @ParamInfo(name="Domain Disc", style="default")
         I_DomainDiscretization domainDisc,
             
         @ParamGroupInfo(group="Problem Setup|false")
         @ParamInfo(name="VDCC Disc", style="default")
-	I_OneSidedBorgGrahamFV1WithVM2UG vdccDisc,
+	I_FV1InnerBoundaryAMPAR vdccDisc,
         
         @ParamGroupInfo(group="Problem Setup|false")
         @ParamInfo(name="Approximation Space", style="default")
@@ -213,6 +219,11 @@ public class MembranePotentialMappingSolver implements Serializable
         double plotStep
     )
     {
+	    I_MembranePotentialMapper mapper = new MembranePotentialMapper(transformator);
+	    
+	    // initialize vdccs transformator TODO mapper to be set...
+	//    vdccDisc.set_mapper(mapper);
+	//    vdccDisc.set_transformator(transformator);
         //if (bEraseOldFiles) eraseAllFilesInFolder(fileOut, "vtu");
           
         // set abortion flag to false initially (can be changed using stopSolver-Method)
@@ -457,6 +468,8 @@ public class MembranePotentialMappingSolver implements Serializable
         // begin simulation loop
         while (time < timeEnd)
         {
+	    transformator.fadvance();
+	    transformator.extract_vms(1, 1);
             F_Print.invoke("++++++ POINT IN TIME  " + Math.floor((time+dt)/dt+0.5)*dt + "s  BEGIN ++++++");
 
             //setup time disc for old solutions and timestep

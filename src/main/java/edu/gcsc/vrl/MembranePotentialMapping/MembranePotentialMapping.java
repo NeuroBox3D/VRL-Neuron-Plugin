@@ -15,6 +15,7 @@ import edu.gcsc.vrl.ug.api.*;
 
 import edu.gcsc.vrl.ug.api.I_MembranePotentialMapper;
 import edu.gcsc.vrl.ug.api.I_Transformator;
+import edu.gcsc.vrl.ug.api.I_FV1InnerBoundaryAMPAR;
 import edu.gcsc.vrl.userdata.FunctionDefinition;
 import edu.gcsc.vrl.userdata.UserDataTuple;
 import edu.gcsc.vrl.userdata.UserDependentSubsetModel;
@@ -32,7 +33,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-@ComponentInfo(name="MembranePotentialMapping", category="MembranePotentialMappingPlugin")
+@ComponentInfo(name="MembranePotentialMapping", category="/UG4/VRL-Plugins/Neuro/MembranePotentialMapping/")
 public class MembranePotentialMapping implements Serializable
 {
     private static final long serialVersionUID = 1L;
@@ -57,8 +58,8 @@ public class MembranePotentialMapping implements Serializable
     @OutputInfo
     (
         style="multi-out",
-        elemNames = {"Domain Disc", "VDCC Disc", "Approximation Space", "Initial Solution"},
-        elemTypes = {I_DomainDiscretization.class, I_FV1NMDARElemDisc.class, I_ApproximationSpace.class, UserDataTuple[].class}
+        elemNames = {"Domain Disc", "VDCC Disc", "Approximation Space", "Initial Solution", "NEURON Setup"},
+        elemTypes = {I_DomainDiscretization.class, I_FV1InnerBoundaryAMPAR.class, I_ApproximationSpace.class, UserDataTuple[].class, I_Transformator.class}
     )
     public Object[] invoke
     (
@@ -89,6 +90,14 @@ public class MembranePotentialMapping implements Serializable
         @ParamGroupInfo(group="Problem definition|true; Pl Membrane|false; VDCC")
         @ParamInfo(name="", style="default", options="ugx_tag=\"gridFile\"; fct_tag=\"fctDef\"; type=\"S1|n:cytosolic calcium, density\"")
         UserDataTuple vdccData,
+	
+	@ParamGroupInfo(group="Problem definition|true; NEURON setup|false; NEURON")
+	@ParamInfo(name="geometry")
+	String hocGeometry,
+	
+    	@ParamGroupInfo(group="Problem definition|true; NEURON setup|false; NEURON")
+	@ParamInfo(name="stimulation")
+	String hocStim,
         
         @ParamGroupInfo(group="Problem definition|true; Pl Membrane|false; VDCC")
         @ParamInfo(name="channel type", style="selection", options="value=[\"L\",\"N\",\"T\"]")
@@ -113,6 +122,7 @@ public class MembranePotentialMapping implements Serializable
         @ParamGroupInfo(group="Problem definition|true; Start Value|false")
         @ParamInfo(name="Start Value", style="array", options="ugx_tag=\"gridFile\"; fct_tag=\"fctDef\"; minArraySize=1; type=\"S1|n:function & subset, start value\"")
         UserDataTuple[] startValue
+
     )
     {
         // get selected geometry and its dim
@@ -216,7 +226,8 @@ public class MembranePotentialMapping implements Serializable
         I_CplUserNumber vdccDensityFct = (I_CplUserNumber) vdccData.getNumberData(1);
         
 	
-        I_FV1NMDARElemDisc vdccDisc = new FV1NMDARElemDisc(vdccFcts,
+        I_FV1InnerBoundaryAMPAR vdccDisc = new FV1InnerBoundaryAMPAR(); 
+	/*vdccFcts,
                 vdccSsString, approxSpace, vdccFile, vdccFileTimeFormatString,
                 vdccFileExtension, false);
         if ("L".equals(vdccChannelType)) vdccDisc.set_channel_type_L();
@@ -224,7 +235,7 @@ public class MembranePotentialMapping implements Serializable
         else if ("T".equals(vdccChannelType)) vdccDisc.set_channel_type_T();
         vdccDisc.set_density_function(vdccDensityFct);
         vdccDisc.init(0.0D);
-        // voltage files interval!?
+        // voltage files interval!?*/
         
         domainDisc.add(vdccDisc);
         
@@ -232,6 +243,7 @@ public class MembranePotentialMapping implements Serializable
         // Neumann boundaries
         int i = 0;
         I_UserFluxBoundaryFV1[] neumannDisc = new UserFluxBoundaryFV1[bndData.length];
+	
         for (UserDataTuple bnd : bndData)
         {
             String[] bndFct = ((UserDependentSubsetModel.FSDataType) bnd.getData(0)).getSelFct();
