@@ -6,10 +6,16 @@
 
 package edu.gcsc.vrl.MembranePotentialMapping.userdata;
 
+import java.io.Serializable;
+
 /**
  *
  * @author stephan
  */
-public class Section {
+public class Section implements Serializable {
+	private static final long serialVersionUID = 1L;
 	
+	public Section() {
+			  
+	}	
 }

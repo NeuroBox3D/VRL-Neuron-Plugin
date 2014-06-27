@@ -6,6 +6,7 @@
 
 package edu.gcsc.vrl.MembranePotentialMapping.userdata;
 
+import edu.gcsc.vrl.MembranePotentialMapping.types.SectionType;
 import edu.gcsc.vrl.ug.api.I_Transformator;
 import eu.mihosoft.vrl.annotation.ComponentInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
@@ -31,12 +32,13 @@ public class Clamp implements Serializable {
      * @param stimDel duration of deletion in [ms]
      * @param stimSection section, i. e. soma or other section
      * @param stimPosition relative location of stimulation on section
+     * @param sectionTest test the type representation
      */
     public void point_process(
 	@ParamGroupInfo(group="Point Process|false; Stimulation|false")
 	@ParamInfo(name="Type", style="selection", options="value=[\"IClamp\", \"VClamp\"]") String stimType,
 	@ParamGroupInfo(group="Point Process|false; Stimulation|false")
-    	@ParamInfo(name="stimDur", style="slider") double stimDur,
+    	@ParamInfo(name="stimDur", style="default") double stimDur,
 	@ParamGroupInfo(group="Point Process|false; Stimulation|false")
 	@ParamInfo(name="stimDel") double stimDel,
 	@ParamGroupInfo(group="Point Process|false; Stimulation|false")
@@ -45,7 +47,11 @@ public class Clamp implements Serializable {
 	@ParamGroupInfo(group="Point Process|false; Location|false")
 	@ParamInfo(name="Section") String stimSection,
 	@ParamGroupInfo(group="Point Process|false; Location|false")
-	@ParamInfo(name="Position") String stimPosition
+	@ParamInfo(name="Position") String stimPosition,
+	    
+	@ParamGroupInfo(group="Point Process|false; Test|false")
+	@ParamInfo(name="Section Test", style="default") SectionType sectionTest
+	    
     ) {
 	    if ( ! (m_transformator == null) ) {
 		// TODO: implement method stub

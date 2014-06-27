@@ -6,10 +6,12 @@
 
 package edu.gcsc.vrl.MembranePotentialMapping.userdata;
 
+import edu.gcsc.vrl.MembranePotentialMapping.HOCFileInfo;
+
 /**
  *
  * @author stephan
  */
-public interface SectionObserver {
-    public void update(SectionObservable data);
+public interface LoadHOCFileObserver {
+    public void update(HOCFileInfo data);
 }
