@@ -12,6 +12,10 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+
+import edu.gcsc.vrl.MembranePotentialMapping.types.ClampType;
+import edu.gcsc.vrl.MembranePotentialMapping.types.ClampArrayType;
+import edu.gcsc.vrl.MembranePotentialMapping.userdata.Clamp;
 /**
  *
  * @author sgrein adapted by mbreit
@@ -75,6 +79,10 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
            
            vapi.addComponent(MembranePotentialMapping.class);
            vapi.addComponent(MembranePotentialMappingSolver.class);
+	   
+	   vapi.addTypeRepresentation(ClampType.class);
+	   vapi.addTypeRepresentation(ClampArrayType.class);
+	   vapi.addComponent(Clamp.class);
        }
    }
 
