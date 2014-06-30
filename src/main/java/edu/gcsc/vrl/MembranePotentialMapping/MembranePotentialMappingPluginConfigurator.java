@@ -2,6 +2,14 @@
 package edu.gcsc.vrl.MembranePotentialMapping;
 
 // imports
+import edu.gcsc.vrl.MembranePotentialMapping.types.ClampArrayType;
+import edu.gcsc.vrl.MembranePotentialMapping.types.ClampType;
+import edu.gcsc.vrl.MembranePotentialMapping.types.LoadHOCFileStringType;
+import edu.gcsc.vrl.MembranePotentialMapping.types.LoadHOCFileType;
+import edu.gcsc.vrl.MembranePotentialMapping.types.SectionArrayType;
+import edu.gcsc.vrl.MembranePotentialMapping.types.SectionType;
+import edu.gcsc.vrl.MembranePotentialMapping.userdata.Clamp;
+import edu.gcsc.vrl.MembranePotentialMapping.userdata.Section;
 import eu.mihosoft.vrl.system.InitPluginAPI;
 import eu.mihosoft.vrl.system.PluginAPI;
 import eu.mihosoft.vrl.system.PluginDependency;
@@ -13,9 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-import edu.gcsc.vrl.MembranePotentialMapping.types.ClampType;
-import edu.gcsc.vrl.MembranePotentialMapping.types.ClampArrayType;
-import edu.gcsc.vrl.MembranePotentialMapping.userdata.Clamp;
 /**
  *
  * @author sgrein adapted by mbreit
@@ -83,6 +88,12 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
 	   vapi.addTypeRepresentation(ClampType.class);
 	   vapi.addTypeRepresentation(ClampArrayType.class);
 	   vapi.addComponent(Clamp.class);
+	   vapi.addTypeRepresentation(LoadHOCFileStringType.class);
+	   vapi.addTypeRepresentation(LoadHOCFileType.class);
+	   
+	   vapi.addComponent(Section.class);
+	   vapi.addTypeRepresentation(SectionType.class);
+	   vapi.addTypeRepresentation(SectionArrayType.class);
        }
    }
 

@@ -11,6 +11,7 @@ import edu.gcsc.vrl.ug.api.I_Transformator;
 import eu.mihosoft.vrl.annotation.ComponentInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -31,6 +32,7 @@ public class Clamp implements Serializable {
      * @param stimAmp amplitude [nA]
      * @param stimDel duration of deletion in [ms]
      * @param stimSection section, i. e. soma or other section
+     * @param hoc_file the hoc file to be loaded
      * @param stimPosition relative location of stimulation on section
      * @param sectionTest test the type representation
      */
@@ -48,9 +50,12 @@ public class Clamp implements Serializable {
 	@ParamInfo(name="Section") String stimSection,
 	@ParamGroupInfo(group="Point Process|false; Location|false")
 	@ParamInfo(name="Position") String stimPosition,
+
+	@ParamGroupInfo(group="Point Process|true; Test|true")
+	@ParamInfo(name="Load Dialog Test", style="hoc-load-dialog", options="hoc_tag=\"gridFile\"") java.io.File hoc_file,
 	    
 	@ParamGroupInfo(group="Point Process|false; Test|false")
-	@ParamInfo(name="Section Test", style="default") SectionType sectionTest
+	@ParamInfo(name="Section Test Component", style="default") Section sectionTest
 	    
     ) {
 	    if ( ! (m_transformator == null) ) {

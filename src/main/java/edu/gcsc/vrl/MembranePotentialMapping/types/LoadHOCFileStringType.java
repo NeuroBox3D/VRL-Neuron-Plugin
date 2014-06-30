@@ -6,6 +6,11 @@
 
 package edu.gcsc.vrl.MembranePotentialMapping.types;
 
+/**
+ *
+ * @author stephan
+ */
+
 import eu.mihosoft.vrl.annotation.TypeInfo;
 import eu.mihosoft.vrl.dialogs.FileDialogManager;
 import eu.mihosoft.vrl.io.VFileFilter;
@@ -24,50 +29,35 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.Box;
+
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
 /**
  *
- * @brief use this as SectionLoaderFromHocFile
- * @author stephan
+ * @author Andreas Vogel <andreas.vogel@gcsc.uni-frankfurt.de>
  */
-
-@TypeInfo(type = File.class, input = true, output = false, style = "hoc-load-dialog")
-public class LoadHOCFileType extends TypeRepresentationBase {
-	 private static final long serialVersionUID = 1L;
+@TypeInfo(type = String.class, input = true, output = false, style = "hoc-load-dialog")
+public class LoadHOCFileStringType extends TypeRepresentationBase {
 
     /// the text field to display
     private VTextField input;
-    /// filter to restrict to ugx file
+    /// filter to restrict to hoc file
     private VFileFilter fileFilter = new VFileFilter();
     /// the current hoc_tag
     private String hoc_tag = null;
-    
 
     /**
      * Constructor.
      */
-	 
-	 @Override
-
-    public void addedToMethodRepresentation() {
-        super.addedToMethodRepresentation();
-
-		  // register at observable
-        notifyLoadHOCFileObservable();
-    }	
-	 
-  public LoadHOCFileType() {
-	  
-          	eu.mihosoft.vrl.system.VMessage.info("MPM Plugin status", "LoadHOCFileType instantiated!");
-		  
+    public LoadHOCFileStringType() {
+        eu.mihosoft.vrl.system.VMessage.info("MPM Plugin status", "LoadHOCFileStringType instantiated!");
 
         // create a Box and set it as layout
         VBoxLayout layout = new VBoxLayout(this, VBoxLayout.Y_AXIS);
         setLayout(layout);
         setLayoutType(LayoutType.STATIC);
-        
+
         // set the name label
         nameLabel.setText("File Name (*.hoc):");
         nameLabel.setAlignmentX(0.0f);
@@ -93,7 +83,7 @@ public class LoadHOCFileType extends TypeRepresentationBase {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                setViewValue(new File(input.getText()));
+                setViewValue(input.getText());
             }
         });
         horizBox.add(input);
@@ -101,7 +91,7 @@ public class LoadHOCFileType extends TypeRepresentationBase {
         // hide connector, since no external data allowed
         setHideConnector(true);
 
-        // set to ugx ending only
+        // set to hoc ending only
         ArrayList<String> endings = new ArrayList<String>();
         endings.add("hoc");
         fileFilter.setAcceptedEndings(endings);
@@ -129,7 +119,7 @@ public class LoadHOCFileType extends TypeRepresentationBase {
                         directory, fileFilter, false);
 
                 if (file != null) {
-                    setViewValue(file);
+                    setViewValue(file.toString());
                 }
             }
         });
@@ -139,20 +129,18 @@ public class LoadHOCFileType extends TypeRepresentationBase {
 
     @Override
     public void setViewValue(Object o) {
-        if (o instanceof File) {
-            input.setText(((File) o).getAbsolutePath());
-            input.setCaretPosition(input.getText().length());
-            input.setToolTipText(input.getText());
-            input.setHorizontalAlignment(JTextField.RIGHT);
-            //TODO: reset width according to file name
-        }
+        input.setText(o.toString());
+        input.setCaretPosition(input.getText().length());
+        input.setToolTipText(o.toString());
+        input.setHorizontalAlignment(JTextField.RIGHT);
+
         //  Here we inform the Singleton, that the file has been scheduled
-        notifyLoadHOCFileObservable();
-    }	 
+        notifyLoadUGXFileObservable();
+    }
 
     @Override
     public Object getViewValue() {
-        return new File(input.getText());
+        return input.getText();
     }
 
     @Override
@@ -182,42 +170,50 @@ public class LoadHOCFileType extends TypeRepresentationBase {
             getMainCanvas().getMessageBox().addMessage("Invalid ParamInfo option",
                     "ParamInfo for hoc-subset-selection requires hoc_tag in options",
                     getConnector(), MessageType.ERROR);
-        } else {
-	    getMainCanvas().getMessageBox().addMessage("ParamInfo specified correctly", "hoc_tag was: " + hoc_tag, MessageType.INFO);
-	}
+        }
 
     }
 
-      protected void notifyLoadHOCFileObservable() {
-        File file = new File(input.getText());
-        int id = this.getParentMethod().getParentObject().getObjectID();
-        Object o = ((VisualCanvas) getMainCanvas()).getInspector().getObject(id);
-        int windowID = 0;
+    @Override
+    public void addedToMethodRepresentation() {
+        super.addedToMethodRepresentation();
 
-        //  Here we inform the Singleton, that the file has been scheduled
+        // register at Observable using hoc_tag
+        notifyLoadUGXFileObservable();
+    }
+ 
+    protected void notifyLoadUGXFileObservable() {
+        File file = new File(input.getText());
+            int id = this.getParentMethod().getParentObject().getObjectID();
+            Object o = ((VisualCanvas) getMainCanvas()).getInspector().getObject(id);
+            int windowID = 0;
+
+        //  Here we inform the Singleton, that the file no scheduled
         if (!file.getAbsolutePath().isEmpty() && file.isFile()) {
-		String msg;
-           /* String msg = LoadHOCFileObservable.getInstance().setSelectedFile(file, hoc_tag, o, windowID);
+            //String msg = LoadHOCFileObservable.getInstance().setSelectedFile(file, hoc_tag, o, windowID);
+		String msg = "";
+
             if (!msg.isEmpty() && !getMainCanvas().isLoadingSession()) {
-                getMainCanvas().getMessageBox().addMessage("Invalid ugx-File",
+                getMainCanvas().getMessageBox().addMessage("Invalid hoc-File",
                         msg, getConnector(), MessageType.ERROR);
-            }*/
+            }
 
         } else {
-//            LoadHOCFileObservable.getInstance().setInvalidFile(hoc_tag, o, windowID);
+           // LoadHOCFileObservable.getInstance().setInvalidFile(hoc_tag, o, windowID);
+            
             if (!input.getText().isEmpty() && !getMainCanvas().isLoadingSession()) {
-                getMainCanvas().getMessageBox().addMessage("Invalid ugx-File",
+                getMainCanvas().getMessageBox().addMessage("Invalid hoc-File",
                         "Specified filename invalid: " + file.toString(),
                         getConnector(), MessageType.ERROR);
+
             }
         }
     }
 
-
-	 
-   @Override
+    @Override
     public String getValueAsCode() {
         return "\""
                 + VLangUtils.addEscapesToCode(getValue().toString()) + "\"";
     }
 }
+
