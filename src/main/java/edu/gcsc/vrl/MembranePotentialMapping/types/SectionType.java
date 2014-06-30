@@ -10,15 +10,14 @@ import edu.gcsc.vrl.MembranePotentialMapping.HOCFileInfo;
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.LoadHOCFileObservable;
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.LoadHOCFileObserver;
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.Section;
-import edu.gcsc.vrl.userdata.FunctionDefinition;
 import eu.mihosoft.vrl.annotation.TypeInfo;
 import eu.mihosoft.vrl.lang.VLangUtils;
 import eu.mihosoft.vrl.reflection.LayoutType;
 import eu.mihosoft.vrl.reflection.TypeRepresentationBase;
 import eu.mihosoft.vrl.reflection.VisualCanvas;
-import eu.mihosoft.vrl.visual.MessageType;
 import eu.mihosoft.vrl.visual.VBoxLayout;
 import eu.mihosoft.vrl.visual.VTextField;
+import groovy.lang.Script;
 import java.awt.Component;
 import static java.awt.Component.LEFT_ALIGNMENT;
 import java.awt.event.KeyEvent;
@@ -41,6 +40,7 @@ public class SectionType extends TypeRepresentationBase implements Serializable,
    DefaultListModel subsetListModel = null;
 	protected VTextField hocFileName = null;
 	private Section section = null;
+	private String hoc_tag = null;
 	
 	public void init() {
           	eu.mihosoft.vrl.system.VMessage.info("SectionType", "init was called");
@@ -102,15 +102,31 @@ public class SectionType extends TypeRepresentationBase implements Serializable,
 			 init();
 	       
 			 // TODO: init view etc 
-			if (true) 
+			if (hoc_tag != null) 
         {
             int id = this.getParentMethod().getParentObject().getObjectID();
             Object o = ((VisualCanvas) getMainCanvas()).getInspector().getObject(id);
             int windowID = 0;
-            LoadHOCFileObservable.getInstance().addObserver(this);
+            LoadHOCFileObservable.getInstance().addObserver(this, hoc_tag, o, id);
         }
 
 		}
+		
+		  /**
+    * Requests evaluation of the value options that are usually specified in
+    * {@link eu.mihosoft.vrl.annotation.ParamInfo}.
+    */
+    @Override
+    protected void evaluationRequest(Script script) {
+        super.evaluationRequest(script);
+
+        // read the hoc_tag
+        if (getValueOptions() != null && getValueOptions().contains("hoc_tag"))
+        {
+            Object property = script.getProperty("hoc_tag");
+            if (property != null) hoc_tag = (String) property;
+        }
+    }
         
 	
 	/**

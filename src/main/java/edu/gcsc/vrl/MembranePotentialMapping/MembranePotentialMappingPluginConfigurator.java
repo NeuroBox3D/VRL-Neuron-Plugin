@@ -91,7 +91,7 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
 	   vapi.addTypeRepresentation(LoadHOCFileStringType.class);
 	   vapi.addTypeRepresentation(LoadHOCFileType.class);
 	   
-	   vapi.addComponent(Section.class);
+	   //vapi.addComponent(Section.class);
 	   vapi.addTypeRepresentation(SectionType.class);
 	   vapi.addTypeRepresentation(SectionArrayType.class);
        }
