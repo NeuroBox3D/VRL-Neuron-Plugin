@@ -7,6 +7,7 @@
 package edu.gcsc.vrl.MembranePotentialMapping.types;
 
 import edu.gcsc.vrl.MembranePotentialMapping.HOCFileInfo;
+import edu.gcsc.vrl.MembranePotentialMapping.HOCInterpreter;
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.LoadHOCFileObservable;
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.LoadHOCFileObserver;
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.Section;
@@ -232,9 +233,11 @@ public class SectionType extends TypeRepresentationBase implements Serializable,
 				// clear all elements
             subsetListModel.removeAllElements();
 				System.err.println("if part of adjustview");
+				HOCInterpreter.getInstance().getTransformator().execute_hoc_stmt("a = 10");
 				hocFileName.setText("-- sections need to be extracted --");
 			
 				// TODO: get the sections with I_Transformator instance here 
+				// TODO: additionally we want maybe the registration of a global hoc_tag instead of a window based one!
 			
         } else {
             subsetListModel.removeAllElements();

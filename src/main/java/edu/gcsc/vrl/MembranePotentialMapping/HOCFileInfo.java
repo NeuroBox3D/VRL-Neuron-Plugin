@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class HOCFileInfo {
 	private final ArrayList<String> m_sectionNames = new ArrayList<String>();
 	private int m_noSections = 0;
+	private final static HOCInterpreter m_hocInterpreter = HOCInterpreter.getInstance();
 	
 	/**
 	 * @brief default ctor
@@ -36,6 +37,7 @@ public class HOCFileInfo {
 	 */
 	public synchronized void set_names_sections(ArrayList<String> sectionNames) {
 		m_sectionNames.addAll(sectionNames);
+	//	m_hocInterpreter.getTransformator();
 	}
 	
 	/**

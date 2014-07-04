@@ -7,7 +7,7 @@
 package edu.gcsc.vrl.MembranePotentialMapping.types;
 
 /**
- *
+ * @brief TODO: needs to be implemented in case i need this 
  * @author stephan
  */
 

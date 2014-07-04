@@ -121,6 +121,10 @@ public class LoadHOCFileObservable {
     /**
      * Add an observer to this Observable. The observer listens to a hoc_tag.
      * The observer will be updated with the current data automatically.
+	  * 
+	  * @see this is a window based hoc_tag, i. e. this is a window-local tag, 
+	  *      for a global hoc_tag which listens to a single HOCFileObservable from
+	  *      different windows use the below addObserver method for global tags!
      * 
      * @param obs       the observer to add
      * @param hoc_tag       the hoc_tag

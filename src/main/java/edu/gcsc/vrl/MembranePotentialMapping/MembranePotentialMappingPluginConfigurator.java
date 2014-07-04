@@ -94,6 +94,8 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
 	   //vapi.addComponent(Section.class);
 	   vapi.addTypeRepresentation(SectionType.class);
 	   vapi.addTypeRepresentation(SectionArrayType.class);
+	   
+	   vapi.addComponent(HOCCommand.class);
        }
    }
 

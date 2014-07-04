@@ -60,7 +60,7 @@ public class LoadHOCFileType extends TypeRepresentationBase {
 	 
   public LoadHOCFileType() {
 	  
-          	eu.mihosoft.vrl.system.VMessage.info("MPM Plugin status", "LoadHOCFileType instantiated!");
+       	eu.mihosoft.vrl.system.VMessage.info("MPM Plugin status", "LoadHOCFileType instantiated!");
 		  
 
         // create a Box and set it as layout
