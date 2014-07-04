@@ -209,15 +209,20 @@ public class LoadHOCFileObservable {
 	  * @param windowID
      */
     public synchronized void notifyObservers(String hoc_tag, Object object, int windowID) {
+				System.err.println("within notifyObservers");
         // get data for hoc_tag
         LoadHOCFileObservable.HOCFileTag hocTag = getTag(hoc_tag, object, windowID, false);
-
+			if (hocTag == null) {
+					  System.err.println("hoc tag null -> therefore no update!");
+			}
         // if no such hoc_tag present, return (i.e. no observer)
         if (hocTag != null) {
 
             // notify observers of this hoc_tag
             for (LoadHOCFileObserver b : hocTag.observers) {
+						  System.err.println("hoctag observers");
                 b.update(hocTag.data);
+					 System.err.println("hoctag observers");
             }
         }
 
@@ -225,13 +230,19 @@ public class LoadHOCFileObservable {
         LoadHOCFileObservable.HOCFileGlobalTag hocGlobalTag = getGlobalTag(hoc_tag, false);
 
         // if no such hoc_tag present, return (i.e. no observer)
+		  if (hocGlobalTag == null) {
+				 System.err.println("No global observers present!");
+		  }
+		  
         if (hocGlobalTag != null) {
 
             // notify observers of this hoc_tag
             for (LoadHOCFileObserver b : hocGlobalTag.observers) {
                 if (hocTag != null) {
                     b.update(hocTag.data);
+						  System.err.println("b.update(hocTag.data) called");
                 } else {
+						  System.err.println("b.update(null) called!");
                     b.update(null);
                 }
             }
@@ -276,15 +287,22 @@ public class LoadHOCFileObservable {
             return "Invalid Filename: " + file.toString() + ". Must be *.hoc.";
         }
 
-		  // create the hoc data
-        hocTag.data = new HOCFileInfo();
+		  // BUG BELOW: fill data with actual DATA from parsing the file
+		  // create the hoc data (TODO: buggy)
+ /*       hocTag.data = new HOCFileInfo();
 		  transformator.execute_hoc_stmt("forall for { print sec() } "); // TODO: get_all_sections in a better way
 		  hocTag.data.set_num_sections(transformator.get_sections());
 		  ArrayList<String> names_sections = null;
-		  hocTag.data.set_names_sections(names_sections);
+		  hocTag.data.set_names_sections(names_sections);*/
+		  ArrayList<String> names = new ArrayList<String>();
+		  names.add("foo section!");
+		  hocTag.data = new HOCFileInfo();
+		  hocTag.data.set_names_sections(names);
 
         // now we notify the obersver of this hoc_tag
         notifyObservers(hoc_tag, object, windowID);
+		  
+		  System.err.println("Notify Observers called");
 
         return "";
     }

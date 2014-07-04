@@ -6,6 +6,7 @@
 
 package edu.gcsc.vrl.MembranePotentialMapping.types;
 
+import edu.gcsc.vrl.MembranePotentialMapping.userdata.LoadHOCFileObservable;
 import eu.mihosoft.vrl.annotation.TypeInfo;
 import eu.mihosoft.vrl.dialogs.FileDialogManager;
 import eu.mihosoft.vrl.io.VFileFilter;
@@ -49,8 +50,7 @@ public class LoadHOCFileType extends TypeRepresentationBase {
      * Constructor.
      */
 	 
-	 @Override
-
+ @Override
     public void addedToMethodRepresentation() {
         super.addedToMethodRepresentation();
 
@@ -189,6 +189,7 @@ public class LoadHOCFileType extends TypeRepresentationBase {
     }
 
       protected void notifyLoadHOCFileObservable() {
+          	eu.mihosoft.vrl.system.VMessage.info("Clamp", "notifyloadhocfileobaservable called!");
         File file = new File(input.getText());
         int id = this.getParentMethod().getParentObject().getObjectID();
         Object o = ((VisualCanvas) getMainCanvas()).getInspector().getObject(id);
@@ -196,17 +197,16 @@ public class LoadHOCFileType extends TypeRepresentationBase {
 
         //  Here we inform the Singleton, that the file has been scheduled
         if (!file.getAbsolutePath().isEmpty() && file.isFile()) {
-		String msg;
-           /* String msg = LoadHOCFileObservable.getInstance().setSelectedFile(file, hoc_tag, o, windowID);
+            String msg = LoadHOCFileObservable.getInstance().setSelectedFile(file, hoc_tag, o, windowID);
             if (!msg.isEmpty() && !getMainCanvas().isLoadingSession()) {
-                getMainCanvas().getMessageBox().addMessage("Invalid ugx-File",
+                getMainCanvas().getMessageBox().addMessage("Invalid hoc-File",
                         msg, getConnector(), MessageType.ERROR);
-            }*/
+            }
 
         } else {
-//            LoadHOCFileObservable.getInstance().setInvalidFile(hoc_tag, o, windowID);
+            LoadHOCFileObservable.getInstance().setInvalidFile(hoc_tag, o, windowID);
             if (!input.getText().isEmpty() && !getMainCanvas().isLoadingSession()) {
-                getMainCanvas().getMessageBox().addMessage("Invalid ugx-File",
+                getMainCanvas().getMessageBox().addMessage("Invalid hoc-File",
                         "Specified filename invalid: " + file.toString(),
                         getConnector(), MessageType.ERROR);
             }

@@ -55,7 +55,7 @@ public class Clamp implements Serializable {
 	@ParamInfo(name="Load Dialog Test", style="hoc-load-dialog", options="hoc_tag=\"gridFile\"") java.io.File hoc_file,
 	    
 	@ParamGroupInfo(group="Point Process|false; Test|false")
-	@ParamInfo(name="Section Test Component", style="default") Section sectionTest
+	@ParamInfo(name="Section Test Component", style="default", options="hoc_tag=\"gridFile\"") Section sectionTest
 	    
     ) {
 	    if ( ! (m_transformator == null) ) {

@@ -10,7 +10,6 @@ import edu.gcsc.vrl.MembranePotentialMapping.userdata.Section;
 import edu.gcsc.vrl.userdata.types.UserDataArrayBaseType;
 import eu.mihosoft.vrl.annotation.TypeInfo;
 import eu.mihosoft.vrl.lang.VLangUtils;
-import eu.mihosoft.vrl.visual.MessageType;
 
 /**
  *
