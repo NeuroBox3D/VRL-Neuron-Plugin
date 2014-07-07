@@ -234,7 +234,8 @@ public class SectionType extends TypeRepresentationBase implements Serializable,
             subsetListModel.removeAllElements();
 				System.err.println("if part of adjustview");
 				HOCInterpreter.getInstance().getTransformator().execute_hoc_stmt("a = 10");
-				hocFileName.setText("-- sections need to be extracted --");
+				ArrayList<String> sections = info.get_names_sections();
+				hocFileName.setText("-- #sections in hoc file: " + sections.size() +"--");
 			
 				// TODO: get the sections with I_Transformator instance here 
 				// TODO: additionally we want maybe the registration of a global hoc_tag instead of a window based one!
@@ -242,8 +243,8 @@ public class SectionType extends TypeRepresentationBase implements Serializable,
         } else {
             subsetListModel.removeAllElements();
 				System.err.println("else part of adjustview");
-            subsetListModel.addElement("-- adjustview no hoc file selected --");
-				hocFileName.setText("-- adjustview no hoc file selected --");
+            subsetListModel.addElement("-- else part of adjustview -- ");
+				hocFileName.setText("-- no hoc file selected --");
         }
     }
 	

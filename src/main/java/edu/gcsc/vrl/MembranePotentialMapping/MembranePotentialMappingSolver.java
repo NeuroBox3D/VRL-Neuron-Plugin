@@ -82,7 +82,8 @@ public class MembranePotentialMappingSolver implements Serializable
     (	
 	@ParamGroupInfo(group="Problem Setup|false")
 	@ParamInfo(name="NEURON Setup", style="default")
-	I_Transformator transformator,
+	HOCInterpreter interpreter,
+	//I_Transformator transformator,
 	
         @ParamGroupInfo(group="Problem Setup|false")
         @ParamInfo(name="Domain Disc", style="default")
@@ -219,7 +220,7 @@ public class MembranePotentialMappingSolver implements Serializable
         double plotStep
     )
     {
-	    I_MembranePotentialMapper mapper = new MembranePotentialMapper(transformator);
+	    I_MembranePotentialMapper mapper = new MembranePotentialMapper(interpreter.getTransformator());
 	    
 	    // initialize vdccs transformator TODO mapper to be set...
 	//    vdccDisc.set_mapper(mapper);
@@ -468,8 +469,8 @@ public class MembranePotentialMappingSolver implements Serializable
         // begin simulation loop
         while (time < timeEnd)
         {
-	    transformator.fadvance();
-	    transformator.extract_vms(1, 1);
+	 //   interpreter.getTransformator().fadvance();
+	  //  interpreter.getTransformator().extract_vms(1, 1);
             F_Print.invoke("++++++ POINT IN TIME  " + Math.floor((time+dt)/dt+0.5)*dt + "s  BEGIN ++++++");
 
             //setup time disc for old solutions and timestep

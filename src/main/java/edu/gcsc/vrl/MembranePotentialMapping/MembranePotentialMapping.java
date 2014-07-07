@@ -60,7 +60,7 @@ public class MembranePotentialMapping implements Serializable
     (
         style="multi-out",
         elemNames = {"Domain Disc", "VDCC Disc", "Approximation Space", "Initial Solution", "NEURON Setup"},
-        elemTypes = {I_DomainDiscretization.class, I_FV1InnerBoundaryAMPAR.class, I_ApproximationSpace.class, UserDataTuple[].class, I_Transformator.class}
+        elemTypes = {I_DomainDiscretization.class, I_FV1InnerBoundaryAMPAR.class, I_ApproximationSpace.class, UserDataTuple[].class, HOCInterpreter.class}
     )
     public Object[] invoke
     (
@@ -227,7 +227,9 @@ public class MembranePotentialMapping implements Serializable
         I_CplUserNumber vdccDensityFct = (I_CplUserNumber) vdccData.getNumberData(1);
         
 	
-        I_FV1InnerBoundaryAMPAR vdccDisc = new FV1InnerBoundaryAMPAR(); 
+	I_FV1InnerBoundaryAMPAR vdccDisc = new FV1InnerBoundaryAMPAR();
+ //       I_FV1InnerBoundaryAMPAR vdccDisc = new FV1InnerBoundaryAMPAR(); 
+	//I_OneSidedBorgGrahamFV1 vdccDisc = new OneSidedBorgGrahamFV1();
 	/*vdccFcts,
                 vdccSsString, approxSpace, vdccFile, vdccFileTimeFormatString,
                 vdccFileExtension, false);
@@ -238,7 +240,7 @@ public class MembranePotentialMapping implements Serializable
         vdccDisc.init(0.0D);
         // voltage files interval!?*/
         
-        domainDisc.add(vdccDisc);
+        //domainDisc.add(vdccDisc);
         
         
         // Neumann boundaries
@@ -310,7 +312,9 @@ public class MembranePotentialMapping implements Serializable
                 }
             }
         }
-        return new Object[]{domainDisc, vdccDisc, approxSpace, startValue};
+	
+	HOCInterpreter interpreter = HOCInterpreter.getInstance();
+        return new Object[]{domainDisc, vdccDisc, approxSpace, startValue, interpreter};
     }
     
     
