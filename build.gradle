@@ -35,9 +35,10 @@ loadProperties('build.properties')
 
 // add dependencies
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.10'
     compile (group: 'eu.mihosoft.vrl', name: 'vrl', version: '0.4.2.8.5-SNAPSHOT')
+    testCompile group: 'org.easymock', name: 'easymock', version: '3.1'
     compile fileTree(dir: vrldir+"/plugins/", includes:['*.jar'])
+    testCompile group: 'junit', name: 'junit', version: '4.10'
 }
 
 // compiles and installs the vrl plugin to the specified folder
