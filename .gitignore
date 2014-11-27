@@ -1,10 +1,9 @@
-*.class
-
-# Package Files #
 *.jar
 *.war
 *.ear
 
-# folders
 VRL-Neuron-Plugin/dist
 VRL-Neuron-Plugin/build
+build/.*
+.gradle/.*
+.nb_gradle/.*
