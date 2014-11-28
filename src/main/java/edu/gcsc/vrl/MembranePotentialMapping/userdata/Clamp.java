@@ -31,10 +31,9 @@ public class Clamp implements Serializable {
      * @param stimDur duration [ms]
      * @param stimAmp amplitude [nA]
      * @param stimDel duration of deletion in [ms]
-     * @param stimSection section, i. e. soma or other section
      * @param hoc_file the hoc file to be loaded
-     * @param stimPosition relative location of stimulation on section
      * @param sectionTest test the type representation
+     * @param stimLoc
      */
     public void point_process(
 	@ParamGroupInfo(group="Point Process|false; Stimulation|false")
@@ -45,20 +44,34 @@ public class Clamp implements Serializable {
 	@ParamInfo(name="stimDel") double stimDel,
 	@ParamGroupInfo(group="Point Process|false; Stimulation|false")
 	@ParamInfo(name="stimAmp") double stimAmp,
+	@ParamGroupInfo(group="Point Process|false; Stimulation|false")
+	@ParamInfo(name="stimLoc") double stimLoc,
 		
-	@ParamGroupInfo(group="Point Process|false; Location|false")
+	/*@ParamGroupInfo(group="Point Process|false; Location|false")
 	@ParamInfo(name="Section") String stimSection,
 	@ParamGroupInfo(group="Point Process|false; Location|false")
-	@ParamInfo(name="Position") String stimPosition,
+	@ParamInfo(name="Position") String stimPosition,*/
 
-	@ParamGroupInfo(group="Point Process|true; Test|true")
-	@ParamInfo(name="Load Dialog Test", style="hoc-load-dialog", options="hoc_tag=\"gridFile\"") java.io.File hoc_file,
+	@ParamGroupInfo(group="Point Process|true; Geometry|false")
+	@ParamInfo(name="Load", style="hoc-load-dialog", options="hoc_tag=\"gridFile\"") File hoc_file,
 	    
-	@ParamGroupInfo(group="Point Process|false; Test|false")
-	@ParamInfo(name="Section Test Component", style="default", options="hoc_tag=\"gridFile\"") Section sectionTest
+	@ParamGroupInfo(group="Point Process|false; Geometry|false")
+	@ParamInfo(name="Section", style="default", options="hoc_tag=\"gridFile\"") Section sectionTest
 	    
     ) {
 	    if ( ! (m_transformator == null) ) {
+		    for (int i = 0; i < sectionTest.get_names().size(); i++) {
+			    System.err.println(sectionTest.get_names().get(i));
+			    m_transformator.execute_hoc_stmt("objectvar stim" + i);
+			    if (stimType.equals("VClamp")) {
+				    m_transformator.execute_hoc_stmt(sectionTest.get_names().get(i) + " stim"+i + "= new VClamp(" + stimLoc + ")");
+			    } else if (stimType.equals("IClamp")) {
+				    m_transformator.execute_hoc_stmt(sectionTest.get_names().get(i) + " stim"+i + "= new IClamp(" + stimLoc + ")");
+			    } else {
+				    
+			    }
+		    }
+		    /// then execute transformator statement
 		// TODO: implement method stub
 		// m_transformator.execute_hoc_stmt("");
 	    } else {

@@ -11,9 +11,11 @@ import edu.gcsc.vrl.ug.api.I_Transformator;
 import edu.gcsc.vrl.ug.api.Transformator;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -299,7 +301,16 @@ public class LoadHOCFileObservable {
 		  ArrayList<String> names_sections = null;
 		  hocTag.data.set_names_sections(names_sections);*/
 		  ArrayList<String> names = new ArrayList<String>();
-		  names.add("foo section!");
+	//	  names.add("foo section!");
+	//	  names.add("bar section!");
+		  transformator.load_geom(file.toString());
+		  String sections = transformator.get_section_names_as_string();
+		  String[] sections_exploded = sections.split(";");
+		  List<String> finals = Arrays.asList(sections_exploded);
+		  for (String s : finals) {
+			  names.add(s);
+		  }
+		  System.err.println("Sections: " + sections);
 		  hocTag.data = new HOCFileInfo();
 		  hocTag.data.set_names_sections(names);
 

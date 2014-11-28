@@ -38,6 +38,7 @@ import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+
 /**
  *
  * @author stephan
@@ -115,8 +116,36 @@ public class SectionType extends TypeRepresentationBase implements Serializable,
                 }
         });
         subsetList.setAlignmentX(Component.LEFT_ALIGNMENT);
+	   subsetList.addListSelectionListener(new ListSelectionListener()
+        {
+            @Override
+            public void valueChanged(ListSelectionEvent e)
+            {
+                if (subsetList.getSelectedIndices() != null && hocFileName.getText() != null)
+                {
+                    // construct selectedValuesList by hand since 
+                    // getSelectedValuesList() depends on 1.7 and may raise an exception
+                    List<String> selSubsets = new ArrayList<String>();
+                    for (int i: subsetList.getSelectedIndices()) selSubsets.add((String) subsetList.getModel().getElementAt(i));
+		    section = new Section();
+		    section.set_names(selSubsets);
+                }
+            }
+        });
         add(subsetList);
 	}
+	
+	 @Override
+    public Object getViewValue()
+    {
+	    if (section != null) {
+		    return section;
+	    } else {
+		    return new Section();
+	    }
+	    
+    }
+    
 	
 	/**
 	 * @brief default ctor
@@ -236,6 +265,11 @@ public class SectionType extends TypeRepresentationBase implements Serializable,
 				HOCInterpreter.getInstance().getTransformator().execute_hoc_stmt("a = 10");
 				ArrayList<String> sections = info.get_names_sections();
 				hocFileName.setText("-- #sections in hoc file: " + sections.size() +"--");
+				System.err.println("Number of sections: " + HOCInterpreter.getInstance().getTransformator().get_sections());
+				ArrayList<String> elements = info.get_names_sections();
+				for (String element : elements) {
+				subsetListModel.addElement(element);
+				}
 			
 				// TODO: get the sections with I_Transformator instance here 
 				// TODO: additionally we want maybe the registration of a global hoc_tag instead of a window based one!

@@ -14,7 +14,7 @@ import edu.gcsc.vrl.ug.api.*;
 // mpm plugin imports
 
 import edu.gcsc.vrl.ug.api.I_Transformator;
-import edu.gcsc.vrl.ug.api.I_FV1InnerBoundaryAMPAR;
+import edu.gcsc.vrl.ug.api.I_FV1InnerBoundaryAMPARNEURON;
 import edu.gcsc.vrl.userdata.FunctionDefinition;
 import edu.gcsc.vrl.userdata.UserDataTuple;
 import edu.gcsc.vrl.userdata.UserDependentSubsetModel;
@@ -60,7 +60,7 @@ public class MembranePotentialMapping implements Serializable
     (
         style="multi-out",
         elemNames = {"Domain Disc", "VDCC Disc", "Approximation Space", "Initial Solution", "NEURON Setup"},
-        elemTypes = {I_DomainDiscretization.class, I_FV1InnerBoundaryAMPAR.class, I_ApproximationSpace.class, UserDataTuple[].class, HOCInterpreter.class}
+        elemTypes = {I_DomainDiscretization.class, I_FV1InnerBoundaryAMPARNEURON.class, I_ApproximationSpace.class, UserDataTuple[].class, HOCInterpreter.class}
     )
     public Object[] invoke
     (
@@ -227,7 +227,8 @@ public class MembranePotentialMapping implements Serializable
         I_CplUserNumber vdccDensityFct = (I_CplUserNumber) vdccData.getNumberData(1);
         
 	
-	I_FV1InnerBoundaryAMPAR vdccDisc = new FV1InnerBoundaryAMPAR();
+	I_FV1InnerBoundaryAMPARNEURON vdccDisc = new FV1InnerBoundaryAMPARNEURON();
+	//vdccDisc.set_transformator(HOCInterpreter.getInstance().getTransformator());
  //       I_FV1InnerBoundaryAMPAR vdccDisc = new FV1InnerBoundaryAMPAR(); 
 	//I_OneSidedBorgGrahamFV1 vdccDisc = new OneSidedBorgGrahamFV1();
 	/*vdccFcts,

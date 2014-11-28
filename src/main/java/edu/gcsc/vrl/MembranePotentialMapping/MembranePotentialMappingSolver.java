@@ -14,7 +14,7 @@ import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
 import eu.mihosoft.vrl.math.Trajectory;
 
-import edu.gcsc.vrl.ug.api.I_FV1InnerBoundaryAMPAR;
+import edu.gcsc.vrl.ug.api.I_FV1InnerBoundaryAMPARNEURON;
 
 import java.io.File;
 import java.io.Serializable;
@@ -91,7 +91,7 @@ public class MembranePotentialMappingSolver implements Serializable
             
         @ParamGroupInfo(group="Problem Setup|false")
         @ParamInfo(name="VDCC Disc", style="default")
-	I_FV1InnerBoundaryAMPAR vdccDisc,
+	I_FV1InnerBoundaryAMPARNEURON vdccDisc,
         
         @ParamGroupInfo(group="Problem Setup|false")
         @ParamInfo(name="Approximation Space", style="default")
@@ -221,10 +221,12 @@ public class MembranePotentialMappingSolver implements Serializable
     )
     {
 	    I_MembranePotentialMapper mapper = new MembranePotentialMapper(interpreter.getTransformator());
+	    vdccDisc.set_transformator(interpreter.getTransformator());
+	    interpreter.getTransformator().execute_hoc_stmt("foo = 10");
+	    System.err.println("Foo with value: " + interpreter.getTransformator().get_hoc_variable("foo"));
 	    
 	    // initialize vdccs transformator TODO mapper to be set...
-	//    vdccDisc.set_mapper(mapper);
-	//    vdccDisc.set_transformator(transformator);
+	 //   vdccDisc.set_mapper(mapper);
         //if (bEraseOldFiles) eraseAllFilesInFolder(fileOut, "vtu");
           
         // set abortion flag to false initially (can be changed using stopSolver-Method)
@@ -422,14 +424,15 @@ public class MembranePotentialMappingSolver implements Serializable
         }
         
         // take first measurement
+	/*
         for (int i=0; i<measFct.size(); i++)
         {
             F_TakeMeasurement.invoke(u, approxSpace, time, measSs.get(i),
                                      measFct.get(i), outputPath + "meas/data");
-        }
+        }*/
         
         // create new grid function for old value
-        I_GridFunction uOld = u.clone();  // TODO: was clone() => this is supposed to fail -> now not any more
+        I_GridFunction uOld = u.const__clone();  // TODO: was clone() => this is supposed to fail -> now not any more
         
         // store grid function in vector of old solutions
         I_SolutionTimeSeries solTimeSeries = new SolutionTimeSeries();
@@ -547,11 +550,11 @@ public class MembranePotentialMappingSolver implements Serializable
                 }
 
                 // take measurement in nucleus every timeStep seconds
-                for (int i=0; i<measFct.size(); i++)
+                /*for (int i=0; i<measFct.size(); i++)
                 {
                     F_TakeMeasurement.invoke(u, approxSpace, time, measSs.get(i),
                                              measFct.get(i), outputPath + "meas/data");
-                }
+                }*/
 
                 // export solution of ca on mem_er
                 //F_ExportSolution.invoke(u, approxSpace, time, "mem_cyt", "ca_cyt", outputPath + "sol/sol");

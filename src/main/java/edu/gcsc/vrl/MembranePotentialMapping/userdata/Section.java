@@ -7,6 +7,7 @@
 package edu.gcsc.vrl.MembranePotentialMapping.userdata;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -14,7 +15,17 @@ import java.io.Serializable;
  */
 public class Section implements Serializable {
 	private static final long serialVersionUID = 1L;
+	private List<String> names;
 	
 	public Section() {
 	}	
+	
+	public void set_names(List<String> list) {
+		this.names = list;
+	}
+	
+	public List<String> get_names() {
+		return this.names;
+	}
+	
 }
