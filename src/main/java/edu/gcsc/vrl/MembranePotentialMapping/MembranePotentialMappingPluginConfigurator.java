@@ -36,6 +36,7 @@ import javax.imageio.ImageIO;
  */
 public class MembranePotentialMappingPluginConfigurator extends VPluginConfigurator{
 	private File templateProjectSrc;
+	private File templateProjectSrc2;
 
     public MembranePotentialMappingPluginConfigurator() {
         //specify the plugin name and version
@@ -119,6 +120,7 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
     public void install(InitPluginAPI iApi) {
         // ensure template projects are updated
         new File(iApi.getResourceFolder(), "template-01.vrlp").delete();
+	new File(iApi.getResourceFolder(), "template-02.vrlp").delete();
     }
 	
 
@@ -134,8 +136,13 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
 	
 	private void initTemplateProject(InitPluginAPI iApi) {
         templateProjectSrc = new File(iApi.getResourceFolder(), "template-01.vrlp");
+        templateProjectSrc2 = new File(iApi.getResourceFolder(), "template-01.vrlp");
 
         if (!templateProjectSrc.exists()) {
+            saveProjectTemplate();
+        }
+	
+        if (!templateProjectSrc2.exists()) {
             saveProjectTemplate();
         }
 
@@ -161,6 +168,30 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
                 return null;
             }
         });
+	
+	 iApi.addProjectTemplate(new ProjectTemplate() {
+
+            @Override
+            public String getName() {
+                return "MPM Plugin - Template 2";
+            }
+
+            @Override
+            public File getSource() {
+                return templateProjectSrc;
+            }
+
+            @Override
+            public String getDescription() {
+                return "MPM Plugin Template Project 2";
+            }
+
+            @Override
+            public BufferedImage getIcon() {
+                return null;
+            }
+        });
+	
 	}
 	
 	 private void saveProjectTemplate() {
@@ -168,6 +199,18 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
                 "/edu/gcsc/vrl/MembranePotentialMapping/resources/projects/template-01.vrlp");
         try {
             IOUtil.saveStreamToFile(in, templateProjectSrc);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(VRLPlugin.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(VRLPlugin.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+	
+	InputStream in2 = MembranePotentialMappingPluginConfigurator.class.getResourceAsStream(
+                "/edu/gcsc/vrl/MembranePotentialMapping/resources/projects/template-02.vrlp");
+        try {
+            IOUtil.saveStreamToFile(in2, templateProjectSrc);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(VRLPlugin.class.getName()).
                     log(Level.SEVERE, null, ex);
