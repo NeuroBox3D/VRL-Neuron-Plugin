@@ -1,4 +1,4 @@
-// package name
+// package's name
 package edu.gcsc.vrl.MembranePotentialMapping;
 
 // imports
@@ -6,22 +6,19 @@ import edu.gcsc.vrl.ug.api.*;
 import edu.gcsc.vrl.ug.api.VTKOutput;
 import edu.gcsc.vrl.userdata.UserDataTuple;
 import edu.gcsc.vrl.userdata.UserDependentSubsetModel;
-
 import eu.mihosoft.vrl.annotation.ComponentInfo;
 import eu.mihosoft.vrl.annotation.MethodInfo;
 import eu.mihosoft.vrl.annotation.OutputInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
 import eu.mihosoft.vrl.math.Trajectory;
-
 import edu.gcsc.vrl.ug.api.I_FV1InnerBoundaryAMPARNEURON;
-
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Solver get's input Transformator instance => Transformator get's inserted in discretization constructors for AMPA, NMDA and VGCC for example
+/** @todo  Solver get's input Transformator instance => Transformator get's inserted in discretization constructors for AMPA, NMDA and VGCC for example */
 
 /**
  *
@@ -231,7 +228,6 @@ public class MembranePotentialMappingSolver implements Serializable
           
         // set abortion flag to false initially (can be changed using stopSolver-Method)
         stopSolver = false;
-        
          //////////////
         // Operator //
         //////////////

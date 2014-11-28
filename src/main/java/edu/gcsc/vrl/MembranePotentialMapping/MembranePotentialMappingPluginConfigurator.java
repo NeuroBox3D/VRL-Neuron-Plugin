@@ -9,7 +9,6 @@ import edu.gcsc.vrl.MembranePotentialMapping.types.LoadHOCFileType;
 import edu.gcsc.vrl.MembranePotentialMapping.types.SectionArrayType;
 import edu.gcsc.vrl.MembranePotentialMapping.types.SectionType;
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.Clamp;
-import edu.gcsc.vrl.MembranePotentialMapping.userdata.Section;
 import eu.mihosoft.vrl.io.IOUtil;
 import eu.mihosoft.vrl.io.VJarUtil;
 import eu.mihosoft.vrl.lang.visual.CompletionUtil;
@@ -28,7 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
+
 
 /**
  *

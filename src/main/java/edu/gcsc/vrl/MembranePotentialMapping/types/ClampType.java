@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+/// package's name
 package edu.gcsc.vrl.MembranePotentialMapping.types;
 
+/// imports
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.Clamp;
 import eu.mihosoft.vrl.annotation.TypeInfo;
 import eu.mihosoft.vrl.lang.VLangUtils;
@@ -29,7 +25,7 @@ public class ClampType extends TypeRepresentationBase implements Serializable {
 
     /**
      * @brief necessary for code generation
-     * @return code as String with escapes
+     * @return
      */
     @Override
     public String getValueAsCode() {

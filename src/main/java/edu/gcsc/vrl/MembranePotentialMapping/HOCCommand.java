@@ -1,18 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+/// package's name
 package edu.gcsc.vrl.MembranePotentialMapping;
 
+/// imports
 import eu.mihosoft.vrl.annotation.ComponentInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
-import eu.mihosoft.vrl.visual.VTextField;
 import java.io.Serializable;
 
 /**
- *
+ * @brief HOC command class
  * @author stephan
  */
 @ComponentInfo(name="HOCCommand", category="/UG4/VRL-Plugins/Neuro/MembranePotentialMapping/")

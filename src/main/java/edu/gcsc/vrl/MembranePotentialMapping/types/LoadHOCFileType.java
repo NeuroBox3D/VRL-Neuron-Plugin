@@ -189,7 +189,7 @@ public class LoadHOCFileType extends TypeRepresentationBase {
     }
 
       protected void notifyLoadHOCFileObservable() {
-          	eu.mihosoft.vrl.system.VMessage.info("Clamp", "notifyloadhocfileobaservable called!");
+        eu.mihosoft.vrl.system.VMessage.info("Clamp", "notifyloadhocfileobaservable called!");
         File file = new File(input.getText());
         int id = this.getParentMethod().getParentObject().getObjectID();
         Object o = ((VisualCanvas) getMainCanvas()).getInspector().getObject(id);
@@ -213,8 +213,10 @@ public class LoadHOCFileType extends TypeRepresentationBase {
         }
     }
 
-
-	 
+   /**
+    * @brief for code generation
+    * @return
+    */
    @Override
     public String getValueAsCode() {
         return "\""

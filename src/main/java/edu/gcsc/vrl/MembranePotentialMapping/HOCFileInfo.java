@@ -45,13 +45,14 @@ public class HOCFileInfo {
 	 * @return 
 	 */
 	public synchronized int get_num_sections() {
-		return  m_noSections;
+		return m_noSections;
 	}
 	
 	/**
 	 * @brief gets the names of sections
 	 * @return 
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public synchronized ArrayList<String> get_names_sections() {
 		return m_sectionNames;
 	}

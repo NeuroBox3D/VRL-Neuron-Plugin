@@ -10,6 +10,7 @@
 package edu.gcsc.vrl.MembranePotentialMapping;
 
 // imports
+import edu.gcsc.vrl.MembranePotentialMapping.userdata.Clamp;
 import edu.gcsc.vrl.ug.api.*;
 // mpm plugin imports
 
@@ -53,6 +54,7 @@ public class MembranePotentialMapping implements Serializable
      * @param vdccFileExtension
      * @param bndData
      * @param startValue
+     * @param clamps
      * @return
      */
     @MethodInfo(valueStyle="multi-out", interactive = false)
@@ -99,7 +101,7 @@ public class MembranePotentialMapping implements Serializable
     	@ParamGroupInfo(group="Problem definition|true; NEURON setup|false; Stimulation")
 	@ParamInfo(name="Stimulation file", style="load-dialog", options="")
 	String hocStim,
-        
+	
         @ParamGroupInfo(group="Problem definition|true; Pl Membrane|false; VDCC")
         @ParamInfo(name="channel type", style="selection", options="value=[\"L\",\"N\",\"T\"]")
         String vdccChannelType,
