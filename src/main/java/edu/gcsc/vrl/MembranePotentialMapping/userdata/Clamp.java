@@ -90,7 +90,7 @@ public class Clamp implements Serializable {
      * @return the hoc interpreter
      */
     @SuppressWarnings("all")
-    private I_Transformator get_transformator() {
+    public I_Transformator get_transformator() {
 	    return m_transformator;
     }
 }

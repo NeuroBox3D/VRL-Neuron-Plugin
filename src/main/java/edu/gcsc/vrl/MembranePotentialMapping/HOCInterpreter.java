@@ -4,11 +4,13 @@ package edu.gcsc.vrl.MembranePotentialMapping;
 /// imports
 import edu.gcsc.vrl.ug.api.I_Transformator;
 import edu.gcsc.vrl.ug.api.Transformator;
+import eu.mihosoft.vrl.annotation.ComponentInfo;
 
 /**
  * @brief access to hoc interpreter, provided as singleton
  * @author stephan
  */
+@ComponentInfo(name="HOCInterpreter", category="/UG4/VRL-Plugins/Neuro/MembranePotentialMapping/")
 public class HOCInterpreter {
    // private singleton instance
    private static volatile HOCInterpreter instance = null;

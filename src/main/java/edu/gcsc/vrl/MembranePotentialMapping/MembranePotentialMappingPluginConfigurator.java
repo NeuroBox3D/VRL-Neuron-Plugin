@@ -100,6 +100,7 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
 	   vapi.addComponent(Clamp.class);
 	   vapi.addTypeRepresentation(LoadHOCFileStringType.class);
 	   vapi.addTypeRepresentation(LoadHOCFileType.class);
+	   vapi.addComponent(HOCInterpreter.class);
 	   
 	   //vapi.addComponent(Section.class);
 	   vapi.addTypeRepresentation(SectionType.class);
@@ -135,7 +136,7 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
 	
 	private void initTemplateProject(InitPluginAPI iApi) {
         templateProjectSrc = new File(iApi.getResourceFolder(), "template-01.vrlp");
-        templateProjectSrc2 = new File(iApi.getResourceFolder(), "template-01.vrlp");
+        templateProjectSrc2 = new File(iApi.getResourceFolder(), "template-02.vrlp");
 
         if (!templateProjectSrc.exists()) {
             saveProjectTemplate();
@@ -177,7 +178,7 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
 
             @Override
             public File getSource() {
-                return templateProjectSrc;
+                return templateProjectSrc2;
             }
 
             @Override
@@ -209,7 +210,7 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
 	InputStream in2 = MembranePotentialMappingPluginConfigurator.class.getResourceAsStream(
                 "/edu/gcsc/vrl/MembranePotentialMapping/resources/projects/template-02.vrlp");
         try {
-            IOUtil.saveStreamToFile(in2, templateProjectSrc);
+            IOUtil.saveStreamToFile(in2, templateProjectSrc2);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(VRLPlugin.class.getName()).
                     log(Level.SEVERE, null, ex);
