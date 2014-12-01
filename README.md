@@ -7,3 +7,4 @@ Badges:
 * [![CI Build Status](https://travis-ci.org/stephanmg/VRL-Neuron-Plugin.svg?branch=master)](https://travis-ci.org/stephanmg/VRL-Neuron-Plugin)
 * [![CI Coverage Status](https://coveralls.io/repos/stephanmg/VRL-Neuron-Plugin/badge.png)](https://coveralls.io/r/stephanmg/VRL-Neuron-Plugin)
 * [![Stories in Ready](https://badge.waffle.io/NeuroBox3D/VRL-Neuron-Plugin.png?label=ready&title=Ready)](http://waffle.io/NeuroBox3D/VRL-Neuron-Plugin)
+* [![Stories in Backlog](https://badge.waffle.io/NeuroBox3D/VRL-Neuron-Plugin.png?label=Backlog&title=Backlog)](http://waffle.io/NeuroBox3D/VRL-Neuron-Plugin)
