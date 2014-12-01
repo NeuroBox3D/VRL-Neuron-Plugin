@@ -15,7 +15,7 @@ import edu.gcsc.vrl.ug.api.*;
 // mpm plugin imports
 
 import edu.gcsc.vrl.ug.api.I_Transformator;
-import edu.gcsc.vrl.ug.api.I_FV1InnerBoundaryAMPARNEURON;
+import edu.gcsc.vrl.ug.api.OneSidedBorgGrahamFV1WithVM2UGNEURON3d;
 import edu.gcsc.vrl.userdata.FunctionDefinition;
 import edu.gcsc.vrl.userdata.UserDataTuple;
 import edu.gcsc.vrl.userdata.UserDependentSubsetModel;
@@ -62,7 +62,7 @@ public class MembranePotentialMapping implements Serializable
     (
         style="multi-out",
         elemNames = {"Domain Disc", "VDCC Disc", "Approximation Space", "Initial Solution", "NEURON Setup"},
-        elemTypes = {I_DomainDiscretization.class, I_FV1InnerBoundaryAMPARNEURON.class, I_ApproximationSpace.class, UserDataTuple[].class, HOCInterpreter.class}
+        elemTypes = {I_DomainDiscretization.class, I_OneSidedBorgGrahamFV1WithVM2UGNEURON.class, I_ApproximationSpace.class, UserDataTuple[].class, HOCInterpreter.class}
     )
     public Object[] invoke
     (
@@ -227,9 +227,29 @@ public class MembranePotentialMapping implements Serializable
         vdccSsString = vdccSsString.substring(2);
         
         I_CplUserNumber vdccDensityFct = (I_CplUserNumber) vdccData.getNumberData(1);
+	I_Transformator trans = new Transformator();
+	//I_OneSidedBorgGrahamFV1WithVM2UGNEURON3d vdccDisc = new OneSidedBorgGrahamFV1WithVM2UGNEURON3d();
         
+        I_OneSidedBorgGrahamFV1WithVM2UGNEURON vdccDisc = new OneSidedBorgGrahamFV1WithVM2UGNEURON(vdccFcts,
+                vdccSsString, approxSpace, trans, vdccFile, vdccFileTimeFormatString,
+                vdccFileExtension, false);
+	System.err.println("foobar");
+	vdccDisc.set_channel_type_L();
+	/**
+	 * @todo this fails still, see implementation of buildTree in case we use NEURON
+	 */
 	
-	I_FV1InnerBoundaryAMPARNEURON vdccDisc = new FV1InnerBoundaryAMPARNEURON();
+	/*I_OneSidedBorgGrahamFV1WithVM2UGNEURON3d vdccDisc = new OneSidedBorgGrahamFV1WithVM2UGNEURON3d
+		(
+			"c", "MDFV", approxSpace, trans, "foo", "bar", "ext", false
+		);*/
+	/*I_OneSidedBorgGrahamFV1WithVM2UGNEURON3d vdccDisc = new OneSidedBorgGrahamFV1WithVM2UGNEURON3d(
+		vdccFcts, vdccSsString, approxSpace, new Transformator(), vdccFile, vdccFileTimeFormatString, vdccFileExtension, false);
+	*/
+	//vdccDisc.set_channel_type_L();
+	
+	//I_FV1InnerBoundaryAMPARNEURON vdccDisc = new FV1InnerBoundaryAMPARNEURON("c", vdccSsString, )
+	
 	//vdccDisc.set_transformator(HOCInterpreter.getInstance().getTransformator());
  //       I_FV1InnerBoundaryAMPAR vdccDisc = new FV1InnerBoundaryAMPAR(); 
 	//I_OneSidedBorgGrahamFV1 vdccDisc = new OneSidedBorgGrahamFV1();

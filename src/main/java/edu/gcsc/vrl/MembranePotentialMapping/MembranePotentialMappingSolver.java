@@ -12,7 +12,7 @@ import eu.mihosoft.vrl.annotation.OutputInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
 import eu.mihosoft.vrl.math.Trajectory;
-import edu.gcsc.vrl.ug.api.I_FV1InnerBoundaryAMPARNEURON;
+import edu.gcsc.vrl.ug.api.OneSidedBorgGrahamFV1WithVM2UG3d;
 import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -88,7 +88,7 @@ public class MembranePotentialMappingSolver implements Serializable
             
         @ParamGroupInfo(group="Problem Setup|false")
         @ParamInfo(name="VDCC Disc", style="default")
-	I_FV1InnerBoundaryAMPARNEURON vdccDisc,
+	I_OneSidedBorgGrahamFV1WithVM2UGNEURON vdccDisc,
         
         @ParamGroupInfo(group="Problem Setup|false")
         @ParamInfo(name="Approximation Space", style="default")
@@ -219,7 +219,11 @@ public class MembranePotentialMappingSolver implements Serializable
     {
 	    I_MembranePotentialMapper mapper = new MembranePotentialMapper(interpreter.getTransformator());
 	    I_Transformator trans = new Transformator();
-	    //vdccDisc.set_transformator(trans);
+	    
+	    //vdccDisc.set_transformator( (I_Transformator) trans);
+	    
+	  //  vdccDisc.set_foo();
+	    
 	    interpreter.getTransformator().execute_hoc_stmt("foo = 10");
 	    System.err.println("Foo with value: " + interpreter.getTransformator().get_hoc_variable("foo"));
 	    
@@ -429,7 +433,7 @@ public class MembranePotentialMappingSolver implements Serializable
         }*/
         
         // create new grid function for old value
-        I_GridFunction uOld = u.const__clone();  // TODO: was clone() => this is supposed to fail -> now not any more
+        I_GridFunction uOld = u.clone();  // TODO: was clone() => this is supposed to fail -> now not any more
         
         // store grid function in vector of old solutions
         I_SolutionTimeSeries solTimeSeries = new SolutionTimeSeries();
