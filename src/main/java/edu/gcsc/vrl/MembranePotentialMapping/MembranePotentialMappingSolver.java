@@ -218,7 +218,8 @@ public class MembranePotentialMappingSolver implements Serializable
     )
     {
 	    I_MembranePotentialMapper mapper = new MembranePotentialMapper(interpreter.getTransformator());
-	    vdccDisc.set_transformator(interpreter.getTransformator());
+	    I_Transformator trans = new Transformator();
+	    //vdccDisc.set_transformator(trans);
 	    interpreter.getTransformator().execute_hoc_stmt("foo = 10");
 	    System.err.println("Foo with value: " + interpreter.getTransformator().get_hoc_variable("foo"));
 	    
