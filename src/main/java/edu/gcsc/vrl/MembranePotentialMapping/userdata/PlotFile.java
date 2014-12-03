@@ -23,7 +23,7 @@ public class PlotFile implements java.io.Serializable {
     public Trajectory plot(
         @ParamInfo(name="Label", style="default", options="") String label,
         @ParamInfo(name="", style="load-dialog", options="") File input,
-	@ParamInfo(name="Delimiter (RE)", options="value=\\s") String delimiter,
+	@ParamInfo(name="Delimiter (RE)", options="value=,") String delimiter,
         @ParamInfo(name="First Column", style="default", options="") int first,
         @ParamInfo(name="Second Column", style="default", options="") int second){
 
@@ -36,9 +36,15 @@ public class PlotFile implements java.io.Serializable {
 		while ((line = br.readLine()) != null) {
 			if (!line.trim().startsWith("#") && !line.trim().isEmpty()) {
 				String[] numbers = line.split(delimiter);
-				double t = Double.parseDouble(numbers[first]);
-				double value = Double.parseDouble(numbers[second]);
-				trajectory.add(t, value);
+				if (numbers.length == 2) {
+					try {
+						double t = Double.parseDouble(numbers[first]);
+						double value = Double.parseDouble(numbers[second]);
+						trajectory.add(t, value);
+					} catch (NumberFormatException e) {
+						System.err.println("Bad line in input file: " + input.getAbsolutePath() + ". Skipping this entry");
+					}
+				}
 			}
 		}
 	br.close();

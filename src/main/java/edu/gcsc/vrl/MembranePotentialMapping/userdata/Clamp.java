@@ -4,6 +4,7 @@ package edu.gcsc.vrl.MembranePotentialMapping.userdata;
 /// imports
 import edu.gcsc.vrl.ug.api.I_Transformator;
 import eu.mihosoft.vrl.annotation.ComponentInfo;
+import eu.mihosoft.vrl.annotation.OutputInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
 import java.io.File;
@@ -90,6 +91,7 @@ public class Clamp implements Serializable {
      * @return the hoc interpreter
      */
     @SuppressWarnings("all")
+    @OutputInfo(name="HOC Interpreter")
     public I_Transformator get_transformator() {
 	    return m_transformator;
     }

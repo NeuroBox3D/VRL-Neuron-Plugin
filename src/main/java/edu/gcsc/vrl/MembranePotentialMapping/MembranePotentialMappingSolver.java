@@ -495,7 +495,10 @@ public class MembranePotentialMappingSolver implements Serializable
         /// todo open files etc here
         // begin simulation loop
         while (time < timeEnd)
+		
         {
+		/// dont advance transformator here, since in prep_time_elem loop we advance it (if it works)
+		/// then we can here just write the measurement out (i. e. the membrane potential)
 		transformator.fadvance();
 		for (String s : finals) {
 			BufferedWriter out = null;
@@ -517,7 +520,9 @@ public class MembranePotentialMappingSolver implements Serializable
             F_Print.invoke("++++++ POINT IN TIME  " + Math.floor((time+dt)/dt+0.5)*dt + "s  BEGIN ++++++");
 
             //setup time disc for old solutions and timestep
-            timeDisc.prepare_step(solTimeSeries, dt);
+	    /// new: timeDisc.prepare_step_elem(solTimeSeries, dt);
+	    timeDisc.prepare_step_elem(solTimeSeries, dt);
+            ///timeDisc.prepare_step(solTimeSeries, dt);
 
             // prepare Newton solver
             if (!newtonSolver.prepare(u))
