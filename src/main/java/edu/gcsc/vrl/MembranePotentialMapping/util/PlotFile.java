@@ -1,5 +1,5 @@
 /// package's name
-package edu.gcsc.vrl.MembranePotentialMapping.userdata;
+package edu.gcsc.vrl.MembranePotentialMapping.util;
 
 /// imports
 import eu.mihosoft.vrl.annotation.ComponentInfo;
@@ -19,6 +19,7 @@ import java.io.IOException;
 @ComponentInfo(name="PlotFile", category="Custom")
 public class PlotFile implements java.io.Serializable {
     private static final long serialVersionUID=1L;
+    private static final int COLUMNS = 2;
 
     public Trajectory plot(
         @ParamInfo(name="Label", style="default", options="") String label,
@@ -36,13 +37,13 @@ public class PlotFile implements java.io.Serializable {
 		while ((line = br.readLine()) != null) {
 			if (!line.trim().startsWith("#") && !line.trim().isEmpty()) {
 				String[] numbers = line.split(delimiter);
-				if (numbers.length == 2) {
+				if (numbers.length == COLUMNS) {
 					try {
 						double t = Double.parseDouble(numbers[first]);
 						double value = Double.parseDouble(numbers[second]);
 						trajectory.add(t, value);
 					} catch (NumberFormatException e) {
-						System.err.println("Bad line in input file: " + input.getAbsolutePath() + ". Skipping this entry");
+						System.err.println("Malformed line in input file: " + input.getAbsolutePath() + ". Skipping this entry because of error: " + e.toString());
 					}
 				}
 			}

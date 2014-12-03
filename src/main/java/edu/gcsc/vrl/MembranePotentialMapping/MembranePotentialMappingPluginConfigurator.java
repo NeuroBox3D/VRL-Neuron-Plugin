@@ -2,6 +2,7 @@
 package edu.gcsc.vrl.MembranePotentialMapping;
 
 // imports
+import edu.gcsc.vrl.MembranePotentialMapping.hoc.HOCExecuteStatement;
 import edu.gcsc.vrl.MembranePotentialMapping.types.ClampArrayType;
 import edu.gcsc.vrl.MembranePotentialMapping.types.ClampType;
 import edu.gcsc.vrl.MembranePotentialMapping.types.LoadHOCFileStringType;
@@ -9,11 +10,11 @@ import edu.gcsc.vrl.MembranePotentialMapping.types.LoadHOCFileType;
 import edu.gcsc.vrl.MembranePotentialMapping.types.SectionArrayType;
 import edu.gcsc.vrl.MembranePotentialMapping.types.SectionType;
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.Clamp;
-import edu.gcsc.vrl.MembranePotentialMapping.userdata.HOCGeometryLoader;
-import edu.gcsc.vrl.MembranePotentialMapping.userdata.HOCStimulationLoader;
-import edu.gcsc.vrl.MembranePotentialMapping.userdata.IClamp;
-import edu.gcsc.vrl.MembranePotentialMapping.userdata.PlotFile;
-import edu.gcsc.vrl.MembranePotentialMapping.userdata.VClamp;
+import edu.gcsc.vrl.MembranePotentialMapping.hoc.HOCGeometryLoader;
+import edu.gcsc.vrl.MembranePotentialMapping.hoc.HOCStimulationLoader;
+import edu.gcsc.vrl.MembranePotentialMapping.hoc.IClamp;
+import edu.gcsc.vrl.MembranePotentialMapping.util.PlotFile;
+import edu.gcsc.vrl.MembranePotentialMapping.hoc.VClamp;
 import eu.mihosoft.vrl.io.IOUtil;
 import eu.mihosoft.vrl.io.VJarUtil;
 import eu.mihosoft.vrl.lang.visual.CompletionUtil;
@@ -108,7 +109,7 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
 	   vapi.addTypeRepresentation(SectionType.class);
 	   vapi.addTypeRepresentation(SectionArrayType.class);
 	   
-	   vapi.addComponent(HOCCommand.class);
+	   vapi.addComponent(HOCExecuteStatement.class);
 	   vapi.addComponent(PlotFile.class);
 	   vapi.addComponent(HOCGeometryLoader.class);
 	   vapi.addComponent(HOCStimulationLoader.class);

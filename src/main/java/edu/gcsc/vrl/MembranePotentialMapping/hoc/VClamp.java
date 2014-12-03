@@ -1,29 +1,23 @@
 /// package's name
-package edu.gcsc.vrl.MembranePotentialMapping.userdata;
+package edu.gcsc.vrl.MembranePotentialMapping.hoc;
 
 /// imports
-import edu.gcsc.vrl.ug.api.I_ApproximationSpace;
-import edu.gcsc.vrl.ug.api.I_DomainDiscretization;
-import edu.gcsc.vrl.ug.api.I_OneSidedBorgGrahamFV1WithVM2UGNEURON;
+import edu.gcsc.vrl.MembranePotentialMapping.userdata.Section;
 import edu.gcsc.vrl.ug.api.I_Transformator;
-import edu.gcsc.vrl.userdata.UserDataTuple;
 import eu.mihosoft.vrl.annotation.ComponentInfo;
-import eu.mihosoft.vrl.annotation.MethodInfo;
 import eu.mihosoft.vrl.annotation.OutputInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
 import java.io.File;
 import java.io.Serializable;
 
-
 /**
  *
  * @author stephan
  */
 @ComponentInfo(name="VClamp", category="/UG4/VRL-Plugins/Neuro/MembranePotentialMapping/")
-public class VClamp implements Serializable {
+public class VClamp extends HOCCommand implements Serializable {
     private static final long serialVersionUID = 1L;
-    private I_Transformator m_transformator = null;
 
 	/**
 	 * @brief default ctor
@@ -32,26 +26,6 @@ public class VClamp implements Serializable {
 		
 	}
 
-  /**
-     * 
-     * @brief set's the HOC interpreter instance
-     * @param transformator the hoc interpreter
-     */
-    public void set_transformator(
-	    @ParamInfo(name="HOC Interpreter")
-	    I_Transformator transformator) {
-	    m_transformator = transformator;
-    }
-
-    /**
-     * @brief get's the HOC interpreter instance
-     * @return the hoc interpreter
-     */
-    @SuppressWarnings("all")
-    @OutputInfo(name="HOC Interpreter")
-    public I_Transformator get_transformator() {
-	    return m_transformator;
-    }
 
     /**
      * @brief VClamp

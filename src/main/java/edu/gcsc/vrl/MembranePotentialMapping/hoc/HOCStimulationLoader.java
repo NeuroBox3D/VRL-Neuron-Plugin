@@ -1,5 +1,5 @@
 /// package's name
-package edu.gcsc.vrl.MembranePotentialMapping.userdata;
+package edu.gcsc.vrl.MembranePotentialMapping.hoc;
 
 /// imports
 import edu.gcsc.vrl.ug.api.I_Transformator;
@@ -8,12 +8,10 @@ import eu.mihosoft.vrl.annotation.ParamInfo;
 import java.io.File;
 import java.io.Serializable;
 
-
 /**
- *
+ * @brief stimulation loader
  * @author stephan
  */
-	
 @ComponentInfo(name="HOCStimulationLoader", category="/UG4/VRL-Plugins/Neuro/MembranePotentialMapping/")
 public class HOCStimulationLoader implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -53,6 +51,8 @@ public class HOCStimulationLoader implements Serializable {
     ) {
 	    if ( ! (m_transformator == null) ) { 
 		    m_transformator.load_geom(hoc_file.getAbsolutePath());
+	    } else {
+          	eu.mihosoft.vrl.system.VMessage.info("HOC interpreter not initialized", "Check if Clamp instance has ingoing connection of a HOC interpreter (I_Transformator).");
 	    }
     }
 	

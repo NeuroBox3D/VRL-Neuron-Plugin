@@ -1,16 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /// package's name
-package edu.gcsc.vrl.MembranePotentialMapping;
+package edu.gcsc.vrl.MembranePotentialMapping.util;
 
 /// imports
-
 import edu.gcsc.vrl.ug.api.I_Transformator;
-
 
 /**
  *
@@ -30,6 +22,7 @@ public final class HOCUtil {
 		 if ( ! (transformator == null) ) {
 			 return true;
 		 } else {
+          		eu.mihosoft.vrl.system.VMessage.info("HOC interpreter not initialized", "Check if Clamp instance has ingoing connection of a HOC interpreter (I_Transformator).");
 			 return false;
 		 }
 	}

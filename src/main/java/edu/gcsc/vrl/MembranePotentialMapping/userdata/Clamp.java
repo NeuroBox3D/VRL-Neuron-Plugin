@@ -2,6 +2,7 @@
 package edu.gcsc.vrl.MembranePotentialMapping.userdata;
 
 /// imports
+import edu.gcsc.vrl.MembranePotentialMapping.hoc.HOCCommand;
 import edu.gcsc.vrl.ug.api.I_Transformator;
 import eu.mihosoft.vrl.annotation.ComponentInfo;
 import eu.mihosoft.vrl.annotation.OutputInfo;
@@ -11,13 +12,19 @@ import java.io.File;
 import java.io.Serializable;
 
 /**
- * @brief clamps, i. e. Point Processes from NEURON
+ * @brief clamps, i. e. Point Processes from NEURON, currently VClamp and IClamp selectable
  * @author stephan
  */
 @ComponentInfo(name="Clamp", category="/UG4/VRL-Plugins/Neuro/MembranePotentialMapping/")
-public class Clamp implements Serializable {
+public class Clamp extends HOCCommand implements Serializable {
     private static final long serialVersionUID = 1L;
-    private I_Transformator m_transformator = null;
+    
+ 	 /**
+     * @brief default ctor
+     */
+    public Clamp() {
+	    
+    }
 	
     /**
      * @brief adds a point process to the given hoc interpreter
@@ -68,31 +75,5 @@ public class Clamp implements Serializable {
 	    }
     }
 
-    /**
-     * @brief default ctor
-     */
-    public Clamp() {
-	    
-    }
-
-    /**
-     * 
-     * @brief set's the HOC interpreter instance
-     * @param transformator the hoc interpreter
-     */
-    public void set_transformator(
-	    @ParamInfo(name="HOC Interpreter")
-	    I_Transformator transformator) {
-	    m_transformator = transformator;
-    }
-
-    /**
-     * @brief get's the HOC interpreter instance
-     * @return the hoc interpreter
-     */
-    @SuppressWarnings("all")
-    @OutputInfo(name="HOC Interpreter")
-    public I_Transformator get_transformator() {
-	    return m_transformator;
-    }
-}
+   
+  }

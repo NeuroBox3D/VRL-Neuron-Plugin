@@ -10,24 +10,16 @@
 package edu.gcsc.vrl.MembranePotentialMapping;
 
 // imports
-import edu.gcsc.vrl.MembranePotentialMapping.userdata.Clamp;
-import edu.gcsc.vrl.MembranePotentialMapping.userdata.Section;
 import edu.gcsc.vrl.ug.api.*;
-// mpm plugin imports
-
-import edu.gcsc.vrl.ug.api.I_Transformator;
-import edu.gcsc.vrl.ug.api.OneSidedBorgGrahamFV1WithVM2UGNEURON3d;
 import edu.gcsc.vrl.userdata.FunctionDefinition;
 import edu.gcsc.vrl.userdata.UserDataTuple;
 import edu.gcsc.vrl.userdata.UserDependentSubsetModel;
-
 import eu.mihosoft.vrl.annotation.ComponentInfo;
 import eu.mihosoft.vrl.annotation.MethodInfo;
 import eu.mihosoft.vrl.annotation.OutputInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
 import java.io.File;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -279,7 +271,7 @@ public class MembranePotentialMapping implements Serializable
 	/** todo this is new and needs testing (next 4 lines) */
         vdccDisc.init(0.0d); /// a hoc geometry must be loaded already to transformator! and the timesteps must be extracted already for the first timestep...
 	System.err.println("after init");
-        //domainDisc.add(vdccDisc);
+        domainDisc.add(vdccDisc);
         
         // Neumann boundaries
         int i = 0;
