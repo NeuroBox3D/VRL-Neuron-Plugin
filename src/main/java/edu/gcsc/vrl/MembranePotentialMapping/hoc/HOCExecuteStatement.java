@@ -2,7 +2,6 @@
 package edu.gcsc.vrl.MembranePotentialMapping.hoc;
 
 /// imports
-import edu.gcsc.vrl.MembranePotentialMapping.HOCInterpreter;
 import edu.gcsc.vrl.ug.api.I_Transformator;
 import eu.mihosoft.vrl.annotation.ComponentInfo;
 import eu.mihosoft.vrl.annotation.OutputInfo;
