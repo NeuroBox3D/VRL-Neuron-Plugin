@@ -11,20 +11,15 @@ package edu.gcsc.vrl.MembranePotentialMapping;
 
 // imports
 import edu.gcsc.vrl.ug.api.*;
-// mpm plugin imports
-
-import edu.gcsc.vrl.ug.api.I_Transformator;
-import edu.gcsc.vrl.ug.api.I_FV1InnerBoundaryAMPAR;
 import edu.gcsc.vrl.userdata.FunctionDefinition;
 import edu.gcsc.vrl.userdata.UserDataTuple;
 import edu.gcsc.vrl.userdata.UserDependentSubsetModel;
-
 import eu.mihosoft.vrl.annotation.ComponentInfo;
 import eu.mihosoft.vrl.annotation.MethodInfo;
 import eu.mihosoft.vrl.annotation.OutputInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
-
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +48,7 @@ public class MembranePotentialMapping implements Serializable
      * @param vdccFileExtension
      * @param bndData
      * @param startValue
+     * @param clamps
      * @return
      */
     @MethodInfo(valueStyle="multi-out", interactive = false)
@@ -60,7 +56,7 @@ public class MembranePotentialMapping implements Serializable
     (
         style="multi-out",
         elemNames = {"Domain Disc", "VDCC Disc", "Approximation Space", "Initial Solution", "NEURON Setup"},
-        elemTypes = {I_DomainDiscretization.class, I_FV1InnerBoundaryAMPAR.class, I_ApproximationSpace.class, UserDataTuple[].class, HOCInterpreter.class}
+        elemTypes = {I_DomainDiscretization.class, I_OneSidedBorgGrahamFV1WithVM2UGNEURON.class, I_ApproximationSpace.class, UserDataTuple[].class, I_Transformator.class}
     )
     public Object[] invoke
     (
@@ -92,14 +88,20 @@ public class MembranePotentialMapping implements Serializable
         @ParamInfo(name="", style="default", options="ugx_tag=\"gridFile\"; fct_tag=\"fctDef\"; type=\"S1|n:cytosolic calcium, density\"")
         UserDataTuple vdccData,
 	
-	@ParamGroupInfo(group="Problem definition|true; NEURON setup|false; Geometry")
+	/*@ParamGroupInfo(group="Problem definition|true; NEURON setup|false; Geometry")
 	@ParamInfo(name="Geometry file", style="load-dialog", options="")
-	String hocGeometry,
+	String hocGeometry,*/
+	
+	@ParamGroupInfo(group="Problem definition|true; NEURON setup|false; Geometry")
+	@ParamInfo(name="Load", style="hoc-load-dialog", options="hoc_tag=\"gridFile\"") File hocGeometry,
+	
+    	/*@ParamGroupInfo(group="Problem definition|true; NEURON setup|false; Geometry")
+	@ParamInfo(name="Sections", style="default", options="hoc_tag=\"gridFile\"") Section sectionTest,*/
 	
     	@ParamGroupInfo(group="Problem definition|true; NEURON setup|false; Stimulation")
 	@ParamInfo(name="Stimulation file", style="load-dialog", options="")
-	String hocStim,
-        
+	File hocStim,
+	
         @ParamGroupInfo(group="Problem definition|true; Pl Membrane|false; VDCC")
         @ParamInfo(name="channel type", style="selection", options="value=[\"L\",\"N\",\"T\"]")
         String vdccChannelType,
@@ -223,25 +225,53 @@ public class MembranePotentialMapping implements Serializable
         if (vdccSelSs.length == 0) throw new RuntimeException("No subset definition in ER leakage definition!");
         for (String s: vdccSelSs) vdccSsString = vdccSsString + ", " + s;
         vdccSsString = vdccSsString.substring(2);
-        
         I_CplUserNumber vdccDensityFct = (I_CplUserNumber) vdccData.getNumberData(1);
-        
 	
-	I_FV1InnerBoundaryAMPAR vdccDisc = new FV1InnerBoundaryAMPAR();
- //       I_FV1InnerBoundaryAMPAR vdccDisc = new FV1InnerBoundaryAMPAR(); 
-	//I_OneSidedBorgGrahamFV1 vdccDisc = new OneSidedBorgGrahamFV1();
-	/*vdccFcts,
-                vdccSsString, approxSpace, vdccFile, vdccFileTimeFormatString,
+	// prepare NEURON interpreter
+	I_Transformator trans = new Transformator();
+	trans.load_geom(hocGeometry.getAbsolutePath());
+	trans.load_stim(hocStim.getAbsolutePath());
+	///trans.setup_hoc(0d, 1.0d, 0.01d, -75.0d);
+	
+	I_Transformator trans2  = new Transformator();
+	/// prepare elem disc
+        I_OneSidedBorgGrahamFV1WithVM2UGNEURON vdccDisc = new OneSidedBorgGrahamFV1WithVM2UGNEURON(vdccFcts,
+                vdccSsString, approxSpace, trans2, vdccFile, vdccFileTimeFormatString,
                 vdccFileExtension, false);
-        if ("L".equals(vdccChannelType)) vdccDisc.set_channel_type_L();
-        else if ("N".equals(vdccChannelType)) vdccDisc.set_channel_type_N();
-        else if ("T".equals(vdccChannelType)) vdccDisc.set_channel_type_T();
+	
+	// set appropriate channel type
+	if ("L".equals(vdccChannelType)) { vdccDisc.set_channel_type_L(); }
+        else if ("N".equals(vdccChannelType)) { vdccDisc.set_channel_type_N(); }
+        else if ("T".equals(vdccChannelType)) { vdccDisc.set_channel_type_T(); }
+
+	System.err.println("Number of sections: " + trans.get_sections());
+	//trans.fadvance();
+	trans.execute_hoc_stmt("dt = 0.1");
+	trans.execute_hoc_stmt("tstart = 0");
+	trans.execute_hoc_stmt("tstop = 1");
+	trans.setup_hoc(0d, 1d, 0.1d, -75d);
+	
+	// set density function and init, then add to domainDisc
         vdccDisc.set_density_function(vdccDensityFct);
-        vdccDisc.init(0.0D);
-        // voltage files interval!?*/
-        
-        //domainDisc.add(vdccDisc);
-        
+	vdccDisc.set_transformator(trans);
+	trans.extract_vms(1,3);
+	I_MembranePotentialMapper mapper = new MembranePotentialMapper(trans);
+	vdccDisc.set_mapper(mapper);
+	/** this works:
+	I_MembranePotentialMapper mapper = new MembranePotentialMapper(trans);
+	System.err.println("get potential: " + mapper.get_potential(0d, 0d, 0d));
+	*/
+	trans.print_setup(true);
+	System.err.println("hoc statements executed again");
+	
+	//trans.extract_vms(1, 3);
+	///I_MembranePotentialMapper mapper = new MembranePotentialMapper(trans);
+	/// recompile API first
+	/// somehow this fails with invalid memory access figure out why -> at least we can remove this and dont use the timestep elem prep loop
+	/** todo this is new and needs testing (next 4 lines) */
+        vdccDisc.init(0.0d); /// a hoc geometry must be loaded already to transformator! and the timesteps must be extracted already for the first timestep...
+	System.err.println("after init");
+        domainDisc.add(vdccDisc);
         
         // Neumann boundaries
         int i = 0;
@@ -313,8 +343,8 @@ public class MembranePotentialMapping implements Serializable
             }
         }
 	
-	HOCInterpreter interpreter = HOCInterpreter.getInstance();
-        return new Object[]{domainDisc, vdccDisc, approxSpace, startValue, interpreter};
+	//HOCInterpreter interpreter = HOCInterpreter.getInstance();
+        return new Object[]{domainDisc, vdccDisc, approxSpace, startValue, trans};
     }
     
     

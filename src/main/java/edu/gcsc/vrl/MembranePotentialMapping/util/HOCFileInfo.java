@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/// package's name
+package edu.gcsc.vrl.MembranePotentialMapping.util;
 
-package edu.gcsc.vrl.MembranePotentialMapping;
-
+/// imports
 import java.util.ArrayList;
 
 /**
@@ -15,7 +11,6 @@ import java.util.ArrayList;
 public class HOCFileInfo {
 	private final ArrayList<String> m_sectionNames = new ArrayList<String>();
 	private int m_noSections = 0;
-	private final static HOCInterpreter m_hocInterpreter = HOCInterpreter.getInstance();
 	
 	/**
 	 * @brief default ctor
@@ -37,7 +32,6 @@ public class HOCFileInfo {
 	 */
 	public synchronized void set_names_sections(ArrayList<String> sectionNames) {
 		m_sectionNames.addAll(sectionNames);
-	//	m_hocInterpreter.getTransformator();
 	}
 	
 	/**
@@ -45,13 +39,14 @@ public class HOCFileInfo {
 	 * @return 
 	 */
 	public synchronized int get_num_sections() {
-		return  m_noSections;
+		return m_noSections;
 	}
 	
 	/**
 	 * @brief gets the names of sections
 	 * @return 
 	 */
+	@SuppressWarnings("ReturnOfCollectionOrArrayField")
 	public synchronized ArrayList<String> get_names_sections() {
 		return m_sectionNames;
 	}

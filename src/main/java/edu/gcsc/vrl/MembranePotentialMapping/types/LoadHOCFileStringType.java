@@ -1,16 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+/// package's name
 package edu.gcsc.vrl.MembranePotentialMapping.types;
 
-/**
- * @brief TODO: needs to be implemented in case i need this 
- * @author stephan
- */
-
+/// imports
+import edu.gcsc.vrl.MembranePotentialMapping.userdata.LoadHOCFileObservable;
 import eu.mihosoft.vrl.annotation.TypeInfo;
 import eu.mihosoft.vrl.dialogs.FileDialogManager;
 import eu.mihosoft.vrl.io.VFileFilter;
@@ -29,17 +21,17 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import javax.swing.Box;
-
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
 /**
- *
- * @author Andreas Vogel <andreas.vogel@gcsc.uni-frankfurt.de>
+ * @brief 
+ * @author stephan inspiration from avogels implementation
  */
 @TypeInfo(type = String.class, input = true, output = false, style = "hoc-load-dialog")
 public class LoadHOCFileStringType extends TypeRepresentationBase {
-
+    /// to serialize
+    private static final long serialVersionUID = 1L;
     /// the text field to display
     private VTextField input;
     /// filter to restrict to hoc file
@@ -48,7 +40,7 @@ public class LoadHOCFileStringType extends TypeRepresentationBase {
     private String hoc_tag = null;
 
     /**
-     * Constructor.
+     * @brief defualt Constructor.
      */
     public LoadHOCFileStringType() {
         eu.mihosoft.vrl.system.VMessage.info("MPM Plugin status", "LoadHOCFileStringType instantiated!");
@@ -135,7 +127,7 @@ public class LoadHOCFileStringType extends TypeRepresentationBase {
         input.setHorizontalAlignment(JTextField.RIGHT);
 
         //  Here we inform the Singleton, that the file has been scheduled
-        notifyLoadUGXFileObservable();
+        notifyLoadHOCFileObservable();
     }
 
     @Override
@@ -179,10 +171,13 @@ public class LoadHOCFileStringType extends TypeRepresentationBase {
         super.addedToMethodRepresentation();
 
         // register at Observable using hoc_tag
-        notifyLoadUGXFileObservable();
+        notifyLoadHOCFileObservable();
     }
  
-    protected void notifyLoadUGXFileObservable() {
+    /**
+     * @brief notifies the obervers
+     */
+    protected void notifyLoadHOCFileObservable() {
         File file = new File(input.getText());
             int id = this.getParentMethod().getParentObject().getObjectID();
             Object o = ((VisualCanvas) getMainCanvas()).getInspector().getObject(id);
@@ -190,8 +185,8 @@ public class LoadHOCFileStringType extends TypeRepresentationBase {
 
         //  Here we inform the Singleton, that the file no scheduled
         if (!file.getAbsolutePath().isEmpty() && file.isFile()) {
-            //String msg = LoadHOCFileObservable.getInstance().setSelectedFile(file, hoc_tag, o, windowID);
-		String msg = "";
+            String msg = LoadHOCFileObservable.getInstance().setSelectedFile(file, hoc_tag, o, windowID);
+		//String msg = "";
 
             if (!msg.isEmpty() && !getMainCanvas().isLoadingSession()) {
                 getMainCanvas().getMessageBox().addMessage("Invalid hoc-File",
@@ -210,6 +205,10 @@ public class LoadHOCFileStringType extends TypeRepresentationBase {
         }
     }
 
+    /**
+     * @brief necessary for code generation
+     * @return 
+     */
     @Override
     public String getValueAsCode() {
         return "\""

@@ -1,27 +1,29 @@
-// package name
+// package's name
 package edu.gcsc.vrl.MembranePotentialMapping;
 
 // imports
+import edu.gcsc.vrl.MembranePotentialMapping.userdata.Section;
 import edu.gcsc.vrl.ug.api.*;
 import edu.gcsc.vrl.ug.api.VTKOutput;
 import edu.gcsc.vrl.userdata.UserDataTuple;
 import edu.gcsc.vrl.userdata.UserDependentSubsetModel;
-
 import eu.mihosoft.vrl.annotation.ComponentInfo;
 import eu.mihosoft.vrl.annotation.MethodInfo;
 import eu.mihosoft.vrl.annotation.OutputInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
 import eu.mihosoft.vrl.math.Trajectory;
-
-import edu.gcsc.vrl.ug.api.I_FV1InnerBoundaryAMPAR;
-
+import edu.gcsc.vrl.ug.api.OneSidedBorgGrahamFV1WithVM2UG3d;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-// TODO: Solver get's input Transformator instance => Transformator get's inserted in discretization constructors for AMPA, NMDA and VGCC for example
+/** @todo  Solver get's input Transformator instance => Transformator get's inserted in discretization constructors for AMPA, NMDA and VGCC for example */
 
 /**
  *
@@ -82,8 +84,8 @@ public class MembranePotentialMappingSolver implements Serializable
     (	
 	@ParamGroupInfo(group="Problem Setup|false")
 	@ParamInfo(name="NEURON Setup", style="default")
-	HOCInterpreter interpreter,
-	//I_Transformator transformator,
+	//HOCInterpreter interpreter,
+	I_Transformator transformator,
 	
         @ParamGroupInfo(group="Problem Setup|false")
         @ParamInfo(name="Domain Disc", style="default")
@@ -91,7 +93,7 @@ public class MembranePotentialMappingSolver implements Serializable
             
         @ParamGroupInfo(group="Problem Setup|false")
         @ParamInfo(name="VDCC Disc", style="default")
-	I_FV1InnerBoundaryAMPAR vdccDisc,
+	I_OneSidedBorgGrahamFV1WithVM2UGNEURON vdccDisc,
         
         @ParamGroupInfo(group="Problem Setup|false")
         @ParamInfo(name="Approximation Space", style="default")
@@ -209,7 +211,16 @@ public class MembranePotentialMappingSolver implements Serializable
         @ParamGroupInfo(group="Output|false; Measurements|false")
         @ParamInfo(name="Integration Subset", style="array", options="fct_tag=\"fctDef\"; minArraySize=0; type=\"S1:function & subset\"")
         UserDataTuple[] meas,
-        
+	
+	// membrane potentials
+        @ParamGroupInfo(group="Output|false; NEURON|false")
+	@ParamInfo(name="do extract")
+	boolean generateVMoutput,
+	
+	@ParamGroupInfo(group="Output|false; NEURON|false")
+	@ParamInfo(name="output path", style="save-folder-dialog") 
+	String folder,
+	
         // plotting
         @ParamGroupInfo(group="Output|false; VTK|false")
         @ParamInfo(name="do plot")
@@ -220,16 +231,22 @@ public class MembranePotentialMappingSolver implements Serializable
         double plotStep
     )
     {
-	    I_MembranePotentialMapper mapper = new MembranePotentialMapper(interpreter.getTransformator());
+	 //   I_MembranePotentialMapper mapper = new MembranePotentialMapper(interpreter.getTransformator());
+	    I_Transformator trans = new Transformator();
+	    
+	    //vdccDisc.set_transformator( (I_Transformator) trans);
+	    
+	  //  vdccDisc.set_foo();
+	    
+	   // interpreter.getTransformator().execute_hoc_stmt("foo = 10");
+	    //System.err.println("Foo with value: " + interpreter.getTransformator().get_hoc_variable("foo"));
 	    
 	    // initialize vdccs transformator TODO mapper to be set...
-	//    vdccDisc.set_mapper(mapper);
-	//    vdccDisc.set_transformator(transformator);
+	 //   vdccDisc.set_mapper(mapper);
         //if (bEraseOldFiles) eraseAllFilesInFolder(fileOut, "vtu");
           
         // set abortion flag to false initially (can be changed using stopSolver-Method)
         stopSolver = false;
-        
          //////////////
         // Operator //
         //////////////
@@ -422,13 +439,15 @@ public class MembranePotentialMappingSolver implements Serializable
         }
         
         // take first measurement
+	/*
         for (int i=0; i<measFct.size(); i++)
         {
             F_TakeMeasurement.invoke(u, approxSpace, time, measSs.get(i),
                                      measFct.get(i), outputPath + "meas/data");
-        }
+        }*/
+
         
-        // create new grid function for old value
+        // create new grid function for old value (const bug fixed, then we can use it here as const__clone();
         I_GridFunction uOld = u.clone();  // TODO: was clone() => this is supposed to fail -> now not any more
         
         // store grid function in vector of old solutions
@@ -465,16 +484,45 @@ public class MembranePotentialMappingSolver implements Serializable
         int[] checkbackCounter = new int[LowLv+1];
         for (int i=0; i<checkbackCounter.length; i++) checkbackCounter[i] = 0;
         
-        
+	String sections = transformator.get_section_names_as_string();
+	transformator.execute_hoc_stmt("dt = " + dt);
+	String[] sections_exploded = sections.split(";");
+	List<String> finals = Arrays.asList(sections_exploded);
+	
+		System.err.println("HOC Setup:");
+		//transformator.setup_hoc(0d, 1.0d, 0.01d, -75d);
+		//transformator.print_setup(true);
+        /// todo open files etc here
         // begin simulation loop
         while (time < timeEnd)
+		
         {
+		/// dont advance transformator here, since in prep_time_elem loop we advance it (if it works)
+		/// then we can here just write the measurement out (i. e. the membrane potential)
+		transformator.fadvance();
+		for (String s : finals) {
+			BufferedWriter out = null;
+			try {
+ 		   	FileWriter fstream = new FileWriter(folder + "/" + s + ".csv", true); //true tells to append data.
+ 		   	out = new BufferedWriter(fstream);
+		   	transformator.execute_hoc_stmt("access " + s);
+		   	out.write("\n" + time + ", " + transformator.get_hoc_variable("v"));
+		   	out.close();
+			} catch (IOException e) {
+ 		   	System.err.println("Error: " + e.getMessage());
+			}
+		}
+		
+		System.err.println("*** SECTIONS *** " + transformator.get_section_names_as_string()); 
+		/// here we extract the vms then
 	 //   interpreter.getTransformator().fadvance();
 	  //  interpreter.getTransformator().extract_vms(1, 1);
             F_Print.invoke("++++++ POINT IN TIME  " + Math.floor((time+dt)/dt+0.5)*dt + "s  BEGIN ++++++");
 
             //setup time disc for old solutions and timestep
-            timeDisc.prepare_step(solTimeSeries, dt);
+	    /// new: timeDisc.prepare_step_elem(solTimeSeries, dt);
+	    timeDisc.prepare_step_elem(solTimeSeries, dt);
+            ///timeDisc.prepare_step(solTimeSeries, dt);
 
             // prepare Newton solver
             if (!newtonSolver.prepare(u))
@@ -494,6 +542,9 @@ public class MembranePotentialMappingSolver implements Serializable
             }
             vdccDisc.update_gating(time+dt);
             */
+	    /**
+	     * @todo update potential here ...
+	     */
             
             // apply Newton solver
             if (!newtonSolver.apply(u))
@@ -547,11 +598,11 @@ public class MembranePotentialMappingSolver implements Serializable
                 }
 
                 // take measurement in nucleus every timeStep seconds
-                for (int i=0; i<measFct.size(); i++)
+                /*for (int i=0; i<measFct.size(); i++)
                 {
                     F_TakeMeasurement.invoke(u, approxSpace, time, measSs.get(i),
                                              measFct.get(i), outputPath + "meas/data");
-                }
+                }*/
 
                 // export solution of ca on mem_er
                 //F_ExportSolution.invoke(u, approxSpace, time, "mem_cyt", "ca_cyt", outputPath + "sol/sol");
