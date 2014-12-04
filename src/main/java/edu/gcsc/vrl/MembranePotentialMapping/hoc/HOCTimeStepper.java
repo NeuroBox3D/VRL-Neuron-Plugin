@@ -78,8 +78,13 @@ public class HOCTimeStepper extends HOCCommand implements Serializable {
 	) {
 	    
  if ( ! (m_transformator == null) ) {
-	 m_transformator.setup_hoc(t_start, t_end, dt, finit);
+	 m_transformator.execute_hoc_stmt("tstart = " + t_start);
+	 m_transformator.execute_hoc_stmt("tstop = " + t_end);
+	 m_transformator.execute_hoc_stmt("dt = " + dt);
+	 m_transformator.execute_hoc_stmt("finitialize(" + finit + ")");
+	 /// m_transformator.setup_hoc(t_start, t_end, dt, finit); /// this fails, use this in conjunction with membrane potential mapping...
 		    if (! (sectionTest == null)) {
+			    System.err.println("sectionTest size: " + sectionTest.get_names().size());
 			for (int j = 0; j < ((t_end - t_start) / dt) - 1; j++) {
 		   		m_transformator.fadvance();
 		    		for (int i = 0; i < sectionTest.get_names().size(); i++) {
