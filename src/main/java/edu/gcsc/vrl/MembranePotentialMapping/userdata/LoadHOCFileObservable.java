@@ -2,7 +2,7 @@
 package edu.gcsc.vrl.MembranePotentialMapping.userdata;
 
 /// imports
-import edu.gcsc.vrl.MembranePotentialMapping.HOCFileInfo;
+import edu.gcsc.vrl.MembranePotentialMapping.util.HOCFileInfo;
 import edu.gcsc.vrl.ug.api.I_Transformator;
 import edu.gcsc.vrl.ug.api.Transformator;
 import java.io.File;

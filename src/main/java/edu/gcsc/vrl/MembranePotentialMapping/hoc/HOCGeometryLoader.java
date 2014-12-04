@@ -54,6 +54,7 @@ public class HOCGeometryLoader extends HOCCommand implements Serializable {
 	File hoc_file
     ) {
 	    if ( ! (m_transformator == null) ) { 
+		    System.err.println(hoc_file.toString());
 		    m_transformator.load_geom(hoc_file.toString());
 	    } else {
           	eu.mihosoft.vrl.system.VMessage.info("HOC interpreter not initialized", "Check if Clamp instance has ingoing connection of a HOC interpreter (I_Transformator).");

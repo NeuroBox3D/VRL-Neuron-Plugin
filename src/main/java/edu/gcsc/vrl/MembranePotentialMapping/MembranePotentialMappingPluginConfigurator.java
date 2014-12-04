@@ -103,7 +103,6 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
 	   /// defaults
            vapi.addComponent(MembranePotentialMapping.class);
            vapi.addComponent(MembranePotentialMappingSolver.class);
-	   vapi.addComponent(HOCInterpreter.class);
 	   
 	   /// types
 	   vapi.addTypeRepresentation(ClampType.class);

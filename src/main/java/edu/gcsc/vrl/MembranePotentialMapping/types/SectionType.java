@@ -2,7 +2,7 @@
 package edu.gcsc.vrl.MembranePotentialMapping.types;
 
 /// imports
-import edu.gcsc.vrl.MembranePotentialMapping.HOCFileInfo;
+import edu.gcsc.vrl.MembranePotentialMapping.util.HOCFileInfo;
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.LoadHOCFileObservable;
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.LoadHOCFileObserver;
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.Section;
