@@ -2,10 +2,7 @@
 package edu.gcsc.vrl.MembranePotentialMapping.hoc;
 
 /// imports
-
 import edu.gcsc.vrl.ug.api.I_Transformator;
-import eu.mihosoft.vrl.annotation.OutputInfo;
-import eu.mihosoft.vrl.annotation.ParamInfo;
 
 
 /**
@@ -22,7 +19,6 @@ public abstract class HOCCommand {
      * @param transformator the hoc interpreter
      */
     public void set_transformator(
-	    @ParamInfo(name="HOC Interpreter")
 	    I_Transformator transformator) {
 	    m_transformator = transformator;
     }
@@ -32,7 +28,6 @@ public abstract class HOCCommand {
      * @return the hoc interpreter
      */
     @SuppressWarnings("all")
-    @OutputInfo(name="HOC Interpreter")
     public I_Transformator get_transformator() {
 	    return m_transformator;
     }

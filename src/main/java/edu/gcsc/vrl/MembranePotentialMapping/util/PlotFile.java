@@ -24,9 +24,9 @@ public class PlotFile implements java.io.Serializable {
     public Trajectory plot(
         @ParamInfo(name="Label", style="default", options="") String label,
         @ParamInfo(name="", style="load-dialog", options="") File input,
-	@ParamInfo(name="Delimiter (RE)", options="value=,") String delimiter,
-        @ParamInfo(name="First Column", style="default", options="") int first,
-        @ParamInfo(name="Second Column", style="default", options="") int second){
+	@ParamInfo(name="Delimiter (RE)") String delimiter,
+        @ParamInfo(name="First Column", style="default", options="value=0") int first,
+        @ParamInfo(name="Second Column", style="default", options="value=1") int second){
 
         Trajectory trajectory = new Trajectory();
         trajectory.setLabel(label);

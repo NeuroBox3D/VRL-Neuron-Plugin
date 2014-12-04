@@ -25,6 +25,20 @@ public class Clamp extends HOCCommand implements Serializable {
     public Clamp() {
 	    
     }
+
+      @Override
+    public void set_transformator(
+	    @ParamInfo(name="HOC Interpreter")
+	    I_Transformator transformator) {
+	    super.set_transformator(transformator);
+    }
+    
+    @Override
+    @OutputInfo(name="HOC Interpreter")
+    public I_Transformator get_transformator() {
+	    return m_transformator;
+    }
+
 	
     /**
      * @brief adds a point process to the given hoc interpreter
@@ -61,10 +75,15 @@ public class Clamp extends HOCCommand implements Serializable {
 		    	for (int i = 0; i < sectionTest.get_names().size(); i++) {
 			    System.err.println(sectionTest.get_names().get(i));
 			    m_transformator.execute_hoc_stmt("objectvar stim" + i);
+			    /**
+			     * @todo implement correctly all clamps
+			     */
 			    if (stimType.equals("VClamp")) {
 				    m_transformator.execute_hoc_stmt(sectionTest.get_names().get(i) + " stim"+i + "= new VClamp(" + stimLoc + ")");
 			    } else if (stimType.equals("IClamp")) {
 				    m_transformator.execute_hoc_stmt(sectionTest.get_names().get(i) + " stim"+i + "= new IClamp(" + stimLoc + ")");
+			    } else if (stimType.equals("SEClamp")) {
+				    m_transformator.execute_hoc_stmt(sectionTest.get_names().get(i) + " stim"+i + "= new SEClamp(" + stimLoc + ")");
 			    } else {
 				   System.err.println("hoc statement could not be executed."); 
 			    }

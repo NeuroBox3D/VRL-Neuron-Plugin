@@ -2,6 +2,7 @@
 package edu.gcsc.vrl.MembranePotentialMapping;
 
 // imports
+import edu.gcsc.vrl.MembranePotentialMapping.hoc.HOCCleanup;
 import edu.gcsc.vrl.MembranePotentialMapping.hoc.HOCExecuteStatement;
 import edu.gcsc.vrl.MembranePotentialMapping.types.ClampArrayType;
 import edu.gcsc.vrl.MembranePotentialMapping.types.ClampType;
@@ -11,8 +12,11 @@ import edu.gcsc.vrl.MembranePotentialMapping.types.SectionArrayType;
 import edu.gcsc.vrl.MembranePotentialMapping.types.SectionType;
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.Clamp;
 import edu.gcsc.vrl.MembranePotentialMapping.hoc.HOCGeometryLoader;
+import edu.gcsc.vrl.MembranePotentialMapping.hoc.HOCMembraneMechanismInserter;
 import edu.gcsc.vrl.MembranePotentialMapping.hoc.HOCStimulationLoader;
+import edu.gcsc.vrl.MembranePotentialMapping.hoc.HOCTimeStepper;
 import edu.gcsc.vrl.MembranePotentialMapping.hoc.IClamp;
+import edu.gcsc.vrl.MembranePotentialMapping.hoc.SEClamp;
 import edu.gcsc.vrl.MembranePotentialMapping.util.PlotFile;
 import edu.gcsc.vrl.MembranePotentialMapping.hoc.VClamp;
 import eu.mihosoft.vrl.io.IOUtil;
@@ -96,25 +100,35 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
            // examples:
            //
            
+	   /// defaults
            vapi.addComponent(MembranePotentialMapping.class);
            vapi.addComponent(MembranePotentialMappingSolver.class);
-	   
-	   vapi.addTypeRepresentation(ClampType.class);
-	   vapi.addTypeRepresentation(ClampArrayType.class);
-	   vapi.addComponent(Clamp.class);
-	   vapi.addTypeRepresentation(LoadHOCFileStringType.class);
-	   vapi.addTypeRepresentation(LoadHOCFileType.class);
 	   vapi.addComponent(HOCInterpreter.class);
 	   
+	   /// types
+	   vapi.addTypeRepresentation(ClampType.class);
+	   vapi.addTypeRepresentation(ClampArrayType.class);
+	   vapi.addTypeRepresentation(LoadHOCFileStringType.class);
+	   vapi.addTypeRepresentation(LoadHOCFileType.class);
 	   vapi.addTypeRepresentation(SectionType.class);
 	   vapi.addTypeRepresentation(SectionArrayType.class);
 	   
-	   vapi.addComponent(HOCExecuteStatement.class);
+	   /// userdata
+	   vapi.addComponent(Clamp.class);
+	   
+	   /// util
 	   vapi.addComponent(PlotFile.class);
+	   
+	   /// hoc
+	   vapi.addComponent(HOCExecuteStatement.class);
 	   vapi.addComponent(HOCGeometryLoader.class);
 	   vapi.addComponent(HOCStimulationLoader.class);
+	   vapi.addComponent(HOCTimeStepper.class);
+	   vapi.addComponent(HOCCleanup.class);
+	   vapi.addComponent(HOCMembraneMechanismInserter.class);
 	   vapi.addComponent(IClamp.class);
 	   vapi.addComponent(VClamp.class);
+	   vapi.addComponent(SEClamp.class);
        }
    }
 

@@ -2,7 +2,6 @@
 package edu.gcsc.vrl.MembranePotentialMapping.hoc;
 
 /// imports
-import edu.gcsc.vrl.MembranePotentialMapping.HOCInterpreter;
 import edu.gcsc.vrl.ug.api.I_Transformator;
 import eu.mihosoft.vrl.annotation.ComponentInfo;
 import eu.mihosoft.vrl.annotation.OutputInfo;
@@ -10,19 +9,20 @@ import eu.mihosoft.vrl.annotation.ParamInfo;
 import java.io.Serializable;
 
 /**
- * @brief HOC command class
+ * @brief cleanups the environment (the interpreter)
  * @author stephan
  */
-@ComponentInfo(name="HOCExecuteStatement", category="/UG4/VRL-Plugins/Neuro/MembranePotentialMapping/")
-public class HOCExecuteStatement extends HOCCommand implements Serializable {
+@ComponentInfo(name="HOCCleanup", category="/UG4/VRL-Plugins/Neuro/MembranePotentialMapping/")
+public class HOCCleanup extends HOCCommand implements Serializable {
 	private static final long serialVersionUID = 1L;
-	/**
-	 * @brief default ctor
-	 */
-	public HOCExecuteStatement() {
-	}
 	
-    @Override
+	/**
+	 * @brief ctor
+	 */
+	public HOCCleanup() {
+		
+	}
+   @Override
     public void set_transformator(
 	    @ParamInfo(name="HOC Interpreter")
 	    I_Transformator transformator) {
@@ -35,20 +35,14 @@ public class HOCExecuteStatement extends HOCCommand implements Serializable {
 	    return super.get_transformator();
     }
 
-
     /**
-     * @brief executes a hoc command string
-     * @param cmd_str
-     * @return
+     * @brief purge
      */
-	public boolean cmd_str(
-		@ParamInfo(name="Command String", style="code") String cmd_str
-		) {
-		if (! (m_transformator == null)) {
-			return (m_transformator.execute_hoc_stmt(cmd_str) == 0);
-		} else {
+    public void cleanup() {
+	if (! (m_transformator == null)) {
+		m_transformator.purge();
+	} else {
           	eu.mihosoft.vrl.system.VMessage.info("HOC interpreter not initialized", "Check if Clamp instance has ingoing connection of a HOC interpreter (I_Transformator).");
-		return false;
-		}
 	}
+    }
 }
