@@ -2,7 +2,6 @@
 package edu.gcsc.vrl.MembranePotentialMapping;
 
 // imports
-import edu.gcsc.vrl.MembranePotentialMapping.userdata.Section;
 import edu.gcsc.vrl.ug.api.*;
 import edu.gcsc.vrl.ug.api.VTKOutput;
 import edu.gcsc.vrl.userdata.UserDataTuple;
@@ -13,7 +12,6 @@ import eu.mihosoft.vrl.annotation.OutputInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
 import eu.mihosoft.vrl.math.Trajectory;
-import edu.gcsc.vrl.ug.api.OneSidedBorgGrahamFV1WithVM2UG3d;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -22,8 +20,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-/** @todo  Solver get's input Transformator instance => Transformator get's inserted in discretization constructors for AMPA, NMDA and VGCC for example */
 
 /**
  *
@@ -34,7 +30,6 @@ import java.util.List;
 public class MembranePotentialMappingSolver implements Serializable
 {
     private static final long serialVersionUID = 1L;
-    private boolean stopSolver;
     private Trajectory[] vEvalTrajectory;
     
     /**
@@ -69,6 +64,8 @@ public class MembranePotentialMappingSolver implements Serializable
      * @param absTolNonLinear
      * @param meas
      * @param outputPath
+     * @param generateVMoutput
+     * @param folder
      * @param generateVTKoutput
      * @param plotStep
      * @return
@@ -80,6 +77,7 @@ public class MembranePotentialMappingSolver implements Serializable
       elemNames = {"PVD File"},
       elemTypes = {File.class}
     )
+    @SuppressWarnings({"UnusedAssignment", "AssignmentToMethodParameter"})
     public Object[] invoke
     (	
 	@ParamGroupInfo(group="Problem Setup|false")
@@ -231,40 +229,26 @@ public class MembranePotentialMappingSolver implements Serializable
         double plotStep
     )
     {
-	 //   I_MembranePotentialMapper mapper = new MembranePotentialMapper(interpreter.getTransformator());
-	    I_Transformator trans = new Transformator();
-	    
-	    //vdccDisc.set_transformator( (I_Transformator) trans);
-	    
-	  //  vdccDisc.set_foo();
-	    
-	   // interpreter.getTransformator().execute_hoc_stmt("foo = 10");
-	    //System.err.println("Foo with value: " + interpreter.getTransformator().get_hoc_variable("foo"));
-	    
-	    // initialize vdccs transformator TODO mapper to be set...
-	 //   vdccDisc.set_mapper(mapper);
-        //if (bEraseOldFiles) eraseAllFilesInFolder(fileOut, "vtu");
-          
-        // set abortion flag to false initially (can be changed using stopSolver-Method)
-        stopSolver = false;
          //////////////
         // Operator //
         //////////////
         
         // create time discretization
         I_ThetaTimeStep timeDisc = new ThetaTimeStep(domainDisc);
-        if      ("Implicit Euler".equals(timeSolverName)) timeDisc.set_theta(1.0);
-        else if ("Crank-Nicolson".equals(timeSolverName)) timeDisc.set_theta(0.5);
-        else if ("Explicit Euler".equals(timeSolverName)) timeDisc.set_theta(0.0);
-        else errorExit("Cannot find time solver: " + timeSolverName);
+        if      ("Implicit Euler".equals(timeSolverName))  { 
+		timeDisc.set_theta(1.0);
+	} else if ("Crank-Nicolson".equals(timeSolverName)) { 
+		timeDisc.set_theta(0.5);
+	} else if ("Explicit Euler".equals(timeSolverName)) { 
+		timeDisc.set_theta(0.0);
+	} else {
+		errorExit("Cannot find time solver: " + timeSolverName);
+	}
 
         // create operator from discretization
         I_AssembledOperator op = new AssembledOperator();
         op.set_discretization(timeDisc);
         op.init();
-        
-        //I_MGSubsetHandler sh = dom.subset_handler();
-
         
         /////////////
         // Algebra //
@@ -278,11 +262,17 @@ public class MembranePotentialMappingSolver implements Serializable
 
         // create solver (with preconditioner)
         I_ILinearOperatorInverse solver = null;
-        if      ("Bi-CGSTAB".equals(solverName)) solver = new BiCGStab();
-        else if ("CG".equals(solverName)) solver = new CG();
-        else if ("Linear Solver".equals(solverName)) solver = new LinearSolver();
-        else if ("LU".equals(solverName)) solver = new LU();
-        else errorExit("Cannot find solver: " + solverName);
+        if      ("Bi-CGSTAB".equals(solverName)) { 
+		solver = new BiCGStab();
+	} else if ("CG".equals(solverName)) { 
+		solver = new CG();
+	} else if ("Linear Solver".equals(solverName)) { 
+		solver = new LinearSolver();
+	} else if ("LU".equals(solverName)) { 
+		solver = new LU();
+	} else {
+		errorExit("Cannot find solver: " + solverName);
+	}
         solver.set_convergence_check(convCheckLinear);
 
         // create preconditioner (if suitable)
@@ -290,11 +280,13 @@ public class MembranePotentialMappingSolver implements Serializable
         {
             I_ILinearIterator precond = null;
  
-            if      ("Jacobi".equals(precondName)) precond = new Jacobi();
-            else if ("Gauss-Seidel".equals(precondName)) precond = new GaussSeidel();
-            else if ("ILU".equals(precondName)) precond = new ILU();
-            else if ("GMG".equals(precondName))
-            {
+            if      ("Jacobi".equals(precondName)) {
+		    precond = new Jacobi();
+	    } else if ("Gauss-Seidel".equals(precondName)) { 
+		    precond = new GaussSeidel();
+	    } else if ("ILU".equals(precondName)) {
+		    precond = new ILU();
+	    } else if ("GMG".equals(precondName)) {
                 // create GMG according to settings
                 precond = new GeometricMultiGrid(approxSpace);
                 ((GeometricMultiGrid) precond).set_discretization(timeDisc);
@@ -308,29 +300,35 @@ public class MembranePotentialMappingSolver implements Serializable
                 
                 // base solver
                 I_ILinearOperatorInverse baseSolver;
-                if ("LU".equals(gmgBaseSolver)) baseSolver = new LU();
+                if ("LU".equals(gmgBaseSolver)) { 
+			baseSolver = new LU();
+		}
                 else
                 {
                     baseSolver = new LinearSolver();
-                    if      ("Jacobi".equals(gmgBaseSolver))
+                    if      ("Jacobi".equals(gmgBaseSolver)) {
                         ((I_IPreconditionedLinearOperatorInverse)baseSolver).set_preconditioner(new Jacobi());
-                    else if ("Gauss-Seidel".equals(gmgBaseSolver))
+		    } else if ("Gauss-Seidel".equals(gmgBaseSolver)) {
                         ((I_IPreconditionedLinearOperatorInverse)baseSolver).set_preconditioner(new GaussSeidel());
-                    else if ("ILU".equals(gmgBaseSolver))
+		    } else if ("ILU".equals(gmgBaseSolver)) {
                         ((I_IPreconditionedLinearOperatorInverse)baseSolver).set_preconditioner(new ILU());
-                    else errorExit("Cannot find preconditioner '" + gmgBaseSolver + "' for GMG.");
+		    } else {
+			    errorExit("Cannot find preconditioner '" + gmgBaseSolver + "' for GMG.");
+		    }
                 }
                 baseSolver.set_convergence_check(convCheckBase);
                 ((GeometricMultiGrid) precond).set_base_solver(baseSolver);
                 
                 // smoother
-                if      ("Jacobi".equals(gmgSmoother))
+                if      ("Jacobi".equals(gmgSmoother)) {
                     ((GeometricMultiGrid) precond).set_smoother(new Jacobi());
-                else if ("Gauss-Seidel".equals(gmgSmoother))
+		} else if ("Gauss-Seidel".equals(gmgSmoother)) {
                     ((GeometricMultiGrid) precond).set_smoother(new GaussSeidel());
-                else if ("ILU".equals(gmgSmoother))
+		} else if ("ILU".equals(gmgSmoother)) {
                     ((GeometricMultiGrid) precond).set_smoother(new ILU());
-                else errorExit("Cannot find smoother '" + gmgSmoother + "' for GMG.");
+		} else { 
+			errorExit("Cannot find smoother '" + gmgSmoother + "' for GMG.");
+		}
                 
                 // cycle
                 if      ("V".equals(gmgCycleType)) ((GeometricMultiGrid) precond).set_cycle_type(1);
@@ -345,10 +343,7 @@ public class MembranePotentialMappingSolver implements Serializable
             try {((I_IPreconditionedLinearOperatorInverse)solver).set_preconditioner(precond);}
             catch (Exception e)
             {
-                // in case of solver is LU, there maybe a CastExeption
-                // No, this cannot happen because of the 
-                // if (!"LU".equals(solverName))' statement
-                System.err.println(getClass().getSimpleName() +": solver is LU therefore CastException !?");
+                System.err.println(getClass().getSimpleName() + e);
             }
         }
         approxSpace.domain().const__get_dim();
@@ -362,20 +357,18 @@ public class MembranePotentialMappingSolver implements Serializable
         newtonSolver.set_convergence_check(convCheckNewton);
         newtonSolver.init(op);
       
-        
         /////////
         // I/O //
         /////////
         
         // append / to output path
-        outputPath = outputPath + "/";
+        outputPath += "/"; 
         
         // VTK output
         I_VTKOutput vtkOut = null;
-        if (generateVTKoutput) vtkOut = new VTKOutput();
-        
-// voltageFilesInterval: this still has to be dealt woth correctly!
-        double voltageFilesInterval = 0.001;
+        if (generateVTKoutput) {
+		vtkOut = new VTKOutput();
+	}
         
         ////////////////
         // Simulation //
@@ -394,14 +387,20 @@ public class MembranePotentialMappingSolver implements Serializable
         {
             // get function to interpolate for
             String[] selFct = ((UserDependentSubsetModel.FSDataType) udt.getData(0)).getSelFct();
-            if (selFct.length != 1) throw new RuntimeException("Start value definition needs exactly one function at a time, but has "+selFct.length+".");
+            if (selFct.length != 1) { 
+		    throw new RuntimeException("Start value definition needs exactly one function at a time, but has "+selFct.length+".");
+	    }
             String fct = selFct[0];
 
             // get subsets to interpolate for
             String[] selSs = ((UserDependentSubsetModel.FSDataType) udt.getData(0)).getSelSs();
             String ssString = "";
-            if (selSs.length == 0) throw new RuntimeException("No subset selection in start value definition "+cntUDT+".");
-            for (String s: selSs) ssString = ssString + ", " + s;
+            if (selSs.length == 0) { 
+		    throw new RuntimeException("No subset selection in start value definition "+cntUDT+".");
+	    }
+            for (String s: selSs) {
+	    	ssString = ssString + ", " + s;
+	    }
             ssString = ssString.substring(2);
             
             // get start value
@@ -414,8 +413,9 @@ public class MembranePotentialMappingSolver implements Serializable
         }
         
         // write initial solution to vtk file
-        if (generateVTKoutput)
+        if (generateVTKoutput) {
             vtkOut.print(outputPath + "vtk/result", u, (int) Math.floor(time/plotStep+0.5), time);
+	}
         
         // prepare measurements
         List<String> measFct = new ArrayList<String>();
@@ -425,27 +425,26 @@ public class MembranePotentialMappingSolver implements Serializable
         {
             // get function to interpolate for
             String[] selFct = ((UserDependentSubsetModel.FSDataType) udt.getData(0)).getSelFct();
-            if (selFct.length != 1) throw new RuntimeException("Measurement definition needs exactly one function at a time, but has "+selFct.length+".");
+            if (selFct.length != 1) { 
+		    throw new RuntimeException("Measurement definition needs exactly one function at a time, but has "+selFct.length+".");
+	    }
             measFct.add(selFct[0]);
 
             // get subsets to interpolate for
             String[] selSs = ((UserDependentSubsetModel.FSDataType) udt.getData(0)).getSelSs();
             String ssString = "";
-            if (selSs.length == 0) throw new RuntimeException("No subset selection in measurement definition "+cntUDT+".");
-            for (String s: selSs) ssString = ssString + ", " + s;
+            if (selSs.length == 0) { 
+		    throw new RuntimeException("No subset selection in measurement definition "+cntUDT+".");
+	    }
+	    
+            for (String s: selSs) { 
+		    ssString = ssString + ", " + s;
+	    }
+	    
             measSs.add(ssString.substring(2));
             
             cntUDT++;
         }
-        
-        // take first measurement
-	/*
-        for (int i=0; i<measFct.size(); i++)
-        {
-            F_TakeMeasurement.invoke(u, approxSpace, time, measSs.get(i),
-                                     measFct.get(i), outputPath + "meas/data");
-        }*/
-
         
         // create new grid function for old value (const bug fixed, then we can use it here as const__clone();
         I_GridFunction uOld = u.clone();  // TODO: was clone() => this is supposed to fail -> now not any more
@@ -458,11 +457,13 @@ public class MembranePotentialMappingSolver implements Serializable
         
         // display volumes/areas of subsets
         String allSubsets = "";
-        for (int i=0; i<sh.const__num_subsets(); i++)
+        for (int i=0; i<sh.const__num_subsets(); i++) {
             allSubsets = allSubsets + ", " + sh.const__get_subset_name(i);
-        if (sh.const__num_subsets()>0) allSubsets = allSubsets.substring(2);
-        
-        //F_ComputeVolume.invoke(approxSpace, allSubsets);
+	}
+	
+        if (sh.const__num_subsets()>0) {
+		allSubsets = allSubsets.substring(2);
+	}
         
         // computations for time stepping
         
@@ -478,27 +479,21 @@ public class MembranePotentialMappingSolver implements Serializable
         double minStepSizeNew = maxStepSize / Math.pow(2, LowLv);
         minStepSize = minStepSizeNew;
         
-        int checkbackInterval = 10;
-        int lv = startLv;
-        double levelUpDelay = 0.0; //caEntryDuration + (nSpikes - 1) * 1.0/freq;
-        int[] checkbackCounter = new int[LowLv+1];
-        for (int i=0; i<checkbackCounter.length; i++) checkbackCounter[i] = 0;
-        
 	String sections = transformator.get_section_names_as_string();
 	transformator.execute_hoc_stmt("dt = " + dt);
 	String[] sections_exploded = sections.split(";");
 	List<String> finals = Arrays.asList(sections_exploded);
 	
-		System.err.println("HOC Setup:");
-		//transformator.setup_hoc(0d, 1.0d, 0.01d, -75d);
-		//transformator.print_setup(true);
-        /// todo open files etc here
+	System.err.println("HOC Setup:");
+	//transformator.setup_hoc(0d, 1.0d, 0.01d, -75d);
+	//transformator.print_setup(true);
         // begin simulation loop
         while (time < timeEnd)
 		
         {
 		/// dont advance transformator here, since in prep_time_elem loop we advance it (if it works)
 		/// then we can here just write the measurement out (i. e. the membrane potential)
+		/// below we favance again, which is not necessary since timedisc.prepare_step_elem already does this
 		transformator.fadvance();
 		for (String s : finals) {
 			BufferedWriter out = null;
@@ -520,7 +515,6 @@ public class MembranePotentialMappingSolver implements Serializable
             F_Print.invoke("++++++ POINT IN TIME  " + Math.floor((time+dt)/dt+0.5)*dt + "s  BEGIN ++++++");
 
             //setup time disc for old solutions and timestep
-	    /// new: timeDisc.prepare_step_elem(solTimeSeries, dt);
 	    timeDisc.prepare_step_elem(solTimeSeries, dt);
             ///timeDisc.prepare_step(solTimeSeries, dt);
 
@@ -532,20 +526,7 @@ public class MembranePotentialMappingSolver implements Serializable
                 errorExit("Newton solver failed at point in time "
                         + Math.floor((time+dt)/dt+0.5)*dt + ".");
             } 
-
-            // prepare BG channel state
-            /*// never update, so that always -72mV
-            if (time + dt < 0.2)
-            {
-                double vm_time = Math.floor((time+dt)/voltageFilesInterval)*voltageFilesInterval	; // truncate to last time that data exists for
-                vdccDisc.update_potential(vm_time);
-            }
-            vdccDisc.update_gating(time+dt);
-            */
-	    /**
-	     * @todo update potential here ...
-	     */
-            
+           
             // apply Newton solver
             if (!newtonSolver.apply(u))
             {
@@ -554,58 +535,18 @@ public class MembranePotentialMappingSolver implements Serializable
                                + Math.floor((time+dt)/dt+0.5)*dt
                                + " with time step " + dt + ".");
 
-                // correction for Borg-Graham channels: have to set back time
-                //neumannDiscVGCC:update_gating(time)
-
-                dt = dt/2;
-                lv = lv++;
-                F_VecScaleAssign.invoke(u, 1.0, solTimeSeries.latest());
-
-                // halve time step and try again unless time step below minimum
-                if (dt < minStepSize)
-                {
-                    F_Print.invoke("Time step below minimum. Aborting. Failed at point in time "
-                            + Math.floor((time+dt)/dt+0.5)*dt + ".");
-                    time = timeEnd;
-                }
-                else
-                {    
-                    F_Print.invoke("Trying with half the time step...");
-                    checkbackCounter[lv] = 0;
-                }
-            }
-            else
+	    } else
             {
                 // update new time
                 time = solTimeSeries.const__time(0) + dt;
 
-                // update checkback counter and if applicable, reset dt
-                checkbackCounter[lv]++;
-                while (checkbackCounter[lv] % (2*checkbackInterval) == 0 && lv > 0 && (time >= levelUpDelay || lv > startLv))
-                {
-                    F_Print.invoke("Doubling time due to continuing convergence; now: " + 2*dt);
-                    dt = 2*dt;
-                    lv--;
-                    checkbackCounter[lv] = checkbackCounter[lv] + checkbackCounter[lv+1] / 2;
-                    checkbackCounter[lv+1] = 0;
-                }
-
                 // plot solution every plotStep seconds
                 if (generateVTKoutput)
                 {
-                    if (Math.abs(time/plotStep - Math.floor(time/plotStep+0.5)) < 1e-5)
+                    if (Math.abs(time/plotStep - Math.floor(time/plotStep+0.5)) < 1e-5) {
                         vtkOut.print(outputPath + "vtk/result", u, (int) Math.floor(time/plotStep+0.5), time);
+		    }
                 }
-
-                // take measurement in nucleus every timeStep seconds
-                /*for (int i=0; i<measFct.size(); i++)
-                {
-                    F_TakeMeasurement.invoke(u, approxSpace, time, measSs.get(i),
-                                             measFct.get(i), outputPath + "meas/data");
-                }*/
-
-                // export solution of ca on mem_er
-                //F_ExportSolution.invoke(u, approxSpace, time, "mem_cyt", "ca_cyt", outputPath + "sol/sol");
 
                 // get oldest solution
                 I_Vector oldestSol = solTimeSeries.oldest();
@@ -617,27 +558,33 @@ public class MembranePotentialMappingSolver implements Serializable
                 solTimeSeries.push_discard_oldest(oldestSol, time);
 
                 F_Print.invoke("++++++ POINT IN TIME  " + Math.floor(time/dt+0.5)*dt + "s  END ++++++++");
+		 time = solTimeSeries.const__time(0) + dt;
             }
         }
         
         // end timeseries, produce gathering file
-        if (generateVTKoutput) vtkOut.write_time_pvd(outputPath + "vtk/result", u);
+        if (generateVTKoutput) { 
+		vtkOut.write_time_pvd(outputPath + "vtk/result", u);
+	}
         
-        if (generateVTKoutput) return new Object[]{new File(outputPath + "vtk/result.pvd")};
+        if (generateVTKoutput) { 
+		return new Object[]{new File(outputPath + "vtk/result.pvd")};
+	}
+	
         return new Object[]{null};
     }
 
-    public void stopSolver()
-    {
-        stopSolver=true;
-    }
-   
+    /**
+     * @brief indicate error
+     * @param s
+     */ 
     private void errorExit(String s)
     {
-        eu.mihosoft.vrl.system.VMessage.exception("Setup Error in KineticSolver: ", s);
+        eu.mihosoft.vrl.system.VMessage.exception("Setup Error in MembranePotentialMappingSolver: ", s);
     }
 
     @MethodInfo(name="", valueName="Trajectories", valueStyle="default", valueOptions="", interactive = false)
+    @SuppressWarnings("ReturnOfCollectionOrArrayField")
     public Trajectory[] getTrajectories()
     {
        return vEvalTrajectory;

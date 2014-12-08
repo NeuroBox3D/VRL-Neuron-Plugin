@@ -52,22 +52,15 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
        setIdentifier(new PluginIdentifier("VRL-MembranePotentialMapping-Plugin", "0.1"));
 
        // describe the plugin
-       setDescription("Plugin for membrane potential mapping simulations with UG in VRL-Studio.");
+       setDescription("Plugin for membrane potential mapping simulations and using the NEURON interpreter within UG in VRL-Studio.");
 
        // copyright info
        setCopyrightInfo("VRL-MembranePotentialMapping-Plugin",
-                        "(c) sgrein",
+                        "(c) Stephan Grein",
                         "www.g-csc.de", "Proprietary", "Proprietary");
-       
-       // set the icon of the plugin
-      /* BufferedImage img = null;
-       try {
-	img = ImageIO.read(new File("img/neuro.jpg"));
-	setIcon(img);
-       } catch (IOException ioe) {
-          eu.mihosoft.vrl.system.VMessage.warning("Error loading icon", ioe.toString());
-       }*/
-       
+
+       // export the package
+       exportPackage("edu.gcsc.vrl.MembranePotentialMapping");
        
        // specify dependencies
        addDependency(new PluginDependency("VRL", "0.4.2", "0.4.2"));
@@ -77,29 +70,16 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
     }
     
     @Override
+    /**
+     * @brief register components
+     * @param api
+     */
     public void register(PluginAPI api) {
 
        // register plugin with canvas
        if (api instanceof VPluginAPI) {
            VPluginAPI vapi = (VPluginAPI) api;
-
-           // Register visual components:
-           //
-           // Here you can add additional components,
-           // type representations, styles etc.
-           //
-           // ** NOTE **
-           //
-           // To ensure compatibility with future versions of VRL,
-           // you should only use the vapi or api object for registration.
-           // If you directly use the canvas or its properties, please make
-           // sure that you specify the VRL versions you are compatible with
-           // in the constructor of this plugin configurator because the
-           // internal api is likely to change.
-           //
-           // examples:
-           //
-           
+          
 	   /// defaults
            vapi.addComponent(MembranePotentialMapping.class);
            vapi.addComponent(MembranePotentialMappingSolver.class);
@@ -132,12 +112,20 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
    }
 
     @Override
+ /**
+  * @brief unregister components
+  * @param iApi
+  */
    public void unregister(PluginAPI api) {
        // nothing to unregister
    }
 
     
  @Override
+ /**
+  * @brief install plugins
+  * @param iApi
+  */
     public void install(InitPluginAPI iApi) {
         // ensure template projects are updated
         new File(iApi.getResourceFolder(), "template-01.vrlp").delete();
@@ -145,6 +133,10 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
     }
 	
 
+    /**
+     * @brief inits the plugin
+     * @param iApi
+     */
 	@Override
  	   public void init(InitPluginAPI iApi) {
 
@@ -154,7 +146,10 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
         initTemplateProject(iApi);
     }
     
-	
+	/**
+	 * @brief inits the template projects
+	 * @param iApi 
+	 */
 	private void initTemplateProject(InitPluginAPI iApi) {
         templateProjectSrc = new File(iApi.getResourceFolder(), "template-01.vrlp");
         templateProjectSrc2 = new File(iApi.getResourceFolder(), "template-02.vrlp");
@@ -215,6 +210,9 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
 	
 	}
 	
+	/**
+	 * @brief saves the project templates
+	 */
 	 private void saveProjectTemplate() {
         InputStream in = MembranePotentialMappingPluginConfigurator.class.getResourceAsStream(
                 "/edu/gcsc/vrl/MembranePotentialMapping/resources/projects/template-01.vrlp");

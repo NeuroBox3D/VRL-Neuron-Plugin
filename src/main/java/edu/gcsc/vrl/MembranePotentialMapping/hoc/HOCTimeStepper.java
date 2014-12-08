@@ -78,6 +78,9 @@ public class HOCTimeStepper extends HOCCommand implements Serializable {
 	) {
 	    
  if ( ! (m_transformator == null) ) {
+	 if ( ((int) Math.signum(dt)) == -1) {
+          	eu.mihosoft.vrl.system.VMessage.info("Negative timestep", "Make sure you want a negative timestep. The timestep was: " + dt);
+	 }
 	 m_transformator.execute_hoc_stmt("tstart = " + t_start);
 	 m_transformator.execute_hoc_stmt("tstop = " + t_end);
 	 m_transformator.execute_hoc_stmt("dt = " + dt);

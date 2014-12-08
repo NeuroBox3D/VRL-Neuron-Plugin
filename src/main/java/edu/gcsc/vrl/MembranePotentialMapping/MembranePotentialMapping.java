@@ -88,15 +88,8 @@ public class MembranePotentialMapping implements Serializable
         @ParamInfo(name="", style="default", options="ugx_tag=\"gridFile\"; fct_tag=\"fctDef\"; type=\"S1|n:cytosolic calcium, density\"")
         UserDataTuple vdccData,
 	
-	/*@ParamGroupInfo(group="Problem definition|true; NEURON setup|false; Geometry")
-	@ParamInfo(name="Geometry file", style="load-dialog", options="")
-	String hocGeometry,*/
-	
 	@ParamGroupInfo(group="Problem definition|true; NEURON setup|false; Geometry")
 	@ParamInfo(name="Load", style="hoc-load-dialog", options="hoc_tag=\"gridFile\"") File hocGeometry,
-	
-    	/*@ParamGroupInfo(group="Problem definition|true; NEURON setup|false; Geometry")
-	@ParamInfo(name="Sections", style="default", options="hoc_tag=\"gridFile\"") Section sectionTest,*/
 	
     	@ParamGroupInfo(group="Problem definition|true; NEURON setup|false; Stimulation")
 	@ParamInfo(name="Stimulation file", style="load-dialog", options="")
@@ -105,18 +98,6 @@ public class MembranePotentialMapping implements Serializable
         @ParamGroupInfo(group="Problem definition|true; Pl Membrane|false; VDCC")
         @ParamInfo(name="channel type", style="selection", options="value=[\"L\",\"N\",\"T\"]")
         String vdccChannelType,
-        
-        @ParamGroupInfo(group="Problem definition|true; Pl Membrane|false; VDCC")
-        @ParamInfo(name="Voltage Files", style="load-dialog", options="")
-        String vdccFile,
-        
-        @ParamGroupInfo(group="Problem definition|true; Pl Membrane|false; VDCC")
-        @ParamInfo(name="timestep format", style="default", options="value=\"%.3f\"")
-        String vdccFileTimeFormatString,
-        
-        @ParamGroupInfo(group="Problem definition|true; Pl Membrane|false; VDCC")
-        @ParamInfo(name="Voltage Files", style="default", options="value=\".dat\"")
-        String vdccFileExtension,
         
         @ParamGroupInfo(group="Problem definition|true; Boundary conditions|false")
         @ParamInfo(name="Neumann Boundary", style="array", options="ugx_tag=\"gridFile\"; fct_tag=\"fctDef\"; minArraySize=0; type=\"S1|n:function & subset, value\"")
@@ -235,9 +216,8 @@ public class MembranePotentialMapping implements Serializable
 	
 	I_Transformator trans2  = new Transformator();
 	/// prepare elem disc
-        I_OneSidedBorgGrahamFV1WithVM2UGNEURON vdccDisc = new OneSidedBorgGrahamFV1WithVM2UGNEURON(vdccFcts,
-                vdccSsString, approxSpace, trans2, vdccFile, vdccFileTimeFormatString,
-                vdccFileExtension, false);
+        I_OneSidedBorgGrahamFV1WithVM2UGNEURON vdccDisc = new OneSidedBorgGrahamFV1WithVM2UGNEURON
+                (vdccFcts, vdccSsString, approxSpace, trans2, "", "", "", false);
 	
 	// set appropriate channel type
 	if ("L".equals(vdccChannelType)) { vdccDisc.set_channel_type_L(); }
@@ -245,7 +225,6 @@ public class MembranePotentialMapping implements Serializable
         else if ("T".equals(vdccChannelType)) { vdccDisc.set_channel_type_T(); }
 
 	System.err.println("Number of sections: " + trans.get_sections());
-	//trans.fadvance();
 	trans.execute_hoc_stmt("dt = 0.1");
 	trans.execute_hoc_stmt("tstart = 0");
 	trans.execute_hoc_stmt("tstop = 1");
@@ -362,10 +341,13 @@ public class MembranePotentialMapping implements Serializable
 	System.out.print("done.\n");
         
 	// create Refiner
-	if (numPreRefs > numRefs)
+	if (numPreRefs > numRefs) {
             throw new RuntimeException("numPreRefs must be smaller than numRefs.");
+	}
 	
-	if (numPreRefs > numRefs)  numPreRefs = numRefs;
+	if (numPreRefs > numRefs)  { 
+		numPreRefs = numRefs;
+	}
 	
 	// Create a refiner instance. This is a factory method
 	// which automatically creates a parallel refiner if required.
@@ -386,8 +368,9 @@ public class MembranePotentialMapping implements Serializable
         }
 	
         // distribute the domain to all involved processes
-	if (!distributeDomain(dom, distributionMethod, verticalInterfaces, numTargetProcs, distributionLevel, wFct))
+	if (!distributeDomain(dom, distributionMethod, verticalInterfaces, numTargetProcs, distributionLevel, wFct)) {
             throw new RuntimeException("Error while Distributing Grid.");
+	}
 	
 	// perform post-refine
 	for (int i=numPreRefs; i<numRefs; i++) {
@@ -398,8 +381,9 @@ public class MembranePotentialMapping implements Serializable
         // in the SubsetHandler of the domain
 	if (neededSubsets != null)
         {
-            if (!checkSubsets(dom, neededSubsets))
+            if (!checkSubsets(dom, neededSubsets)) {
                 throw new RuntimeException("Something wrong with required subsets. Aborting.");
+	    }
         }
 	
 	// return the created domain
@@ -407,6 +391,16 @@ public class MembranePotentialMapping implements Serializable
     }
     
     
+    /**
+     * @brief distributes the supplied domain
+     * @param dom
+     * @param partitioningMethod
+     * @param verticalInterfaces
+     * @param numTargetProcs
+     * @param distributionLevel
+     * @param wFct
+     * @return 
+     */
     private boolean distributeDomain(I_Domain dom, String partitioningMethod, boolean verticalInterfaces, int numTargetProcs, int distributionLevel, I_PartitionWeighting wFct)
     {
         if (F_NumProcs.invoke() == 1) return true;
@@ -471,10 +465,23 @@ public class MembranePotentialMapping implements Serializable
     }
     
     
+    /**
+     * @partion by bisection method
+     * @param dom
+     * @param partitionMapOut
+     * @param numProcs 
+     */
     private void partitionMapBisection(I_Domain dom, I_PartitionMap partitionMapOut, int numProcs)
     {
     }
     
+    /**
+     * @brief bisect with metis
+     * @param dom
+     * @param partitionMapOut
+     * @param numProcs
+     * @param baseLevel 
+     */
     private void partitionMapMetis(I_Domain dom, I_PartitionMap partitionMapOut, int numProcs, int baseLevel)
     {
         if (partitionMapOut.num_target_procs() != numProcs)
@@ -485,6 +492,14 @@ public class MembranePotentialMapping implements Serializable
         F_PartitionDomain_MetisKWay.invoke(dom, partitionMapOut, numProcs, baseLevel, 1, 1);
     }
     
+    /**
+     * @brief reweight with metis
+     * @param dom
+     * @param partitionMapOut
+     * @param numProcs
+     * @param baseLevel
+     * @param wFct 
+     */
     private void partitionMapMetisReweigh(I_Domain dom, I_PartitionMap partitionMapOut, int numProcs, int baseLevel, I_PartitionWeighting wFct)
     {
         if (partitionMapOut.num_target_procs() != numProcs)
@@ -495,6 +510,12 @@ public class MembranePotentialMapping implements Serializable
 	F_PartitionDomain_MetisKWay.invoke(dom, partitionMapOut, numProcs, baseLevel, wFct);
     }
     
+    /**
+     * @brief check for subset availability
+     * @param dom
+     * @param neededSubsets
+     * @return 
+     */
     private boolean checkSubsets(I_Domain dom, String[] neededSubsets)
     {
         I_MGSubsetHandler sh = dom.subset_handler();
@@ -509,13 +530,4 @@ public class MembranePotentialMapping implements Serializable
 	
 	return true;
     }
-    
-    
-    private void errorExit(String s)
-    {
-        
-        eu.mihosoft.vrl.system.VMessage.exception("Setup Error in AdvectionDiffusion: ", s);
-    }
-
-    
 }
