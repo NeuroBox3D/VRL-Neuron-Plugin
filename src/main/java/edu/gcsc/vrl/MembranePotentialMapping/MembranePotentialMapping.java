@@ -27,13 +27,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
+/**
+ * @brief configuration of the simulation setup
+ * @author stephan
+ */
 @ComponentInfo(name="MembranePotentialMapping", category="/UG4/VRL-Plugins/Neuro/MembranePotentialMapping/")
 public class MembranePotentialMapping implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
     /**
-     *
      * @param gridFile
      * @param num_refs
      * @param num_prerefs
@@ -43,12 +46,8 @@ public class MembranePotentialMapping implements Serializable
      * @param hocStim 
      * @param vdccData
      * @param vdccChannelType
-     * @param vdccFile
-     * @param vdccFileTimeFormatString
-     * @param vdccFileExtension
      * @param bndData
      * @param startValue
-     * @param clamps
      * @return
      */
     @MethodInfo(valueStyle="multi-out", interactive = false)
@@ -114,11 +113,13 @@ public class MembranePotentialMapping implements Serializable
         UGXFileInfo ugxFI = new UGXFileInfo();
 
         //  parse ugx file for world dimension
-        if (ugxFI.parse_file(gridFileName) == false)
+        if (ugxFI.parse_file(gridFileName) == false) {
             throw new RuntimeException("Unable to parse ugx-File: " + gridFileName);
+	}
         
-        if (ugxFI.const__num_grids() != 1)
+        if (ugxFI.const__num_grids() != 1) {
             throw new RuntimeException("UGX file must contain exactly one grid.");
+	}
         
         int dim = ugxFI.const__grid_world_dimension(0);
 
@@ -142,8 +143,9 @@ public class MembranePotentialMapping implements Serializable
         for (FunctionDefinition fd: problemDefinition)
         {
             String subsets = "";
-            if (fd.getFctData().subsetList.isEmpty())
+            if (fd.getFctData().subsetList.isEmpty()) {
                 throw new RuntimeException("No subset definition for function '"+fd.getFctData().fctName+"'!");
+	    }
             
             for (String s: fd.getFctData().subsetList) subsets = subsets + ", " + s;
             subsets = subsets.substring(2);
@@ -167,12 +169,18 @@ public class MembranePotentialMapping implements Serializable
         { 
             // get selected function and selected subsets
             UserDependentSubsetModel.FSDataType fctSsSel = (UserDependentSubsetModel.FSDataType) diffusionData[i].getData(0);
-            if (fctSsSel.getSelFct().length != 1) throw new RuntimeException("Diffusion process "+i+" needs exactly one function, but has "+fctSsSel.getSelFct().length+".");
+            if (fctSsSel.getSelFct().length != 1) {
+	    throw new RuntimeException("Diffusion process "+i+" needs exactly one function, but has "+fctSsSel.getSelFct().length+".");
+	    }
             String fct = fctSsSel.getSelFct()[0];
             String[] ss = fctSsSel.getSelSs();
             String ssString = "";
-            if (ss.length == 0) throw new RuntimeException("No subset definition for function '"+fct+"' in diffusion process "+i+"!");
-            for (String s: ss) ssString = ssString + ", " + s;
+            if (ss.length == 0) {
+	    	throw new RuntimeException("No subset definition for function '"+fct+"' in diffusion process "+i+"!");
+	    }
+            for (String s: ss) {
+	    	ssString = ssString + ", " + s;
+	    }
             ssString = ssString.substring(2);
             
             // create elemDisc
@@ -198,13 +206,19 @@ public class MembranePotentialMapping implements Serializable
         
         // Borg-Graham VDCC
         String[] vdccSelFcts = ((UserDependentSubsetModel.FSDataType) vdccData.getData(0)).getSelFct();
-        if (vdccSelFcts.length != 1) throw new RuntimeException("ER leakage mechanism needs exactly one function, but has "+vdccSelFcts.length+".");
+        if (vdccSelFcts.length != 1) {
+		throw new RuntimeException("ER leakage mechanism needs exactly one function, but has "+vdccSelFcts.length+".");
+	}
         String vdccFcts = vdccSelFcts[0];
         
         String[] vdccSelSs = ((UserDependentSubsetModel.FSDataType) vdccData.getData(0)).getSelSs();
         String vdccSsString = "";
-        if (vdccSelSs.length == 0) throw new RuntimeException("No subset definition in ER leakage definition!");
-        for (String s: vdccSelSs) vdccSsString = vdccSsString + ", " + s;
+        if (vdccSelSs.length == 0) { 
+		throw new RuntimeException("No subset definition in ER leakage definition!");
+	}
+        for (String s: vdccSelSs) {
+		vdccSsString = vdccSsString + ", " + s;
+	}
         vdccSsString = vdccSsString.substring(2);
         I_CplUserNumber vdccDensityFct = (I_CplUserNumber) vdccData.getNumberData(1);
 	
@@ -259,12 +273,18 @@ public class MembranePotentialMapping implements Serializable
         for (UserDataTuple bnd : bndData)
         {
             String[] bndFct = ((UserDependentSubsetModel.FSDataType) bnd.getData(0)).getSelFct();
-            if (bndFct.length != 1) throw new RuntimeException("Definition of Neumann boundary condition "+i+" needs exactly one function, but has "+bndFct.length+".");
+            if (bndFct.length != 1) {
+	    throw new RuntimeException("Definition of Neumann boundary condition "+i+" needs exactly one function, but has "+bndFct.length+".");
+	    }
             
             String[] bndSelSs = ((UserDependentSubsetModel.FSDataType) bnd.getData(0)).getSelSs();
             String bndSsString = "";
-            if (bndSelSs.length == 0) throw new RuntimeException("No subset selected in Neumann boundary definition "+ i +"!");
-            for (String s: bndSelSs) bndSsString = bndSsString + ", " + s;
+            if (bndSelSs.length == 0) { 
+		    throw new RuntimeException("No subset selected in Neumann boundary definition "+ i +"!");
+	    }
+            for (String s: bndSelSs) {
+		    bndSsString = bndSsString + ", " + s;
+	    }
             bndSsString = bndSsString.substring(2);
             
             Logger.getLogger(MembranePotentialMapping.class.getName()).log(Level.INFO, "bndFct: {0}", bndFct[0]);
@@ -294,8 +314,9 @@ public class MembranePotentialMapping implements Serializable
                 }
                 String fct = ((UserDependentSubsetModel.FSDataType) udt.getData(0)).getSelFct()[0];
                 
-                if (fct.equals(fd.getFctData().fctName))
+                if (fct.equals(fd.getFctData().fctName)) {
                     dssll.add(fd.getFctData().subsetList);
+		}
             }
             
             // check that each item on the definition subset list
@@ -305,14 +326,13 @@ public class MembranePotentialMapping implements Serializable
             {
                 boolean found = false;
                 outerSearchLoop:
-                for (List<String> issl: dssll)
-                {
-                    for (String iss: issl)
-                        if (iss.equals(dss))
-                        {
+                for (List<String> issl: dssll) {
+                    for (String iss: issl) {
+                        if (iss.equals(dss)) {
                             found = true;
                             break outerSearchLoop;
                         }
+		    }
                 }
                 if (!found)
                 {
@@ -330,6 +350,7 @@ public class MembranePotentialMapping implements Serializable
     // The following functions are mere java equivalents of lua script functions
     // defined in ug_util.lua and domain_distribution_util.lua.
     
+    @SuppressWarnings("AssignmentToMethodParameter")
     private I_Domain createAndDistributeDomain(String gridName, int numRefs, int numPreRefs, String[] neededSubsets, String distributionMethod, boolean verticalInterfaces, int numTargetProcs, int distributionLevel, I_PartitionWeighting wFct)
     {
         // create Instance of a Domain
@@ -401,20 +422,29 @@ public class MembranePotentialMapping implements Serializable
      * @param wFct
      * @return 
      */
+    @SuppressWarnings("AssignmentToMethodParameter")
     private boolean distributeDomain(I_Domain dom, String partitioningMethod, boolean verticalInterfaces, int numTargetProcs, int distributionLevel, I_PartitionWeighting wFct)
     {
-        if (F_NumProcs.invoke() == 1) return true;
+        if (F_NumProcs.invoke() == 1) { 
+		return true;
+	}
 	
 	I_PartitionMap partitionMap = new PartitionMap();
         
-	if (partitioningMethod == null) partitioningMethod = "bisection";
+	if (partitioningMethod == null) {
+		partitioningMethod = "bisection";
+	}
 	
-	if (numTargetProcs <= 0) numTargetProcs = F_NumProcs.invoke();
+	if (numTargetProcs <= 0) { 
+		numTargetProcs = F_NumProcs.invoke();
+	}
         
 	if (distributionLevel < 0)
         {
 		distributionLevel = dom.grid().const__num_levels() - 1;
-		if (distributionLevel < 0) distributionLevel = 0;
+		if (distributionLevel < 0) { 
+			distributionLevel = 0;
+		}
         }
 	
 	if (dom.const__domain_info().const__num_elements_on_level(distributionLevel) < numTargetProcs)
@@ -437,16 +467,13 @@ public class MembranePotentialMapping implements Serializable
             }
             partitionMapBisection(dom, partitionMap, numTargetProcs);
         }
-        else if ("metis".equals(partitioningMethod))
-        {
+        else if ("metis".equals(partitioningMethod)) {
             partitionMapMetis(dom, partitionMap, numTargetProcs, distributionLevel);
         }
-        else if ("metisReweigh".equals(partitioningMethod))
-        {
-            if (wFct != null)
+        else if ("metisReweigh".equals(partitioningMethod)) {
+            if (wFct != null) {
                 partitionMapMetisReweigh(dom, partitionMap, numTargetProcs, distributionLevel, wFct);
-            else 
-            {
+	    } else  {
                 System.out.println("ERROR in MembranePotentialMapping::distributeDomain: "
                         + "requested partitionMethod \"metisReweigh\", but no weightingFct given.");
                 return false;
