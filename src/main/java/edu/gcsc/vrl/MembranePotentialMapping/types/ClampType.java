@@ -12,23 +12,24 @@ import java.io.Serializable;
  *
  * @author sgrein
  */
-@TypeInfo(type = Clamp.class, input = true, output = false, style="default")
+@TypeInfo(type = Clamp.class, input = true, output = false, style = "default")
 public class ClampType extends TypeRepresentationBase implements Serializable {
-    private static final long serialVersionUID = 1L;
-    
-    /**
-     * @brief default ctor
-     */
-    public ClampType() {
-	    
-    }
 
-    /**
-     * @brief necessary for code generation
-     * @return
-     */
-    @Override
-    public String getValueAsCode() {
-   	return "\"" + VLangUtils.addEscapesToCode(getValue().toString()) + "\"";
-    }	
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * @brief default ctor
+	 */
+	public ClampType() {
+
+	}
+
+	/**
+	 * @brief necessary for code generation
+	 * @return
+	 */
+	@Override
+	public String getValueAsCode() {
+		return "\"" + VLangUtils.addEscapesToCode(getValue().toString()) + "\"";
+	}
 }

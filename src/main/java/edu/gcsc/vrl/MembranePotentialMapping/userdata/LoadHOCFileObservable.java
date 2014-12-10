@@ -15,20 +15,21 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @todo how to handle the hoc interpreter?
- *       singleton instance for obversable?
- *       also I_Transformator should or must be singleton instance,
- *       for safety and consistency reasons also on tehe c++ counterpart
+ * @todo how to handle the hoc interpreter? singleton instance for obversable?
+ * also I_Transformator should or must be singleton instance, for safety and
+ * consistency reasons also on the c++ counterpart
  *
  * @brief the hoc file observable
  * @author stephan grein <stephan.grein@gcsc.uni-frankfurt.de>
  */
 public class LoadHOCFileObservable {
+
 	/**
-	 * @brief stores the observers and the 
-	 * hoc file info from the specific file
+	 * @brief stores the observers and the hoc file info from the specific
+	 * file
 	 */
 	private class HOCFileTag {
+
 		public Collection<LoadHOCFileObserver> observers = new HashSet<LoadHOCFileObserver>();
 		public HOCFileInfo data = null;
 	}
@@ -37,16 +38,19 @@ public class LoadHOCFileObservable {
 	 * @brief stores the hoc global tab
 	 */
 	private class HOCFileGlobalTag {
+
 		public Collection<LoadHOCFileObserver> observers = new HashSet<LoadHOCFileObserver>();
 	}
 
 	/**
-	 * @brief if multiple file loaders exist they are distinguished by the hoc_tag
+	 * @brief if multiple file loaders exist they are distinguished by the
+	 * hoc_tag
 	 * @param hoc_tag
 	 * @param id
 	 * @param object
 	 */
 	private class Identifier {
+
 		private final String hoc_tag;
 		private final Object object;
 		private final int windowID;
@@ -55,14 +59,14 @@ public class LoadHOCFileObservable {
 		 * @brief default ctor
 		 * @param hoc_tag
 		 * @param object
-		 * @param windowID 
+		 * @param windowID
 		 */
 		public Identifier(String hoc_tag, Object object, int windowID) {
 			this.hoc_tag = hoc_tag;
 			this.object = object;
 			this.windowID = windowID;
 		}
-		
+
 		/**
 		 * @brief hashcode
 		 */
@@ -171,7 +175,7 @@ public class LoadHOCFileObservable {
 				obs.update(entry.getValue().data);
 			}
 		}
-        	/**
+		/**
 		 * @todo should we inform the listeners here?!
 		 */
 		// obs.update(getTag(hoc_tag, object, windowID, false).data);
@@ -179,7 +183,7 @@ public class LoadHOCFileObservable {
 
 	/**
 	 * @brief Removes an observer from this Observable
-	 * 
+	 *
 	 * @param obs the observer to remove
 	 * @param hoc_tag the hoc_tag
 	 * @param object
@@ -197,7 +201,7 @@ public class LoadHOCFileObservable {
 
 	/**
 	 * @brief Removes an observer from this Observable
-	 * 
+	 *
 	 * @param obs the observer to remove
 	 */
 	public synchronized void deleteObserver(LoadHOCFileObserver obs) {
@@ -212,7 +216,7 @@ public class LoadHOCFileObservable {
 
 	/**
 	 * @brief Removes all observer of a hoc_tag from this Observable
-	 * 
+	 *
 	 * @param hoc_tag the hoc_tag
 	 * @param object
 	 * @param windowID
@@ -228,8 +232,9 @@ public class LoadHOCFileObservable {
 	}
 
 	/**
-	 * @brief Notifies all observers of a hoc_tag about the currently given data
-	 * 
+	 * @brief Notifies all observers of a hoc_tag about the currently given
+	 * data
+	 *
 	 * @param hoc_tag the hoc_tag
 	 * @param object
 	 * @param windowID
@@ -276,8 +281,8 @@ public class LoadHOCFileObservable {
 	}
 
 	/**
-	 * @brief Notifies a specific observer of a hoc_tag about 
-	 * the currently given data
+	 * @brief Notifies a specific observer of a hoc_tag about the currently
+	 * given data
 	 *
 	 * @param obs the observer
 	 * @param hoc_tag the hoc_tag
@@ -294,8 +299,9 @@ public class LoadHOCFileObservable {
 	}
 
 	/**
-	 * @brief sets a filename for a hoc_tag. The file will be analysed and the
-	 * contained data will be broadcasted to all observer of the hoc_tag.
+	 * @brief sets a filename for a hoc_tag. The file will be analysed and
+	 * the contained data will be broadcasted to all observer of the
+	 * hoc_tag.
 	 *
 	 * @param file the file
 	 * @param hoc_tag the hoc_tag
@@ -311,12 +317,14 @@ public class LoadHOCFileObservable {
 			setInvalidFile(hoc_tag, object, windowID);
 			return "Invalid Filename: " + file.toString() + ". Must be *.hoc.";
 		}
-		
+
 		/// populate the hoc file object
 		ArrayList<String> names = new ArrayList<String>();
 		transformator.load_geom(file.toString());
 		String sections = transformator.get_section_names_as_string();
-		/** @todo this could be certainly improved here */
+		/**
+		 * @todo this could be certainly improved here
+		 */
 		String[] sections_exploded = sections.split(";");
 		List<String> finals = Arrays.asList(sections_exploded);
 		for (String s : finals) {

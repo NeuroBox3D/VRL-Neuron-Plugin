@@ -35,6 +35,7 @@ import javax.swing.event.ListSelectionListener;
  */
 @TypeInfo(type = Section.class, input = true, output = false, style = "default")
 public class SectionType extends TypeRepresentationBase implements Serializable, LoadHOCFileObserver {
+
 	private static final long serialVersionUID = 1L;
 	protected JList sectionList = null;
 	DefaultListModel sectionListModel = null;
@@ -55,7 +56,7 @@ public class SectionType extends TypeRepresentationBase implements Serializable,
 		// elements are horizontally aligned
 		Box horizBox = Box.createHorizontalBox();
 		horizBox.setAlignmentX(LEFT_ALIGNMENT);
-		
+
 		hocFileName = new VTextField("-- no hoc file selected --");
 		hocFileName.setAlignmentX(Component.LEFT_ALIGNMENT);
 		hocFileName.addKeyListener(new KeyListener() {
@@ -71,12 +72,12 @@ public class SectionType extends TypeRepresentationBase implements Serializable,
 			public void keyReleased(KeyEvent e) {
 				// eu.mihosoft.vrl.system.VMessage.info("VTextField", "key was released");
 				if (sectionList.getSelectedIndices() != null && hocFileName.getText() != null) {
-                   			// construct selectedValuesList by hand since 
+					// construct selectedValuesList by hand since 
 					// getSelectedValuesList() depends on 1.7 and may raise an exception
 					/**
 					 * @todo implement/
 					 */
-					 
+
 				}
 			}
 		});
@@ -113,7 +114,7 @@ public class SectionType extends TypeRepresentationBase implements Serializable,
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				if (sectionList.getSelectedIndices() != null && hocFileName.getText() != null) {
-                    			// construct selectedValuesList by hand since 
+					// construct selectedValuesList by hand since 
 					// getSelectedValuesList() depends on 1.7 and may raise an exception
 					List<String> selSubsets = new ArrayList<String>();
 					for (int i : sectionList.getSelectedIndices()) {
@@ -129,7 +130,7 @@ public class SectionType extends TypeRepresentationBase implements Serializable,
 
 	/**
 	 * @brief gets the view value
-	 * @return 
+	 * @return
 	 */
 	@Override
 	public Object getViewValue() {
@@ -185,9 +186,9 @@ public class SectionType extends TypeRepresentationBase implements Serializable,
 	}
 
 	/**
-	 * @brief evaluates the script
-	 * Requests evaluation of the value options that are usually specified
-	 * in {@link eu.mihosoft.vrl.annotation.ParamInfo}.
+	 * @brief evaluates the script Requests evaluation of the value options
+	 * that are usually specified in
+	 * {@link eu.mihosoft.vrl.annotation.ParamInfo}.
 	 */
 	@Override
 	protected void evaluationRequest(Script script) {
@@ -229,10 +230,10 @@ public class SectionType extends TypeRepresentationBase implements Serializable,
 	public void update(HOCFileInfo info) {
 		adjustView(info);
 	}
-	
+
 	/**
 	 * @brief sets the value of the view
-	 * @param o 
+	 * @param o
 	 */
 	@Override
 	public void setViewValue(Object o) {
@@ -267,7 +268,7 @@ public class SectionType extends TypeRepresentationBase implements Serializable,
 			sectionListModel.removeAllElements();
 			ArrayList<String> sections = info.get_names_sections();
 			hocFileName.setText("Number of sections: " + sections.size());
-			
+
 			// add the elements to the subset list model
 			for (String element : sections) {
 				sectionListModel.addElement(element);

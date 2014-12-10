@@ -12,42 +12,41 @@ import java.io.Serializable;
  * @brief HOC command class
  * @author stephan
  */
-@ComponentInfo(name="HOCExecuteStatement", category="/UG4/VRL-Plugins/Neuro/MembranePotentialMapping/")
+@ComponentInfo(name = "HOCExecuteStatement", category = "/UG4/VRL-Plugins/Neuro/MembranePotentialMapping/")
 public class HOCExecuteStatement extends HOCCommand implements Serializable {
+
 	private static final long serialVersionUID = 1L;
+
 	/**
-	 * @brief default ctor
+	 * @brief ctor
 	 */
 	public HOCExecuteStatement() {
 	}
-	
-    @Override
-    public void set_transformator(
-	    @ParamInfo(name="HOC Interpreter")
-	    I_Transformator transformator) {
-	    super.set_transformator(transformator);
-    }
-    
-    @Override
-    @OutputInfo(name="HOC Interpreter")
-    public I_Transformator get_transformator() {
-	    return super.get_transformator();
-    }
 
+	@Override
+	public void set_transformator(
+		@ParamInfo(name = "HOC Interpreter", typeName="The NEURON interpreter") I_Transformator transformator) {
+		super.set_transformator(transformator);
+	}
 
-    /**
-     * @brief executes a hoc command string
-     * @param cmd_str
-     * @return
-     */
+	@Override
+	@OutputInfo(name = "HOC Interpreter", typeName="The NEURON interpreter")
+	public I_Transformator get_transformator() {
+		return super.get_transformator();
+	}
+
+	/**
+	 * @brief executes a HOC command string
+	 * @param cmd_str
+	 * @return
+	 */
 	public boolean cmd_str(
-		@ParamInfo(name="Command String", style="code") String cmd_str
-		) {
-		if (! (m_transformator == null)) {
+		@ParamInfo(name = "Command String", typeName="Any valid HOC code", style = "code") String cmd_str
+	) {
+		if (!(m_transformator == null)) {
 			return (m_transformator.execute_hoc_stmt(cmd_str) == 0);
 		} else {
-          	eu.mihosoft.vrl.system.VMessage.info("HOC interpreter not initialized", "Check if Clamp instance has ingoing connection of a HOC interpreter (I_Transformator).");
-		return false;
+			return error(this);
 		}
 	}
 }

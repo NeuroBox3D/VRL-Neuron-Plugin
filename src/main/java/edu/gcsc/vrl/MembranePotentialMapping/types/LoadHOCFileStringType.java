@@ -25,194 +25,193 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 
 /**
- * @brief 
- * @author stephan inspiration from avogels implementation
+ * @brief @author stephan inspiration from avogels implementation
  */
 @TypeInfo(type = String.class, input = true, output = false, style = "hoc-load-dialog")
 public class LoadHOCFileStringType extends TypeRepresentationBase {
-    /// to serialize
-    private static final long serialVersionUID = 1L;
-    /// the text field to display
-    private VTextField input;
-    /// filter to restrict to hoc file
-    private VFileFilter fileFilter = new VFileFilter();
-    /// the current hoc_tag
-    private String hoc_tag = null;
 
-    /**
-     * @brief defualt Constructor.
-     */
-    public LoadHOCFileStringType() {
-        eu.mihosoft.vrl.system.VMessage.info("MPM Plugin status", "LoadHOCFileStringType instantiated!");
+	/// to serialize
+	private static final long serialVersionUID = 1L;
+	/// the text field to display
+	private VTextField input;
+	/// filter to restrict to hoc file
+	private VFileFilter fileFilter = new VFileFilter();
+	/// the current hoc_tag
+	private String hoc_tag = null;
 
-        // create a Box and set it as layout
-        VBoxLayout layout = new VBoxLayout(this, VBoxLayout.Y_AXIS);
-        setLayout(layout);
-        setLayoutType(LayoutType.STATIC);
+	/**
+	 * @brief defualt Constructor.
+	 */
+	public LoadHOCFileStringType() {
+		eu.mihosoft.vrl.system.VMessage.info("MPM Plugin status", "LoadHOCFileStringType instantiated!");
 
-        // set the name label
-        nameLabel.setText("File Name (*.hoc):");
-        nameLabel.setAlignmentX(0.0f);
-        add(nameLabel);
-        
-        // elements are horizontally aligned
-        Box horizBox = Box.createHorizontalBox();
-        horizBox.setAlignmentX(LEFT_ALIGNMENT);
-        add(horizBox);
-        
-        // create input field
-        input = new VTextField(this, "");
-        input.setHorizontalAlignment(JTextField.RIGHT);
-        int height = (int) this.input.getMinimumSize().getHeight();
-        input.setSize(new Dimension(120, height));
-        input.setMinimumSize(new Dimension(120, height));
-        input.setMaximumSize(new Dimension(120, height));
-        input.setPreferredSize(new Dimension(120, height));
-        input.setEditable(true);
-        input.setAlignmentY(0.5f);
-        input.setAlignmentX(0.0f);
-        input.addActionListener(new ActionListener() {
+		// create a Box and set it as layout
+		VBoxLayout layout = new VBoxLayout(this, VBoxLayout.Y_AXIS);
+		setLayout(layout);
+		setLayoutType(LayoutType.STATIC);
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setViewValue(input.getText());
-            }
-        });
-        horizBox.add(input);
+		// set the name label
+		nameLabel.setText("File Name (*.hoc):");
+		nameLabel.setAlignmentX(0.0f);
+		add(nameLabel);
 
-        // hide connector, since no external data allowed
-        setHideConnector(true);
+		// elements are horizontally aligned
+		Box horizBox = Box.createHorizontalBox();
+		horizBox.setAlignmentX(LEFT_ALIGNMENT);
+		add(horizBox);
 
-        // set to hoc ending only
-        ArrayList<String> endings = new ArrayList<String>();
-        endings.add("hoc");
-        fileFilter.setAcceptedEndings(endings);
-        fileFilter.setDescription("*.hoc");
+		// create input field
+		input = new VTextField(this, "");
+		input.setHorizontalAlignment(JTextField.RIGHT);
+		int height = (int) this.input.getMinimumSize().getHeight();
+		input.setSize(new Dimension(120, height));
+		input.setMinimumSize(new Dimension(120, height));
+		input.setMaximumSize(new Dimension(120, height));
+		input.setPreferredSize(new Dimension(120, height));
+		input.setEditable(true);
+		input.setAlignmentY(0.5f);
+		input.setAlignmentX(0.0f);
+		input.addActionListener(new ActionListener() {
 
-        // create a file manager
-        final FileDialogManager fileManager = new FileDialogManager();
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setViewValue(input.getText());
+			}
+		});
+		horizBox.add(input);
 
-        // create a load button
-        JButton button = new JButton("...");
-        button.setMaximumSize(new Dimension(50, button.getMinimumSize().height));
-        button.addActionListener(new ActionListener() {
+		// hide connector, since no external data allowed
+		setHideConnector(true);
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                File directory = null;
-                if (getViewValueWithoutValidation() != null) {
-                    directory = new File(getViewValueWithoutValidation().toString());
-                    if (!directory.isDirectory()) {
-                        directory = directory.getParentFile();
-                    }
-                }
+		// set to hoc ending only
+		ArrayList<String> endings = new ArrayList<String>();
+		endings.add("hoc");
+		fileFilter.setAcceptedEndings(endings);
+		fileFilter.setDescription("*.hoc");
 
-                File file = fileManager.getLoadFile(getMainCanvas(),
-                        directory, fileFilter, false);
+		// create a file manager
+		final FileDialogManager fileManager = new FileDialogManager();
 
-                if (file != null) {
-                    setViewValue(file.toString());
-                }
-            }
-        });
+		// create a load button
+		JButton button = new JButton("...");
+		button.setMaximumSize(new Dimension(50, button.getMinimumSize().height));
+		button.addActionListener(new ActionListener() {
 
-        horizBox.add(button);
-    }
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				File directory = null;
+				if (getViewValueWithoutValidation() != null) {
+					directory = new File(getViewValueWithoutValidation().toString());
+					if (!directory.isDirectory()) {
+						directory = directory.getParentFile();
+					}
+				}
 
-    @Override
-    public void setViewValue(Object o) {
-        input.setText(o.toString());
-        input.setCaretPosition(input.getText().length());
-        input.setToolTipText(o.toString());
-        input.setHorizontalAlignment(JTextField.RIGHT);
+				File file = fileManager.getLoadFile(getMainCanvas(),
+					directory, fileFilter, false);
 
-        //  Here we inform the Singleton, that the file has been scheduled
-        notifyLoadHOCFileObservable();
-    }
+				if (file != null) {
+					setViewValue(file.toString());
+				}
+			}
+		});
 
-    @Override
-    public Object getViewValue() {
-        return input.getText();
-    }
+		horizBox.add(button);
+	}
 
-    @Override
-    public void emptyView() {
-        input.setText("");
-    }
+	@Override
+	public void setViewValue(Object o) {
+		input.setText(o.toString());
+		input.setCaretPosition(input.getText().length());
+		input.setToolTipText(o.toString());
+		input.setHorizontalAlignment(JTextField.RIGHT);
 
-    @Override
-    @SuppressWarnings("unchecked")
-    protected void evaluationRequest(Script script) {
-        super.evaluationRequest(script);
+		//  Here we inform the Singleton, that the file has been scheduled
+		notifyLoadHOCFileObservable();
+	}
 
-        Object property = null;
+	@Override
+	public Object getViewValue() {
+		return input.getText();
+	}
 
-        if (getValueOptions() != null) {
+	@Override
+	public void emptyView() {
+		input.setText("");
+	}
 
-            if (getValueOptions().contains("hoc_tag")) {
-                property = script.getProperty("hoc_tag");
-            }
+	@Override
+	@SuppressWarnings("unchecked")
+	protected void evaluationRequest(Script script) {
+		super.evaluationRequest(script);
 
-            if (property != null) {
-                hoc_tag = (String) property;
-            }
-        }
+		Object property = null;
 
-        if (hoc_tag == null) {
-            getMainCanvas().getMessageBox().addMessage("Invalid ParamInfo option",
-                    "ParamInfo for hoc-subset-selection requires hoc_tag in options",
-                    getConnector(), MessageType.ERROR);
-        }
+		if (getValueOptions() != null) {
 
-    }
+			if (getValueOptions().contains("hoc_tag")) {
+				property = script.getProperty("hoc_tag");
+			}
 
-    @Override
-    public void addedToMethodRepresentation() {
-        super.addedToMethodRepresentation();
+			if (property != null) {
+				hoc_tag = (String) property;
+			}
+		}
 
-        // register at Observable using hoc_tag
-        notifyLoadHOCFileObservable();
-    }
- 
-    /**
-     * @brief notifies the obervers
-     */
-    protected void notifyLoadHOCFileObservable() {
-        File file = new File(input.getText());
-            int id = this.getParentMethod().getParentObject().getObjectID();
-            Object o = ((VisualCanvas) getMainCanvas()).getInspector().getObject(id);
-            int windowID = 0;
+		if (hoc_tag == null) {
+			getMainCanvas().getMessageBox().addMessage("Invalid ParamInfo option",
+				"ParamInfo for hoc-subset-selection requires hoc_tag in options",
+				getConnector(), MessageType.ERROR);
+		}
 
-        //  Here we inform the Singleton, that the file no scheduled
-        if (!file.getAbsolutePath().isEmpty() && file.isFile()) {
-            String msg = LoadHOCFileObservable.getInstance().setSelectedFile(file, hoc_tag, o, windowID);
-		//String msg = "";
+	}
 
-            if (!msg.isEmpty() && !getMainCanvas().isLoadingSession()) {
-                getMainCanvas().getMessageBox().addMessage("Invalid hoc-File",
-                        msg, getConnector(), MessageType.ERROR);
-            }
+	@Override
+	public void addedToMethodRepresentation() {
+		super.addedToMethodRepresentation();
 
-        } else {
-           // LoadHOCFileObservable.getInstance().setInvalidFile(hoc_tag, o, windowID);
-            
-            if (!input.getText().isEmpty() && !getMainCanvas().isLoadingSession()) {
-                getMainCanvas().getMessageBox().addMessage("Invalid hoc-File",
-                        "Specified filename invalid: " + file.toString(),
-                        getConnector(), MessageType.ERROR);
+		// register at Observable using hoc_tag
+		notifyLoadHOCFileObservable();
+	}
 
-            }
-        }
-    }
+	/**
+	 * @brief notifies the obervers
+	 */
+	protected void notifyLoadHOCFileObservable() {
+		File file = new File(input.getText());
+		int id = this.getParentMethod().getParentObject().getObjectID();
+		Object o = ((VisualCanvas) getMainCanvas()).getInspector().getObject(id);
+		int windowID = 0;
 
-    /**
-     * @brief necessary for code generation
-     * @return 
-     */
-    @Override
-    public String getValueAsCode() {
-        return "\""
-                + VLangUtils.addEscapesToCode(getValue().toString()) + "\"";
-    }
+		//  Here we inform the Singleton, that the file no scheduled
+		if (!file.getAbsolutePath().isEmpty() && file.isFile()) {
+			String msg = LoadHOCFileObservable.getInstance().setSelectedFile(file, hoc_tag, o, windowID);
+			//String msg = "";
+
+			if (!msg.isEmpty() && !getMainCanvas().isLoadingSession()) {
+				getMainCanvas().getMessageBox().addMessage("Invalid hoc-File",
+					msg, getConnector(), MessageType.ERROR);
+			}
+
+		} else {
+			// LoadHOCFileObservable.getInstance().setInvalidFile(hoc_tag, o, windowID);
+
+			if (!input.getText().isEmpty() && !getMainCanvas().isLoadingSession()) {
+				getMainCanvas().getMessageBox().addMessage("Invalid hoc-File",
+					"Specified filename invalid: " + file.toString(),
+					getConnector(), MessageType.ERROR);
+
+			}
+		}
+	}
+
+	/**
+	 * @brief necessary for code generation
+	 * @return
+	 */
+	@Override
+	public String getValueAsCode() {
+		return "\""
+			+ VLangUtils.addEscapesToCode(getValue().toString()) + "\"";
+	}
 }
-

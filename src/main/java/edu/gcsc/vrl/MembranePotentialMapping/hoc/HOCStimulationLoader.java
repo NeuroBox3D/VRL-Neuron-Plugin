@@ -13,53 +13,53 @@ import java.io.Serializable;
  * @brief stimulation loader
  * @author stephan
  */
-@ComponentInfo(name="HOCStimulationLoader", category="/UG4/VRL-Plugins/Neuro/MembranePotentialMapping/")
+@ComponentInfo(name = "HOCStimulationLoader", category = "/UG4/VRL-Plugins/Neuro/MembranePotentialMapping/")
 public class HOCStimulationLoader extends HOCCommand implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @brief ctor
 	 */
-    public HOCStimulationLoader() {
-	    
-    }
-    /**
-     * 
-     * @brief set's the HOC interpreter instance
-     * @param transformator the hoc interpreter
-     */
-    @Override
-    public void set_transformator(
-	    @ParamInfo(name="HOC Interpreter")
-	    I_Transformator transformator) {
-	    super.set_transformator(transformator);
-    }
+	public HOCStimulationLoader() {
 
-    /**
-     * @brief get's the HOC interpreter instance
-     * @return the hoc interpreter
-     */
-    @SuppressWarnings("all")
-    @Override
-    @OutputInfo(name="HOC Interpreter")
-    public I_Transformator get_transformator() {
-	    return super.get_transformator();
-    }
+	}
 
-    /**
-     * @brief loads a hoc geometry into the given interpreter
-     * @param hoc_file 
-     */
-    public void load_stimulation(
-	@ParamInfo(name="Load", style="load-dialog")
-	File hoc_file
-    ) {
-	    if ( ! (m_transformator == null) ) { 
-		    m_transformator.load_stim(hoc_file.toString());
-	    } else {
-          	eu.mihosoft.vrl.system.VMessage.info("HOC interpreter not initialized", "Check if Clamp instance has ingoing connection of a HOC interpreter (I_Transformator).");
-	    }
-    }
-	
+	/**
+	 *
+	 * @brief sets the HOC interpreter instance
+	 * @param transformator the hoc interpreter
+	 */
+	@Override
+	public void set_transformator(
+		@ParamInfo(name = "HOC Interpreter", typeName="The NEURON interpreter") I_Transformator transformator) {
+		super.set_transformator(transformator);
+	}
+
+	/**
+	 * @brief gets the HOC interpreter instance
+	 * @return the hoc interpreter
+	 */
+	@SuppressWarnings("all")
+	@Override
+	@OutputInfo(name = "HOC Interpreter", typeName="The NEURON interpreter")
+	public I_Transformator get_transformator() {
+		return super.get_transformator();
+	}
+
+	/**
+	 * @brief loads a hoc geometry into the given interpreter
+	 * @param hoc_file
+	 * @return
+	 */
+	public boolean load_stimulation(
+		@ParamInfo(name = "Load", typeName="Any stimulation protocol in a hoc file", style = "load-dialog") File hoc_file
+	) {
+		if (!(m_transformator == null)) {
+			m_transformator.load_stim(hoc_file.toString());
+			return true;
+		} else {
+			return error(this);
+		}
+	}
 }
-

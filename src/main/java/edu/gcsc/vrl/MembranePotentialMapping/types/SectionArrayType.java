@@ -13,34 +13,37 @@ import eu.mihosoft.vrl.lang.VLangUtils;
  */
 @TypeInfo(type = Section[].class, input = true, output = false, style = "array")
 public class SectionArrayType extends UserDataArrayBaseType {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * @brief default ctor
 	 */
 	public SectionArrayType() {
-        	setValueName("Section Array");
-    	}
+		setValueName("Section Array");
+	}
 
-    /**
-     * @brief Evaluates the contract, e.g., checks for 
-     * correct data type or range condition.
-     */
-    @Override
-    protected void evaluateContract() {
+	/**
+	 * @brief Evaluates the contract, e.g., checks for correct data type or
+	 * range condition.
+	 */
+	@Override
+	protected void evaluateContract() {
         // deactivated contract evaluation to prevent multiple error messages
-        // due to null array
-        if (value == null) invalidateValue();
-    }
-    
-    /**
-     * @brief for code generation
-     * @return 
-     */
-    @Override
-    public String getValueAsCode() {
-        return "\""
-                + VLangUtils.addEscapesToCode(getValue().toString()) + "\"";
-    }
-    
+		// due to null array
+		if (value == null) {
+			invalidateValue();
+		}
+	}
+
+	/**
+	 * @brief for code generation
+	 * @return
+	 */
+	@Override
+	public String getValueAsCode() {
+		return "\""
+			+ VLangUtils.addEscapesToCode(getValue().toString()) + "\"";
+	}
+
 }

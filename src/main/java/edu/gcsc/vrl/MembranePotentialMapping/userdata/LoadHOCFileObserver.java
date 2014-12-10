@@ -9,5 +9,6 @@ import edu.gcsc.vrl.MembranePotentialMapping.util.HOCFileInfo;
  * @author stephan grein <stephan.grein@gcsc.uni-frankfurt.>
  */
 public interface LoadHOCFileObserver {
-    public void update(HOCFileInfo data);
+
+	public void update(HOCFileInfo data);
 }
