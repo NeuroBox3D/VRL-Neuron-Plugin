@@ -13,21 +13,22 @@ import eu.mihosoft.vrl.lang.VLangUtils;
  */
 @TypeInfo(type = Clamp[].class, input = true, output = false, style = "array")
 public class ClampArrayType extends UserDataArrayBaseType {
-    private static final long serialVersionUID = 1L;
-    
+
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * @brief default ctor
 	 */
 	public ClampArrayType() {
 
 	}
-	
+
 	/**
 	 * @brief necessary for code generation
 	 * @return
 	 */
 	@Override
 	public String getValueAsCode() {
- 	       return "\"" + VLangUtils.addEscapesToCode(getValue().toString()) + "\"";
+		return "\"" + VLangUtils.addEscapesToCode(getValue().toString()) + "\"";
 	}
 }

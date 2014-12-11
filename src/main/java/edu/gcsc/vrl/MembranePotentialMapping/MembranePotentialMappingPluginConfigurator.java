@@ -38,206 +38,202 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 /**
  *
  * @author sgrein adapted by mbreit
  */
-public class MembranePotentialMappingPluginConfigurator extends VPluginConfigurator{
+public class MembranePotentialMappingPluginConfigurator extends VPluginConfigurator {
+
 	private File templateProjectSrc;
 	private File templateProjectSrc2;
 
-    public MembranePotentialMappingPluginConfigurator() {
-        //specify the plugin name and version
-       setIdentifier(new PluginIdentifier("VRL-MembranePotentialMapping-Plugin", "0.1"));
+	public MembranePotentialMappingPluginConfigurator() {
+		//specify the plugin name and version
+		setIdentifier(new PluginIdentifier("VRL-MembranePotentialMapping-Plugin", "0.1"));
 
-       // describe the plugin
-       setDescription("Plugin for membrane potential mapping simulations with UG in VRL-Studio.");
+		// describe the plugin
+		setDescription("Plugin for membrane potential mapping simulations and using the NEURON interpreter within UG in VRL-Studio.");
 
-       // copyright info
-       setCopyrightInfo("VRL-MembranePotentialMapping-Plugin",
-                        "(c) sgrein",
-                        "www.g-csc.de", "Proprietary", "Proprietary");
-       
-       // set the icon of the plugin
-      /* BufferedImage img = null;
-       try {
-	img = ImageIO.read(new File("img/neuro.jpg"));
-	setIcon(img);
-       } catch (IOException ioe) {
-          eu.mihosoft.vrl.system.VMessage.warning("Error loading icon", ioe.toString());
-       }*/
-       
-       
-       // specify dependencies
-       addDependency(new PluginDependency("VRL", "0.4.2", "0.4.2"));
-       addDependency(new PluginDependency("VRL-UG", "0.2", "0.2"));
-       addDependency(new PluginDependency("VRL-UG-API", "0.2", "0.2"));
-       addDependency(new PluginDependency("VRL-UserData", "0.2", "0.2"));
-    }
-    
-    @Override
-    public void register(PluginAPI api) {
+		// copyright info
+		setCopyrightInfo("VRL-MembranePotentialMapping-Plugin",
+			"(c) Stephan Grein",
+			"www.g-csc.de", "Proprietary", "Proprietary");
 
-       // register plugin with canvas
-       if (api instanceof VPluginAPI) {
-           VPluginAPI vapi = (VPluginAPI) api;
+		// export the package
+		exportPackage("edu.gcsc.vrl.MembranePotentialMapping");
 
-           // Register visual components:
-           //
-           // Here you can add additional components,
-           // type representations, styles etc.
-           //
-           // ** NOTE **
-           //
-           // To ensure compatibility with future versions of VRL,
-           // you should only use the vapi or api object for registration.
-           // If you directly use the canvas or its properties, please make
-           // sure that you specify the VRL versions you are compatible with
-           // in the constructor of this plugin configurator because the
-           // internal api is likely to change.
-           //
-           // examples:
-           //
-           
-	   /// defaults
-           vapi.addComponent(MembranePotentialMapping.class);
-           vapi.addComponent(MembranePotentialMappingSolver.class);
-	   
-	   /// types
-	   vapi.addTypeRepresentation(ClampType.class);
-	   vapi.addTypeRepresentation(ClampArrayType.class);
-	   vapi.addTypeRepresentation(LoadHOCFileStringType.class);
-	   vapi.addTypeRepresentation(LoadHOCFileType.class);
-	   vapi.addTypeRepresentation(SectionType.class);
-	   vapi.addTypeRepresentation(SectionArrayType.class);
-	   
-	   /// userdata
-	   vapi.addComponent(Clamp.class);
-	   
-	   /// util
-	   vapi.addComponent(PlotFile.class);
-	   
-	   /// hoc
-	   vapi.addComponent(HOCExecuteStatement.class);
-	   vapi.addComponent(HOCGeometryLoader.class);
-	   vapi.addComponent(HOCStimulationLoader.class);
-	   vapi.addComponent(HOCTimeStepper.class);
-	   vapi.addComponent(HOCCleanup.class);
-	   vapi.addComponent(HOCMembraneMechanismInserter.class);
-	   vapi.addComponent(IClamp.class);
-	   vapi.addComponent(VClamp.class);
-	   vapi.addComponent(SEClamp.class);
-       }
-   }
-
-    @Override
-   public void unregister(PluginAPI api) {
-       // nothing to unregister
-   }
-
-    
- @Override
-    public void install(InitPluginAPI iApi) {
-        // ensure template projects are updated
-        new File(iApi.getResourceFolder(), "template-01.vrlp").delete();
-	new File(iApi.getResourceFolder(), "template-02.vrlp").delete();
-    }
-	
+		// specify dependencies
+		addDependency(new PluginDependency("VRL", "0.4.2", "0.4.2"));
+		addDependency(new PluginDependency("VRL-UG", "0.2", "0.2"));
+		addDependency(new PluginDependency("VRL-UG-API", "0.2", "0.2"));
+		addDependency(new PluginDependency("VRL-UserData", "0.2", "0.2"));
+	}
 
 	@Override
- 	   public void init(InitPluginAPI iApi) {
+	/**
+	 * @brief register components
+	 * @param api
+	 */
+	public void register(PluginAPI api) {
 
-        CompletionUtil.registerClassesFromJar(
-                VJarUtil.getClassLocation(MembranePotentialMappingPluginConfigurator.class));
-        
-        initTemplateProject(iApi);
-    }
-    
-	
-	private void initTemplateProject(InitPluginAPI iApi) {
-        templateProjectSrc = new File(iApi.getResourceFolder(), "template-01.vrlp");
-        templateProjectSrc2 = new File(iApi.getResourceFolder(), "template-02.vrlp");
+		// register plugin with canvas
+		if (api instanceof VPluginAPI) {
+			VPluginAPI vapi = (VPluginAPI) api;
 
-        if (!templateProjectSrc.exists()) {
-            saveProjectTemplate();
-        }
-	
-        if (!templateProjectSrc2.exists()) {
-            saveProjectTemplate();
-        }
+			/// defaults
+			vapi.addComponent(MembranePotentialMapping.class);
+			vapi.addComponent(MembranePotentialMappingSolver.class);
 
-        iApi.addProjectTemplate(new ProjectTemplate() {
+			/// types
+			vapi.addTypeRepresentation(ClampType.class);
+			vapi.addTypeRepresentation(ClampArrayType.class);
+			vapi.addTypeRepresentation(LoadHOCFileStringType.class);
+			vapi.addTypeRepresentation(LoadHOCFileType.class);
+			vapi.addTypeRepresentation(SectionType.class);
+			vapi.addTypeRepresentation(SectionArrayType.class);
 
-            @Override
-            public String getName() {
-                return "MPM Plugin - Template 1";
-            }
+			/// userdata
+			vapi.addComponent(Clamp.class);
 
-            @Override
-            public File getSource() {
-                return templateProjectSrc;
-            }
+			/// util
+			vapi.addComponent(PlotFile.class);
 
-            @Override
-            public String getDescription() {
-                return "MPM Plugin Template Project 1";
-            }
-
-            @Override
-            public BufferedImage getIcon() {
-                return null;
-            }
-        });
-	
-	 iApi.addProjectTemplate(new ProjectTemplate() {
-
-            @Override
-            public String getName() {
-                return "MPM Plugin - Template 2";
-            }
-
-            @Override
-            public File getSource() {
-                return templateProjectSrc2;
-            }
-
-            @Override
-            public String getDescription() {
-                return "MPM Plugin Template Project 2";
-            }
-
-            @Override
-            public BufferedImage getIcon() {
-                return null;
-            }
-        });
-	
+			/// hoc
+			vapi.addComponent(HOCExecuteStatement.class);
+			vapi.addComponent(HOCGeometryLoader.class);
+			vapi.addComponent(HOCStimulationLoader.class);
+			vapi.addComponent(HOCTimeStepper.class);
+			vapi.addComponent(HOCCleanup.class);
+			vapi.addComponent(HOCMembraneMechanismInserter.class);
+			vapi.addComponent(IClamp.class);
+			vapi.addComponent(VClamp.class);
+			vapi.addComponent(SEClamp.class);
+		}
 	}
-	
-	 private void saveProjectTemplate() {
-        InputStream in = MembranePotentialMappingPluginConfigurator.class.getResourceAsStream(
-                "/edu/gcsc/vrl/MembranePotentialMapping/resources/projects/template-01.vrlp");
-        try {
-            IOUtil.saveStreamToFile(in, templateProjectSrc);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(VRLPlugin.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(VRLPlugin.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        }
-	
-	InputStream in2 = MembranePotentialMappingPluginConfigurator.class.getResourceAsStream(
-                "/edu/gcsc/vrl/MembranePotentialMapping/resources/projects/template-02.vrlp");
-        try {
-            IOUtil.saveStreamToFile(in2, templateProjectSrc2);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(VRLPlugin.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(VRLPlugin.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        }
-    }
- }
+
+	@Override
+	/**
+	 * @brief unregister components
+	 * @param iApi
+	 */
+	public void unregister(PluginAPI api) {
+		// nothing to unregister
+	}
+
+	@Override
+	/**
+	 * @brief install plugins
+	 * @param iApi
+	 */
+	public void install(InitPluginAPI iApi) {
+		// ensure template projects are updated
+		new File(iApi.getResourceFolder(), "template-01.vrlp").delete();
+		new File(iApi.getResourceFolder(), "template-02.vrlp").delete();
+	}
+
+	/**
+	 * @brief inits the plugin
+	 * @param iApi
+	 */
+	@Override
+	public void init(InitPluginAPI iApi) {
+
+		CompletionUtil.registerClassesFromJar(
+			VJarUtil.getClassLocation(MembranePotentialMappingPluginConfigurator.class));
+
+		initTemplateProject(iApi);
+	}
+
+	/**
+	 * @brief inits the template projects
+	 * @param iApi
+	 */
+	private void initTemplateProject(InitPluginAPI iApi) {
+		templateProjectSrc = new File(iApi.getResourceFolder(), "template-01.vrlp");
+		templateProjectSrc2 = new File(iApi.getResourceFolder(), "template-02.vrlp");
+
+		if (!templateProjectSrc.exists()) {
+			saveProjectTemplate();
+		}
+
+		if (!templateProjectSrc2.exists()) {
+			saveProjectTemplate();
+		}
+
+		iApi.addProjectTemplate(new ProjectTemplate() {
+
+			@Override
+			public String getName() {
+				return "MPM Plugin - Template 1";
+			}
+
+			@Override
+			public File getSource() {
+				return templateProjectSrc;
+			}
+
+			@Override
+			public String getDescription() {
+				return "MPM Plugin Template Project 1 - Basic usage of the 1D/3D Hybrid Modeling Framework";
+			}
+
+			@Override
+			public BufferedImage getIcon() {
+				return null;
+			}
+		});
+
+		iApi.addProjectTemplate(new ProjectTemplate() {
+
+			@Override
+			public String getName() {
+				return "MPM Plugin - Template 2";
+			}
+
+			@Override
+			public File getSource() {
+				return templateProjectSrc2;
+			}
+
+			@Override
+			public String getDescription() {
+				return "MPM Plugin Template Project 2 - Basic usage of the NEURON interpreter within VRL-Studio";
+			}
+
+			@Override
+			public BufferedImage getIcon() {
+				return null;
+			}
+		});
+
+	}
+
+	/**
+	 * @brief saves the project templates
+	 */
+	private void saveProjectTemplate() {
+		InputStream in = MembranePotentialMappingPluginConfigurator.class.getResourceAsStream(
+			"/edu/gcsc/vrl/MembranePotentialMapping/resources/projects/template-01.vrlp");
+		try {
+			IOUtil.saveStreamToFile(in, templateProjectSrc);
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(VRLPlugin.class.getName()).
+				log(Level.SEVERE, null, ex);
+		} catch (IOException ex) {
+			Logger.getLogger(VRLPlugin.class.getName()).
+				log(Level.SEVERE, null, ex);
+		}
+
+		InputStream in2 = MembranePotentialMappingPluginConfigurator.class.getResourceAsStream(
+			"/edu/gcsc/vrl/MembranePotentialMapping/resources/projects/template-02.vrlp");
+		try {
+			IOUtil.saveStreamToFile(in2, templateProjectSrc2);
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(VRLPlugin.class.getName()).
+				log(Level.SEVERE, null, ex);
+		} catch (IOException ex) {
+			Logger.getLogger(VRLPlugin.class.getName()).
+				log(Level.SEVERE, null, ex);
+		}
+	}
+}
