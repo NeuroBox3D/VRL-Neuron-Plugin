@@ -49,7 +49,7 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
 
 	public MembranePotentialMappingPluginConfigurator() {
 		//specify the plugin name and version
-		setIdentifier(new PluginIdentifier("VRL-MembranePotentialMapping-Plugin", "0.1"));
+		setIdentifier(new PluginIdentifier("VRL-MembranePotentialMapping-Plugin", "0.3"));
 
 		// describe the plugin
 		setDescription("Plugin for membrane potential mapping simulations and using the NEURON interpreter within UG in VRL-Studio.");
