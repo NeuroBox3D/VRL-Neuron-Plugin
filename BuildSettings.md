@@ -1,0 +1,80 @@
+Build settings for the plugin
+===================
+--
+-- Info: Current options:
+-- Info: TARGET:            vrl (options are: ugshell, vrl, libug4, libgrid, ugplugin, gridshell, amg)
+-- Info: DIM:               3 (options are: 1, 2, 3, ALL, "1;2", "1;3", "2;3")
+-- Info: CPU:               1 (options are: 1, 2, 3, 4, 5, VAR, ALL, "2;4", "1;3;4" , ...)
+-- Info: PRECISION:         double (options are: single, double)
+-- Info: STATIC_BUILD:      OFF (options are: ON, OFF)
+-- Info: DEBUG:             OFF (options are: ON, OFF)
+-- Info: DEBUG_LOGS:        OFF (options are: ON, OFF)
+-- Info: PARALLEL:          OFF (options are: ON, OFF)
+-- Info: PCL_DEBUG_BARRIER: OFF (options are: ON, OFF)
+-- Info: PROFILER:          None (options are: None, Shiny, Scalasca, Vampir, ScoreP)
+-- Info: PROFILE_PCL:       OFF (options are: ON, OFF)
+-- Info: PROFILE_BRIDGE:    OFF (options are: ON, OFF)
+-- Info: LAPACK:            OFF (options are: ON, OFF)
+-- Info: BLAS:              OFF (options are: ON, OFF)
+-- Info: METIS:             OFF (options are: ON, OFF)
+-- Info: PARMETIS:          OFF (options are: ON, OFF)
+-- Info: INTERNAL_BOOST:    ON (options are: ON, OFF)
+-- Info: EMBEDDED_PLUGINS   ON (options are: ON, OFF)
+-- Info: COMPILE_INFO       ON (options are: ON, OFF)
+--
+-- Info: External libraries (path which contains the library or ON if you used uginstall):
+-- Info: TETGEN:
+-- Info: HLIBPRO:
+--
+-- Info: C Compiler ID: GNU, C++ Compiler ID: GNU
+--
+-- Info: Using CPU Algebra.
+-- Info: compiling with cxx flags:  -Wall -O3 -DNDEBUG -funroll-loops -ftree-vectorize
+-- Info: compiling with c flags:  -Wall -O3 -DNDEBUG -funroll-loops -ftree-vectorize
+-- Info: Using LUA2C
+-- Info: Not using LAPACK, use -DLAPACK=ON to enable.
+-- Info: Not using BLAS, use -DBLAS=ON to enable.
+-- Boost version: 1.55.0
+-- Info: Including Boost from /opt/local/include
+-- Info: COMPILE_INFO enabled. Causes relinking on each run of make.
+--
+-- Info: Enabled plugins:
+--       ConvectionDiffusion, calciumDynamics, MembranePotentialMapping,
+--       PlasmaMembrane, neuro_collection,
+-- Info: Disabled plugins:
+--       SmallStrainMechanics, amg, SHTopology,
+--       Biogas, BoutonGenerator, DendriteGenerator,
+--       ChloridDiffusion, CompressibleNavierStokes, Electromagnetism,
+--       ElementQualityStatistics, Evaluator, FiniteStrainMechanics,
+--       IncompressibleNavierStokes, jitsg, LevelSet,
+--       LuaShell, NeuronPlugin, ParticleLadenFlow,
+--       ProMesh, ReceptorKinetic, Sample,
+--       Skin, StructuredGrid, SynapticCalciumDynamics,
+--       SynapseDistributor, GeometryImporter, Template,
+--       TKDGenerator, VesicleDynamics, SG,
+--       MolecularDynamics, SuperLU, Hypre,
+--       hlibpro, nernst_planck, HH_Kabelnew,
+--       PerformanceLib, Parareal,
+--
+-- -------------------information regarding calciumDynamics-------------------
+-- ---------------------------------------------------------------------------
+--
+-- Info: Additional options for the MembranePotentialMapping (-DMPM) plugin:
+-- Info: Testsuite:       OFF (options are: ON, OFF)
+-- Info: VGCC:            ON (options are: ON, OFF)
+-- Info: OpenMP:          OFF (options are: ON, OFF)
+-- Info: NEURON head rev: ON (options are: ON, OFF)
+-- Info: NEURON static:   ON (options are: ON, OFF)
+--
+-- Detected architecture x86_64 on Darwin for the NEURON API.
+-- NEURON API is on (by -DMPMNEURON:/Users/stephan/Code/hg/neuron/nrn), you can use the full hoc language of NEURON (as provided by post 7.3 (head)).
+-- Readline library was found (/usr/lib/libreadline.dylib)
+-- ANN Library API is on (by -ANNLIB=/Users/stephan/Code/unversioned/ann_1.1.2/).
+--
+-- Info: Additional options for the PlasmaMembrane (PM) plugin:
+-- Info: Testsuite:       OFF (options are: ON, OFF)
+-- Info: C++0x:           OFF (options are: ON, OFF)
+--
+-- Info: Additional options for the neuro_collection (-DNC for setting options) plugin:
+-- ANN Library API is on (by -ANNLIB=/Users/stephan/Code/unversioned/ann_1.1.2/).
+-- NEURON interpreter is activated.
