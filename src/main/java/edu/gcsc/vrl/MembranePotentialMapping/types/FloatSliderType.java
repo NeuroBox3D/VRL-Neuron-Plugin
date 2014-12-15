@@ -36,6 +36,9 @@ public final class FloatSliderType extends TypeRepresentationBase {
 		VBoxLayout layout = new VBoxLayout(this, VBoxLayout.Y_AXIS);
 		setLayout(layout);
 
+		/// setup phase of the double slider type,
+		/// note that we need to perform a certain amount of
+		/// the code below, for re-initializing the range stepping
 		valueLabel = new TypeRepresentationLabel(this, getMinValue().toString());
 		nameLabel.setText("Float:");
 		nameLabel.setAlignmentX(0.0f);
@@ -61,6 +64,8 @@ public final class FloatSliderType extends TypeRepresentationBase {
 		input.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
+				/// round numbers to 2 decimal digits, i. e.
+				/// 3.141 get's 3.14
 				Float value = Math.round(input.getValue() * step * 100) / 100.0f;
 				valueLabel.setText(value.toString());
 				setDataOutdated();
@@ -245,14 +250,18 @@ public final class FloatSliderType extends TypeRepresentationBase {
 			if (property != null) {
 				setMaxValue((Integer) property);
 			}
-
-			/*if (getValueOptions().contains("step")) {
+		
+			if (getValueOptions().contains("step")) {
 				property = script.getProperty("step");
 			}
 
 			if (property != null) {
-				setStepValue(((Number) property).doubleValue());
-			}*/
+				//setStepValue(((Number) property).doubleValue());
+				setStepValue(0.001f);
+				/**
+				 * @todo reinit for step size here, see ctor comments
+				 */
+			}
 		}
 	}
 

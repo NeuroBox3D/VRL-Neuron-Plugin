@@ -36,6 +36,9 @@ public final class DoubleSliderType extends TypeRepresentationBase {
 		VBoxLayout layout = new VBoxLayout(this, VBoxLayout.Y_AXIS);
 		setLayout(layout);
 
+		/// setup phase of the double slider type,
+		/// note that we need to perform a certain amount of
+		/// the code below, for re-initializing the range stepping
 		valueLabel = new TypeRepresentationLabel(this, getMinValue().toString());
 		nameLabel.setText("Double:");
 		nameLabel.setAlignmentX(0.0f);
@@ -245,14 +248,18 @@ public final class DoubleSliderType extends TypeRepresentationBase {
 			if (property != null) {
 				setMaxValue((Integer) property);
 			}
-
-			/*if (getValueOptions().contains("step")) {
+		
+			if (getValueOptions().contains("step")) {
 				property = script.getProperty("step");
 			}
 
 			if (property != null) {
 				setStepValue(((Number) property).doubleValue());
-			}*/
+				setStepValue(0.001);
+				/**
+				 * @todo reinit for step size here, see ctor comments
+				 */
+			}
 		}
 	}
 
