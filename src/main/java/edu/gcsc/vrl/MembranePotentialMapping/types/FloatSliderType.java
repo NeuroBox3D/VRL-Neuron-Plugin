@@ -64,8 +64,6 @@ public final class FloatSliderType extends TypeRepresentationBase {
 		input.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				/// round numbers to 2 decimal digits, i. e.
-				/// 3.141 get's 3.14
 				Float value = Math.round(input.getValue() * step * 100) / 100.0f;
 				valueLabel.setText(value.toString());
 				setDataOutdated();
@@ -110,9 +108,9 @@ public final class FloatSliderType extends TypeRepresentationBase {
 	 */
 	@Override
 	public Object getViewValue() {
-		Integer o = null;
+		Float o = null;
 		try {
-			o = new Integer(valueLabel.getText());
+			o = new Float(valueLabel.getText());
 		} catch (Exception e) {
 			VMessage.info("FloatSliderType", "Could not get the view's value. Error: " + e);
 		}
@@ -232,6 +230,14 @@ public final class FloatSliderType extends TypeRepresentationBase {
 		Object property = null;
 
 		if (getValueOptions() != null) {
+			
+			if (getValueOptions().contains("step")) {
+				property = script.getProperty("step");
+			}
+
+			if (property != null) {
+				setStepValue(((Number) property).floatValue());
+			}
 
 			if (getValueOptions().contains("min")) {
 				property = script.getProperty("min");
@@ -249,18 +255,6 @@ public final class FloatSliderType extends TypeRepresentationBase {
 
 			if (property != null) {
 				setMaxValue((Integer) property);
-			}
-		
-			if (getValueOptions().contains("step")) {
-				property = script.getProperty("step");
-			}
-
-			if (property != null) {
-				//setStepValue(((Number) property).doubleValue());
-				setStepValue(0.001f);
-				/**
-				 * @todo reinit for step size here, see ctor comments
-				 */
 			}
 		}
 	}

@@ -74,7 +74,7 @@ public class HOCTimeStepper extends HOCCommand implements Serializable {
 		@ParamGroupInfo(group = "TimeStepper|true; Setup|false")
 		@ParamInfo(name = "Initial potential [mV]", typeName="The initial potential for all compartments", style="slider", options="value=-65; min=-75;max=100;step=0.1") double finit,
 		@ParamGroupInfo(group = "TimeStepper|true; Setup|false")
-		@ParamInfo(name = "dt [ms]", typeName="The timestep width", style="slider", options="value=0;min=0;max=1;step=0.0001") double dt,
+		@ParamInfo(name = "dt [ms]", typeName="The timestep width", style="slider", options="value=0;min=0;max=2;step=0.0001") double dt,
 		@ParamGroupInfo(group = "TimeStepper|true; Geometry|false")
 		@ParamInfo(name = "Load", typeName="Load any hoc geometry file", style = "hoc-load-dialog", options = "hoc_tag=\"gridFile\"") File hoc_file,
 		@ParamGroupInfo(group = "TimeStepper|false; Geometry|false")

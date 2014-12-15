@@ -108,9 +108,9 @@ public final class DoubleSliderType extends TypeRepresentationBase {
 	 */
 	@Override
 	public Object getViewValue() {
-		Integer o = null;
+		Double o = null;
 		try {
-			o = new Integer(valueLabel.getText());
+			o = new Double(valueLabel.getText());
 		} catch (Exception e) {
 			VMessage.info("DoubleSliderType", "Could not get the view's value. Error: " + e);
 		}
@@ -230,6 +230,14 @@ public final class DoubleSliderType extends TypeRepresentationBase {
 		Object property = null;
 
 		if (getValueOptions() != null) {
+			
+			if (getValueOptions().contains("step")) {
+				property = script.getProperty("step");
+			}
+
+			if (property != null) {
+				setStepValue(((Number) property).doubleValue());
+			}
 
 			if (getValueOptions().contains("min")) {
 				property = script.getProperty("min");
@@ -247,18 +255,6 @@ public final class DoubleSliderType extends TypeRepresentationBase {
 
 			if (property != null) {
 				setMaxValue((Integer) property);
-			}
-		
-			if (getValueOptions().contains("step")) {
-				property = script.getProperty("step");
-			}
-
-			if (property != null) {
-				setStepValue(((Number) property).doubleValue());
-				setStepValue(0.001);
-				/**
-				 * @todo reinit for step size here, see ctor comments
-				 */
 			}
 		}
 	}
