@@ -68,7 +68,7 @@ public class HOCTimeStepper extends HOCCommand implements Serializable {
 		@ParamGroupInfo(group = "TimeStepper|true; Output|false")
 		@ParamInfo(name = "Output folder",  typeName="Output folder for membrane potentials", style = "save-folder-dialog") String folder,
 		@ParamGroupInfo(group = "TimeStepper|true; Setup|false")
-		@ParamInfo(name = "Start time [s]", typeName="The simulation starting time") double t_start,
+		@ParamInfo(name = "Start time [s]", typeName="The simulation starting time", style="slider", options="value=1;min=0;max=1000;step=0.1") double t_start,
 		@ParamGroupInfo(group = "TimeStepper|true; Setup|false")
 		@ParamInfo(name = "End time [s]", typeName="The simulation end time") double t_end,
 		@ParamGroupInfo(group = "TimeStepper|true; Setup|false")
