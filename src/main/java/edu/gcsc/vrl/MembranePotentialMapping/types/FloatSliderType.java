@@ -154,7 +154,7 @@ public final class FloatSliderType extends TypeRepresentationBase {
 				}
 
 				box.addUniqueMessage("Value out of range:",
-					"IntSliderType: value does not meet range "
+					"FloatSliderType: value does not meet range "
 					+ "condition. Therefore value will be trimmed to "
 					+ vString, getConnector(),
 					MessageType.WARNING_SINGLE);
@@ -196,8 +196,8 @@ public final class FloatSliderType extends TypeRepresentationBase {
 	 * @param minValue 
 	 */
 	public final void setMinValue(Integer minValue) {
-		this.minValue = minValue;
-		input.setMinimum(minValue);
+		this.minValue = (int) (minValue / this.step);
+		input.setMinimum((int) (minValue / this.step));
 	}
 
 	/**
@@ -246,13 +246,13 @@ public final class FloatSliderType extends TypeRepresentationBase {
 
 			property = null;
 
-			if (getValueOptions().contains("step")) {
+			/*if (getValueOptions().contains("step")) {
 				property = script.getProperty("step");
 			}
 
 			if (property != null) {
-				setStepValue((Float) property);
-			}
+				setStepValue(((Number) property).doubleValue());
+			}*/
 		}
 	}
 
@@ -260,7 +260,7 @@ public final class FloatSliderType extends TypeRepresentationBase {
 	 * @brief gets the code for serialization
 	 * @return
 	 */
-	@Override()
+	@Override
 	public String getValueAsCode() {
 		String result = "null";
 
