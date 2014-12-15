@@ -87,6 +87,7 @@ public final class DoubleSliderType extends TypeRepresentationBase {
 		try {
 			v = (Integer) o;
 		} catch (Exception e) {
+			VMessage.info("DoubleSliderType", "Could not set the view's value. Error: " + e);
 		}
 
 		input.setValue(v);
@@ -108,6 +109,7 @@ public final class DoubleSliderType extends TypeRepresentationBase {
 		try {
 			o = new Integer(valueLabel.getText());
 		} catch (Exception e) {
+			VMessage.info("DoubleSliderType", "Could not get the view's value. Error: " + e);
 		}
 
 		return o;
@@ -145,12 +147,12 @@ public final class DoubleSliderType extends TypeRepresentationBase {
 
 				if (v < getMinValue()) {
 					v = getMinValue();
-					vString = "Min=" + getMinValue();
+					vString = "min=" + getMinValue();
 				}
 
 				if (v > getMaxValue()) {
 					v = getMaxValue();
-					vString = "Max=" + getMaxValue();
+					vString = "max=" + getMaxValue();
 				}
 
 				box.addUniqueMessage("Value out of range:",
@@ -243,8 +245,6 @@ public final class DoubleSliderType extends TypeRepresentationBase {
 			if (property != null) {
 				setMaxValue((Integer) property);
 			}
-
-			property = null;
 
 			/*if (getValueOptions().contains("step")) {
 				property = script.getProperty("step");
