@@ -5,6 +5,7 @@ package edu.gcsc.vrl.MembranePotentialMapping.userdata;
 import edu.gcsc.vrl.MembranePotentialMapping.hoc.HOCCommand;
 import edu.gcsc.vrl.ug.api.I_Transformator;
 import eu.mihosoft.vrl.annotation.ComponentInfo;
+import eu.mihosoft.vrl.annotation.MethodInfo;
 import eu.mihosoft.vrl.annotation.OutputInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
@@ -44,7 +45,7 @@ public class Clamp extends HOCCommand implements Serializable {
 	 * @return
 	 */
 	@Override
-	@OutputInfo(name = "HOC Interpreter", typeName="The NEURON interpreter")
+	@MethodInfo(valueName = "Success", valueTypeName="Success")
 	public I_Transformator get_transformator() {
 		return m_transformator;
 	}
@@ -62,6 +63,7 @@ public class Clamp extends HOCCommand implements Serializable {
 	 * @param stimLoc
 	 * @return
 	 */
+	@MethodInfo(valueName = "Success", valueTypeName="Success")
 	public boolean point_process(
 		@ParamGroupInfo(group = "Point Process|false|Stimulation by a clamp; Stimulation|false")
 		@ParamInfo(name = "Type", typeName="Type of the stimulating clamp", style = "selection", options = "value=[\"IClamp\", \"VClamp\"]") String stimType,

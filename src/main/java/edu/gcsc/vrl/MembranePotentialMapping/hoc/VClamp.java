@@ -5,7 +5,7 @@ package edu.gcsc.vrl.MembranePotentialMapping.hoc;
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.Section;
 import edu.gcsc.vrl.ug.api.I_Transformator;
 import eu.mihosoft.vrl.annotation.ComponentInfo;
-import eu.mihosoft.vrl.annotation.OutputInfo;
+import eu.mihosoft.vrl.annotation.MethodInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
 import java.io.File;
@@ -42,7 +42,6 @@ public class VClamp extends HOCCommand implements Serializable {
 	 * @return
 	 */
 	@Override
-	@OutputInfo(name = "HOC Interpreter", typeName="The NEURON interpreter")
 	public I_Transformator get_transformator() {
 		return super.get_transformator();
 	}
@@ -66,6 +65,7 @@ public class VClamp extends HOCCommand implements Serializable {
 	 * @param sectionTest
 	 * @return
 	 */
+	@MethodInfo(valueName = "Success", valueTypeName="Success")
 	public boolean clamp(
 		@ParamGroupInfo(group = "VClamp|false|Two electrode voltage clamp; Stimulation Duration|false")
 		@ParamInfo(name = "stimDur1 [ms]", typeName="Duration of stimulation", style = "default") double stimDur1,

@@ -62,6 +62,7 @@ public class HOCTimeStepper extends HOCCommand implements Serializable {
 	 * @param sectionTest
 	 * @return
 	 */
+	@MethodInfo(valueName = "Success", valueTypeName="Success")
 	public boolean step(
 		@ParamGroupInfo(group = "TimeStepper|true|Time stepping setup; Output|false")
 		@ParamInfo(name = "Write potentials", typeName="Indicate if we should write membrane potentials to files") boolean generateOutput,

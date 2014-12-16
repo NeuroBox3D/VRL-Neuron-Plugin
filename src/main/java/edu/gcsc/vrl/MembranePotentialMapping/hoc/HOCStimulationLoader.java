@@ -52,6 +52,7 @@ public class HOCStimulationLoader extends HOCCommand implements Serializable {
 	 * @param hoc_file
 	 * @return
 	 */
+	@MethodInfo(valueName = "Success", valueTypeName="Success")
 	public boolean load_stimulation(
 		@ParamInfo(name = "Load", typeName="Any stimulation protocol in a hoc file", style = "load-dialog") File hoc_file
 	) {
