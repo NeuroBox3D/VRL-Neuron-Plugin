@@ -5,6 +5,7 @@ package edu.gcsc.vrl.MembranePotentialMapping.hoc;
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.Section;
 import edu.gcsc.vrl.ug.api.I_Transformator;
 import eu.mihosoft.vrl.annotation.ComponentInfo;
+import eu.mihosoft.vrl.annotation.MethodInfo;
 import eu.mihosoft.vrl.annotation.OutputInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
@@ -45,7 +46,7 @@ public class HOCTimeStepper extends HOCCommand implements Serializable {
 	 * @return transformator
 	 */
 	@Override
-	@OutputInfo(name = "HOC Interpreter", typeName="The NEURON interpreter")
+	@MethodInfo(valueName = "Success", valueTypeName="Success")
 	public I_Transformator get_transformator() {
 		return super.get_transformator();
 	}
@@ -99,8 +100,9 @@ public class HOCTimeStepper extends HOCCommand implements Serializable {
 					for (int i = 0; i < sectionTest.get_names().size(); i++) {
 						@SuppressWarnings("UnusedAssignment")
 						BufferedWriter out = null;
+						boolean append = ! (j == 0); // only in first timestep we open with non appending mode
 						try {
-							FileWriter fstream = new FileWriter(folder + "/" + sectionTest.get_names().get(i) + ".csv", true);
+							FileWriter fstream = new FileWriter(folder + "/" + sectionTest.get_names().get(i) + ".csv", append);
 							out = new BufferedWriter(fstream);
 							boolean st6 = (m_transformator.execute_hoc_stmt("access " + sectionTest.get_names().get(i)) == 0);
 							success = (success && st6);
