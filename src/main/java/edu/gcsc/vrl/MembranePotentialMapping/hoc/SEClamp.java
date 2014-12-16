@@ -3,6 +3,7 @@ package edu.gcsc.vrl.MembranePotentialMapping.hoc;
 
 /// imports
 import eu.mihosoft.vrl.annotation.ComponentInfo;
+import eu.mihosoft.vrl.annotation.MethodInfo;
 import java.io.Serializable;
 import eu.mihosoft.vrl.system.VMessage;
 
@@ -27,6 +28,7 @@ public class SEClamp extends HOCCommand implements Serializable {
 	 * @todo implement
 	 * @return
 	 */
+	@MethodInfo(valueName = "Success", valueTypeName="Success")
 	public boolean clamp() {
 		VMessage.error("SEClamp", "Single Electrode Clamp (SEClamp) currently not implemented.");
 		return false;

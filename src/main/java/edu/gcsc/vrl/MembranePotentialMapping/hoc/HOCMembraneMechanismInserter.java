@@ -5,7 +5,7 @@ package edu.gcsc.vrl.MembranePotentialMapping.hoc;
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.Section;
 import edu.gcsc.vrl.ug.api.I_Transformator;
 import eu.mihosoft.vrl.annotation.ComponentInfo;
-import eu.mihosoft.vrl.annotation.OutputInfo;
+import eu.mihosoft.vrl.annotation.MethodInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
 import java.io.File;
@@ -42,7 +42,8 @@ public class HOCMembraneMechanismInserter extends HOCCommand implements Serializ
 	 * @return transformator
 	 */
 	@Override
-	@OutputInfo(name = "HOC Interpreter")
+	@MethodInfo(valueName = "HOC Interpreter",
+		    valueTypeName="The NEURON interpreter")
 	public I_Transformator get_transformator() {
 		return super.get_transformator();
 	}
@@ -54,12 +55,13 @@ public class HOCMembraneMechanismInserter extends HOCCommand implements Serializ
 	 * @param mechanism
 	 * @return
 	 */
+	@MethodInfo(valueName = "Success", valueTypeName="Success")
 	public boolean membrane_mechanism(
-		@ParamGroupInfo(group = "Membrane mechanism|true; Mechanism|false")
+		@ParamGroupInfo(group = "Membrane mechanism|true|Inserts membrane mechanisms for compartments; Mechanism|false")
 		@ParamInfo(name = "Mechanism", typeName="Any of the common plasma membrane mechanisms", style = "selection", options = "value=[\"pas\", \"hh\"]") String mechanism,
-		@ParamGroupInfo(group = "Membrane mechanism|true; Geometry|false")
+		@ParamGroupInfo(group = "Membrane mechanism|true|Inserts membrane mechanisms for compartments; Geometry|false")
 		@ParamInfo(name = "Load", typeName="Any hoc file can be loaded", style = "hoc-load-dialog", options = "hoc_tag=\"gridFile\"") File hoc_file,
-		@ParamGroupInfo(group = "Membranche mechanism|false; Geometry|false")
+		@ParamGroupInfo(group = "Membranche mechanism|false|Inserts membrane mechanisms for compartments; Geometry|false")
 		@ParamInfo(name = "Sections", typeName="Compartments of the multi-compartmental model we loaded", style = "default", options = "hoc_tag=\"gridFile\"") Section sectionTest
 	) {
 		boolean success = true;

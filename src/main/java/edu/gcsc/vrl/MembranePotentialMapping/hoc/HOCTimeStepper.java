@@ -5,6 +5,7 @@ package edu.gcsc.vrl.MembranePotentialMapping.hoc;
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.Section;
 import edu.gcsc.vrl.ug.api.I_Transformator;
 import eu.mihosoft.vrl.annotation.ComponentInfo;
+import eu.mihosoft.vrl.annotation.MethodInfo;
 import eu.mihosoft.vrl.annotation.OutputInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
@@ -45,7 +46,7 @@ public class HOCTimeStepper extends HOCCommand implements Serializable {
 	 * @return transformator
 	 */
 	@Override
-	@OutputInfo(name = "HOC Interpreter", typeName="The NEURON interpreter")
+	@MethodInfo(valueName = "Success", valueTypeName="Success")
 	public I_Transformator get_transformator() {
 		return super.get_transformator();
 	}
@@ -62,22 +63,23 @@ public class HOCTimeStepper extends HOCCommand implements Serializable {
 	 * @param sectionTest
 	 * @return
 	 */
+	@MethodInfo(valueName = "Success", valueTypeName="Success")
 	public boolean step(
-		@ParamGroupInfo(group = "TimeStepper|true; Output|false")
+		@ParamGroupInfo(group = "TimeStepper|true|Time stepping setup; Output|false")
 		@ParamInfo(name = "Write potentials", typeName="Indicate if we should write membrane potentials to files") boolean generateOutput,
-		@ParamGroupInfo(group = "TimeStepper|true; Output|false")
-		@ParamInfo(name = "Output folder",  typeName="Output folder for membrane potentials", style = "save-folder-dialog") String folder,
-		@ParamGroupInfo(group = "TimeStepper|true; Setup|false")
-		@ParamInfo(name = "Start time [s]", typeName="The simulation starting time") double t_start,
-		@ParamGroupInfo(group = "TimeStepper|true; Setup|false")
-		@ParamInfo(name = "End time [s]", typeName="The simulation end time") double t_end,
-		@ParamGroupInfo(group = "TimeStepper|true; Setup|false")
-		@ParamInfo(name = "Initial potential [mV]", typeName="The initial potential for all compartments") double finit,
-		@ParamGroupInfo(group = "TimeStepper|true; Setup|false")
-		@ParamInfo(name = "dt [ms]", typeName="The timestep width") double dt,
-		@ParamGroupInfo(group = "TimeStepper|true; Geometry|false")
+		@ParamGroupInfo(group = "TimeStepper|true|Time stepping setup; Output|false")
+		@ParamInfo(name = "Output folder", typeName="Output folder for membrane potentials", style = "save-folder-dialog") String folder,
+		@ParamGroupInfo(group = "TimeStepper|true|Time stepping setup; Setup|false")
+		@ParamInfo(name = "Start time [s]", typeName="The simulation starting time", style="slider", options="value=1;min=0;max=1000;step=0.1") double t_start,
+		@ParamGroupInfo(group = "TimeStepper|true|Time stepping setup; Setup|false")
+		@ParamInfo(name = "End time [s]", typeName="The simulation end time", style="slider", options="value=100;min=0;max=10000;step=1") double t_end,
+		@ParamGroupInfo(group = "TimeStepper|true|Time stepping setup; Setup|false" )
+		@ParamInfo(name = "Initial potential [mV]", typeName="The initial potential for all compartments", style="slider", options="value=-65; min=-75;max=100;step=0.1") double finit,
+		@ParamGroupInfo(group = "TimeStepper|true|Time stepping setup; Setup|false")
+		@ParamInfo(name = "dt [ms]", typeName="The timestep width", style="slider", options="value=0;min=0;max=2;step=0.0001") double dt,
+		@ParamGroupInfo(group = "TimeStepper|true|Time stepping setup; Geometry|false")
 		@ParamInfo(name = "Load", typeName="Load any hoc geometry file", style = "hoc-load-dialog", options = "hoc_tag=\"gridFile\"") File hoc_file,
-		@ParamGroupInfo(group = "TimeStepper|false; Geometry|false")
+		@ParamGroupInfo(group = "TimeStepper|false|Time stepping setup; Geometry|false")
 		@ParamInfo(name = "Sections", typeName="The compartments in the multi-compartmental model we loaded", style = "default", options = "hoc_tag=\"gridFile\"") Section sectionTest
 	) {
 
@@ -98,8 +100,9 @@ public class HOCTimeStepper extends HOCCommand implements Serializable {
 					for (int i = 0; i < sectionTest.get_names().size(); i++) {
 						@SuppressWarnings("UnusedAssignment")
 						BufferedWriter out = null;
+						boolean append = ! (j == 0); // only in first timestep we open with non appending mode
 						try {
-							FileWriter fstream = new FileWriter(folder + "/" + sectionTest.get_names().get(i) + ".csv", true);
+							FileWriter fstream = new FileWriter(folder + "/" + sectionTest.get_names().get(i) + ".csv", append);
 							out = new BufferedWriter(fstream);
 							boolean st6 = (m_transformator.execute_hoc_stmt("access " + sectionTest.get_names().get(i)) == 0);
 							success = (success && st6);

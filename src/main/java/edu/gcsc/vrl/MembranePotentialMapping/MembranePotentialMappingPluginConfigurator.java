@@ -19,6 +19,7 @@ import edu.gcsc.vrl.MembranePotentialMapping.hoc.IClamp;
 import edu.gcsc.vrl.MembranePotentialMapping.hoc.SEClamp;
 import edu.gcsc.vrl.MembranePotentialMapping.util.PlotFile;
 import edu.gcsc.vrl.MembranePotentialMapping.hoc.VClamp;
+import edu.gcsc.vrl.MembranePotentialMapping.types.DoubleSliderType;
 import eu.mihosoft.vrl.io.IOUtil;
 import eu.mihosoft.vrl.io.VJarUtil;
 import eu.mihosoft.vrl.lang.visual.CompletionUtil;
@@ -91,6 +92,7 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
 			vapi.addTypeRepresentation(LoadHOCFileType.class);
 			vapi.addTypeRepresentation(SectionType.class);
 			vapi.addTypeRepresentation(SectionArrayType.class);
+			vapi.addTypeRepresentation(DoubleSliderType.class);
 
 			/// userdata
 			vapi.addComponent(Clamp.class);
@@ -108,6 +110,7 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
 			vapi.addComponent(IClamp.class);
 			vapi.addComponent(VClamp.class);
 			vapi.addComponent(SEClamp.class);
+
 		}
 	}
 

@@ -5,6 +5,7 @@ package edu.gcsc.vrl.MembranePotentialMapping.userdata;
 import edu.gcsc.vrl.MembranePotentialMapping.hoc.HOCCommand;
 import edu.gcsc.vrl.ug.api.I_Transformator;
 import eu.mihosoft.vrl.annotation.ComponentInfo;
+import eu.mihosoft.vrl.annotation.MethodInfo;
 import eu.mihosoft.vrl.annotation.OutputInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
@@ -44,7 +45,7 @@ public class Clamp extends HOCCommand implements Serializable {
 	 * @return
 	 */
 	@Override
-	@OutputInfo(name = "HOC Interpreter", typeName="The NEURON interpreter")
+	@MethodInfo(valueName = "Success", valueTypeName="Success")
 	public I_Transformator get_transformator() {
 		return m_transformator;
 	}
@@ -62,20 +63,21 @@ public class Clamp extends HOCCommand implements Serializable {
 	 * @param stimLoc
 	 * @return
 	 */
+	@MethodInfo(valueName = "Success", valueTypeName="Success")
 	public boolean point_process(
-		@ParamGroupInfo(group = "Point Process|false; Stimulation|false")
+		@ParamGroupInfo(group = "Point Process|false|Stimulation by a clamp; Stimulation|false")
 		@ParamInfo(name = "Type", typeName="Type of the stimulating clamp", style = "selection", options = "value=[\"IClamp\", \"VClamp\"]") String stimType,
-		@ParamGroupInfo(group = "Point Process|false; Stimulation|false")
+		@ParamGroupInfo(group = "Point Process|false|Stimulation by a clamp; Stimulation|false")
 		@ParamInfo(name = "stimDur [ms]", typeName="Duration of stimulation", style = "default") double stimDur,
-		@ParamGroupInfo(group = "Point Process|false; Stimulation|false")
+		@ParamGroupInfo(group = "Point Process|false|Stimulation by a clamp; Stimulation|false")
 		@ParamInfo(name = "stimDel [ms]", typeName="Delay until stimulation") double stimDel,
-		@ParamGroupInfo(group = "Point Process|false; Stimulation|false")
+		@ParamGroupInfo(group = "Point Process|false|Stimulation by a clamp; Stimulation|false")
 		@ParamInfo(name = "stimAmp [ms]", typeName="Stimulation amplitude") double stimAmp,
-		@ParamGroupInfo(group = "Point Process|false; Stimulation|false")
+		@ParamGroupInfo(group = "Point Process|false|Stimulation by a clamp; Stimulation|false")
 		@ParamInfo(name = "stimLoc", typeName="Location of stimulation electrode, typically 0.5 is used and refers to the center of the desired compartment") double stimLoc,
-		@ParamGroupInfo(group = "Point Process|true; Geometry|false")
+		@ParamGroupInfo(group = "Point Process|true|Geometry; Geometry|false")
 		@ParamInfo(name = "Load", typeName="Load any hoc geometry", style = "hoc-load-dialog", options = "hoc_tag=\"gridFile\"") File hoc_file,
-		@ParamGroupInfo(group = "Point Process|false; Geometry|false")
+		@ParamGroupInfo(group = "Point Process|false|Geometry; Geometry|false")
 		@ParamInfo(name = "Sections", typeName="The compartment of the multi-compartmental model loaded", style = "default", options = "hoc_tag=\"gridFile\"") Section sectionTest
 	) {
 		boolean success = true;

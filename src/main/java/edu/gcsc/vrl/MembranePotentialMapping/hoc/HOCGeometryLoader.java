@@ -4,7 +4,7 @@ package edu.gcsc.vrl.MembranePotentialMapping.hoc;
 /// imports
 import edu.gcsc.vrl.ug.api.I_Transformator;
 import eu.mihosoft.vrl.annotation.ComponentInfo;
-import eu.mihosoft.vrl.annotation.OutputInfo;
+import eu.mihosoft.vrl.annotation.MethodInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
 import java.io.File;
 import java.io.Serializable;
@@ -41,8 +41,9 @@ public class HOCGeometryLoader extends HOCCommand implements Serializable {
 	 * @return the hoc interpreter
 	 */
 	@SuppressWarnings("all")
-	@OutputInfo(name = "HOC Interpreter", typeName="THE NEURON interpreter")
 	@Override
+	@MethodInfo(valueName = "HOC Interpreter",
+		    valueTypeName="The NEURON interpreter")
 	public I_Transformator get_transformator() {
 		return super.get_transformator();
 	}
@@ -52,6 +53,7 @@ public class HOCGeometryLoader extends HOCCommand implements Serializable {
 	 * @param hoc_file
 	 * @return
 	 */
+	@MethodInfo(valueName = "Success", valueTypeName="Success")
 	public boolean load_geometry(
 		@ParamInfo(name = "Load", style = "load-dialog") File hoc_file
 	) {

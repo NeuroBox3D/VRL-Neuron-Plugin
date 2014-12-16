@@ -5,6 +5,7 @@ package edu.gcsc.vrl.MembranePotentialMapping.hoc;
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.Section;
 import edu.gcsc.vrl.ug.api.I_Transformator;
 import eu.mihosoft.vrl.annotation.ComponentInfo;
+import eu.mihosoft.vrl.annotation.MethodInfo;
 import eu.mihosoft.vrl.annotation.OutputInfo;
 import eu.mihosoft.vrl.annotation.ParamGroupInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
@@ -34,7 +35,6 @@ public class IClamp extends HOCCommand implements Serializable {
 	}
 
 	@Override
-	@OutputInfo(name = "HOC Interpreter", typeName="The NEURON interpreter")
 	public I_Transformator get_transformator() {
 		return super.get_transformator();
 	}
@@ -49,18 +49,19 @@ public class IClamp extends HOCCommand implements Serializable {
 	 * @param sectionTest
 	 * @return 
 	 */
+	@MethodInfo(valueName = "Success", valueTypeName="Success")
 	public boolean clamp(
-		@ParamGroupInfo(group = "IClamp|false; Stimulation|false")
+		@ParamGroupInfo(group = "IClamp|false|Current clamp; Stimulation|false")
 		@ParamInfo(name = "stimDur [ms]", typeName="Duration of stimulation", style = "default") double stimDur,
-		@ParamGroupInfo(group = "IClamp|false; Stimulation|false")
+		@ParamGroupInfo(group = "IClamp|false|Current clamp; Stimulation|false")
 		@ParamInfo(name = "stimDel [ms]", typeName="Delay until stimulation") double stimDel,
-		@ParamGroupInfo(group = "IClamp|false; Stimulation|false")
+		@ParamGroupInfo(group = "IClamp|false|Current clamp; Stimulation|false")
 		@ParamInfo(name = "stimAmp [nA]", typeName="Amplitude of stimulation") double stimAmp,
-		@ParamGroupInfo(group = "IClamp|false; Stimulation|false")
+		@ParamGroupInfo(group = "IClamp|false|Current clamp; Stimulation|false")
 		@ParamInfo(name = "stimLoc", typeName="Location of stimulation electrode, typically 0.5 is used and refers to the center of the desired compartment", options = "value=0.5") double stimLoc,
-		@ParamGroupInfo(group = "IClamp|true; Geometry|false")
+		@ParamGroupInfo(group = "IClamp|true|Geometry; Geometry|false")
 		@ParamInfo(name = "Load", typeName="Load any hoc geometry", style = "hoc-load-dialog", options = "hoc_tag=\"gridFile\"") File hoc_file,
-		@ParamGroupInfo(group = "IClamp|false; Geometry|false")
+		@ParamGroupInfo(group = "IClamp|false|Geometry; Geometry|false")
 		@ParamInfo(name = "Sections", typeName="The compartment of the multi-compartmental model loaded", style = "default", options = "hoc_tag=\"gridFile\"") Section sectionTest
 	) {
 		boolean success = true;

@@ -4,7 +4,7 @@ package edu.gcsc.vrl.MembranePotentialMapping.hoc;
 /// imports
 import edu.gcsc.vrl.ug.api.I_Transformator;
 import eu.mihosoft.vrl.annotation.ComponentInfo;
-import eu.mihosoft.vrl.annotation.OutputInfo;
+import eu.mihosoft.vrl.annotation.MethodInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
 import java.io.Serializable;
 
@@ -39,7 +39,8 @@ public class HOCCleanup extends HOCCommand implements Serializable {
 	 * @return transformator
 	 */
 	@Override
-	@OutputInfo(name = "HOC Interpreter", typeName="The NEURON interpreter")
+	@MethodInfo(valueName = "HOC Interpreter",
+		    valueTypeName="The NEURON interpreter")
 	public I_Transformator get_transformator() {
 		return super.get_transformator();
 	}
