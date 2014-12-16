@@ -63,19 +63,19 @@ public class Clamp extends HOCCommand implements Serializable {
 	 * @return
 	 */
 	public boolean point_process(
-		@ParamGroupInfo(group = "Point Process|false; Stimulation|false")
+		@ParamGroupInfo(group = "Point Process|false|Stimulation by a clamp; Stimulation|false")
 		@ParamInfo(name = "Type", typeName="Type of the stimulating clamp", style = "selection", options = "value=[\"IClamp\", \"VClamp\"]") String stimType,
-		@ParamGroupInfo(group = "Point Process|false; Stimulation|false")
+		@ParamGroupInfo(group = "Point Process|false|Stimulation by a clamp; Stimulation|false")
 		@ParamInfo(name = "stimDur [ms]", typeName="Duration of stimulation", style = "default") double stimDur,
-		@ParamGroupInfo(group = "Point Process|false; Stimulation|false")
+		@ParamGroupInfo(group = "Point Process|false|Stimulation by a clamp; Stimulation|false")
 		@ParamInfo(name = "stimDel [ms]", typeName="Delay until stimulation") double stimDel,
-		@ParamGroupInfo(group = "Point Process|false; Stimulation|false")
+		@ParamGroupInfo(group = "Point Process|false|Stimulation by a clamp; Stimulation|false")
 		@ParamInfo(name = "stimAmp [ms]", typeName="Stimulation amplitude") double stimAmp,
-		@ParamGroupInfo(group = "Point Process|false; Stimulation|false")
+		@ParamGroupInfo(group = "Point Process|false|Stimulation by a clamp; Stimulation|false")
 		@ParamInfo(name = "stimLoc", typeName="Location of stimulation electrode, typically 0.5 is used and refers to the center of the desired compartment") double stimLoc,
-		@ParamGroupInfo(group = "Point Process|true; Geometry|false")
+		@ParamGroupInfo(group = "Point Process|true|Geometry; Geometry|false")
 		@ParamInfo(name = "Load", typeName="Load any hoc geometry", style = "hoc-load-dialog", options = "hoc_tag=\"gridFile\"") File hoc_file,
-		@ParamGroupInfo(group = "Point Process|false; Geometry|false")
+		@ParamGroupInfo(group = "Point Process|false|Geometry; Geometry|false")
 		@ParamInfo(name = "Sections", typeName="The compartment of the multi-compartmental model loaded", style = "default", options = "hoc_tag=\"gridFile\"") Section sectionTest
 	) {
 		boolean success = true;

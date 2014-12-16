@@ -67,33 +67,33 @@ public class VClamp extends HOCCommand implements Serializable {
 	 * @return
 	 */
 	public boolean clamp(
-		@ParamGroupInfo(group = "VClamp|false; Stimulation Duration|false")
+		@ParamGroupInfo(group = "VClamp|false|Two electrode voltage clamp; Stimulation Duration|false")
 		@ParamInfo(name = "stimDur1 [ms]", typeName="Duration of stimulation", style = "default") double stimDur1,
-		@ParamGroupInfo(group = "VClamp|false; Stimulation Duration|false")
+		@ParamGroupInfo(group = "VClamp|false|Two electrode voltage clamp; Stimulation Duration|false")
 		@ParamInfo(name = "stimDur2 [ms]", typeName="Duration of stimulation", style = "default") double stimDur2,
-		@ParamGroupInfo(group = "VClamp|false; Stimulation Duration|false")
+		@ParamGroupInfo(group = "VClamp|false|Two electrode voltage clamp; Stimulation Duration|false")
 		@ParamInfo(name = "stimDur3 [ms]", typeName="Duration of stimulation", style = "default") double stimDur3,
-		@ParamGroupInfo(group = "VClamp|false; Stimulation Deletion|false")
+		@ParamGroupInfo(group = "VClamp|false|Two electrode voltage clamp; Stimulation Deletion|false")
 		@ParamInfo(name = "stimDel [ms]", typeName="Delay until stimulation") double stimDel,
-		@ParamGroupInfo(group = "VClamp|false; Stimulation Amplitude|false")
+		@ParamGroupInfo(group = "VClamp|false|Two electrode voltage clamp; Stimulation Amplitude|false")
 		@ParamInfo(name = "stimAmp1 [nA]", typeName="Amplitude of stimulation") double stimAmp1,
-		@ParamGroupInfo(group = "VClamp|false; Stimulation Amplitude|false")
+		@ParamGroupInfo(group = "VClamp|false|Two electrode voltage clamp; Stimulation Amplitude|false")
 		@ParamInfo(name = "stimAmp2 [nA]", typeName="Amplitude of stimulation") double stimAmp2,
-		@ParamGroupInfo(group = "VClamp|false; Stimulation Amplitude|false")
+		@ParamGroupInfo(group = "VClamp|false|Two electrode voltage clamp; Stimulation Amplitude|false")
 		@ParamInfo(name = "stimAmp3 [nA]", typeName="Amplitude of stimulation") double stimAmp3,
-		@ParamGroupInfo(group = "VClamp|false; Stimulation Gain|false")
+		@ParamGroupInfo(group = "VClamp|false|Two electrode voltage clamp; Stimulation Gain|false")
 		@ParamInfo(name = "stimGain [nA]", typeName="Gain of stimulation") double stimGain,
-		@ParamGroupInfo(group = "VClamp|false; Time constants|false")
+		@ParamGroupInfo(group = "VClamp|false|Two electrode voltage clamp; Time constants|false")
 		@ParamInfo(name = "tau1 [1/ms]", typeName="Time constant of stimulation") double tau1,
-		@ParamGroupInfo(group = "VClamp|false; Time constants|false")
+		@ParamGroupInfo(group = "VClamp|false|Two electrode voltage clamp; Time constants|false")
 		@ParamInfo(name = "tau2 [1/ms]", typeName="Time constant of stimulation") double tau2,
 		@ParamGroupInfo(group = "VClamp|false; Stimulation r|false")
 		@ParamInfo(name = "rstim", typeName="Parameter r of stimulation") double rstim,
-		@ParamGroupInfo(group = "VClamp|false; Stimulation Location|false")
+		@ParamGroupInfo(group = "VClamp|false|Two electrode voltage clamp; Stimulation Location|false")
 		@ParamInfo(name = "stimLoc", typeName="Location of stimulation electrode, typically 0.5 is used and refers to the center of the desired compartment") double stimLoc,
-		@ParamGroupInfo(group = "VClamp|true; Geometry|false")
+		@ParamGroupInfo(group = "VClamp|true|Geometry; Geometry|false")
 		@ParamInfo(name = "Load", typeName="Load any hoc geometry", style = "hoc-load-dialog", options = "hoc_tag=\"gridFile\"") File hoc_file,
-		@ParamGroupInfo(group = "VClamp|false; Geometry|false")
+		@ParamGroupInfo(group = "VClamp|false|Geometry; Geometry|false")
 		@ParamInfo(name = "Sections", typeName="The compartments in the multi-compartmental model loaded", style = "default", options = "hoc_tag=\"gridFile\"") Section sectionTest
 	) {
 		boolean success = true;

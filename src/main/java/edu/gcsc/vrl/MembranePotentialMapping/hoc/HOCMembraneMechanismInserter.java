@@ -55,11 +55,11 @@ public class HOCMembraneMechanismInserter extends HOCCommand implements Serializ
 	 * @return
 	 */
 	public boolean membrane_mechanism(
-		@ParamGroupInfo(group = "Membrane mechanism|true; Mechanism|false")
+		@ParamGroupInfo(group = "Membrane mechanism|true|Inserts membrane mechanisms for compartments; Mechanism|false")
 		@ParamInfo(name = "Mechanism", typeName="Any of the common plasma membrane mechanisms", style = "selection", options = "value=[\"pas\", \"hh\"]") String mechanism,
-		@ParamGroupInfo(group = "Membrane mechanism|true; Geometry|false")
+		@ParamGroupInfo(group = "Membrane mechanism|true|Inserts membrane mechanisms for compartments; Geometry|false")
 		@ParamInfo(name = "Load", typeName="Any hoc file can be loaded", style = "hoc-load-dialog", options = "hoc_tag=\"gridFile\"") File hoc_file,
-		@ParamGroupInfo(group = "Membranche mechanism|false; Geometry|false")
+		@ParamGroupInfo(group = "Membranche mechanism|false|Inserts membrane mechanisms for compartments; Geometry|false")
 		@ParamInfo(name = "Sections", typeName="Compartments of the multi-compartmental model we loaded", style = "default", options = "hoc_tag=\"gridFile\"") Section sectionTest
 	) {
 		boolean success = true;

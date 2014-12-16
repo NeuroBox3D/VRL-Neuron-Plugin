@@ -63,21 +63,21 @@ public class HOCTimeStepper extends HOCCommand implements Serializable {
 	 * @return
 	 */
 	public boolean step(
-		@ParamGroupInfo(group = "TimeStepper|true; Output|false")
+		@ParamGroupInfo(group = "TimeStepper|true|Time stepping setup; Output|false")
 		@ParamInfo(name = "Write potentials", typeName="Indicate if we should write membrane potentials to files") boolean generateOutput,
-		@ParamGroupInfo(group = "TimeStepper|true; Output|false")
-		@ParamInfo(name = "Output folder",  typeName="Output folder for membrane potentials", style = "save-folder-dialog") String folder,
-		@ParamGroupInfo(group = "TimeStepper|true; Setup|false")
+		@ParamGroupInfo(group = "TimeStepper|true|Time stepping setup; Output|false")
+		@ParamInfo(name = "Output folder", typeName="Output folder for membrane potentials", style = "save-folder-dialog") String folder,
+		@ParamGroupInfo(group = "TimeStepper|true|Time stepping setup; Setup|false")
 		@ParamInfo(name = "Start time [s]", typeName="The simulation starting time", style="slider", options="value=1;min=0;max=1000;step=0.1") double t_start,
-		@ParamGroupInfo(group = "TimeStepper|true; Setup|false")
+		@ParamGroupInfo(group = "TimeStepper|true|Time stepping setup; Setup|false")
 		@ParamInfo(name = "End time [s]", typeName="The simulation end time", style="slider", options="value=100;min=0;max=10000;step=1") double t_end,
-		@ParamGroupInfo(group = "TimeStepper|true; Setup|false")
+		@ParamGroupInfo(group = "TimeStepper|true|Time stepping setup; Setup|false" )
 		@ParamInfo(name = "Initial potential [mV]", typeName="The initial potential for all compartments", style="slider", options="value=-65; min=-75;max=100;step=0.1") double finit,
-		@ParamGroupInfo(group = "TimeStepper|true; Setup|false")
+		@ParamGroupInfo(group = "TimeStepper|true|Time stepping setup; Setup|false")
 		@ParamInfo(name = "dt [ms]", typeName="The timestep width", style="slider", options="value=0;min=0;max=2;step=0.0001") double dt,
-		@ParamGroupInfo(group = "TimeStepper|true; Geometry|false")
+		@ParamGroupInfo(group = "TimeStepper|true|Time stepping setup; Geometry|false")
 		@ParamInfo(name = "Load", typeName="Load any hoc geometry file", style = "hoc-load-dialog", options = "hoc_tag=\"gridFile\"") File hoc_file,
-		@ParamGroupInfo(group = "TimeStepper|false; Geometry|false")
+		@ParamGroupInfo(group = "TimeStepper|false|Time stepping setup; Geometry|false")
 		@ParamInfo(name = "Sections", typeName="The compartments in the multi-compartmental model we loaded", style = "default", options = "hoc_tag=\"gridFile\"") Section sectionTest
 	) {
 
