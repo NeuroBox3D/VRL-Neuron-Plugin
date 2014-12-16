@@ -4,6 +4,7 @@ package edu.gcsc.vrl.MembranePotentialMapping.hoc;
 /// imports
 import edu.gcsc.vrl.ug.api.I_Transformator;
 import eu.mihosoft.vrl.annotation.ComponentInfo;
+import eu.mihosoft.vrl.annotation.MethodInfo;
 import eu.mihosoft.vrl.annotation.OutputInfo;
 import eu.mihosoft.vrl.annotation.ParamInfo;
 import java.io.File;
@@ -32,7 +33,7 @@ public class HOCStimulationLoader extends HOCCommand implements Serializable {
 	 */
 	@Override
 	public void set_transformator(
-		@ParamInfo(name = "HOC Interpreter", typeName="The NEURON interpreter") I_Transformator transformator) {
+		@ParamInfo(name = "HOC Interpreter", typeName = "The NEURON interpreter") I_Transformator transformator) {
 		super.set_transformator(transformator);
 	}
 
@@ -42,7 +43,8 @@ public class HOCStimulationLoader extends HOCCommand implements Serializable {
 	 */
 	@SuppressWarnings("all")
 	@Override
-	@OutputInfo(name = "HOC Interpreter", typeName="The NEURON interpreter")
+	@MethodInfo(valueName = "HOC Interpreter",
+		valueTypeName = "The NEURON interpreter")
 	public I_Transformator get_transformator() {
 		return super.get_transformator();
 	}
@@ -52,9 +54,9 @@ public class HOCStimulationLoader extends HOCCommand implements Serializable {
 	 * @param hoc_file
 	 * @return
 	 */
-	@MethodInfo(valueName = "Success", valueTypeName="Success")
+	@MethodInfo(valueName = "Success", valueTypeName = "Success")
 	public boolean load_stimulation(
-		@ParamInfo(name = "Load", typeName="Any stimulation protocol in a hoc file", style = "load-dialog") File hoc_file
+		@ParamInfo(name = "Load", typeName = "Any stimulation protocol in a hoc file", style = "load-dialog") File hoc_file
 	) {
 		if (!(m_transformator == null)) {
 			m_transformator.load_stim(hoc_file.toString());
