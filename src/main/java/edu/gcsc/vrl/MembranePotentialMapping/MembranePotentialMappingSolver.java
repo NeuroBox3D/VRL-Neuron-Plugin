@@ -404,7 +404,7 @@ public class MembranePotentialMappingSolver implements Serializable {
 		minStepSize = minStepSizeNew;
 
 		String sections = transformator.get_section_names_as_string();
-		transformator.execute_hoc_stmt("dt = " + dt);
+		transformator.execute_hoc_stmt("dt = " + dt * 1000);
 		String[] sections_exploded = sections.split(";");
 		List<String> finals = Arrays.asList(sections_exploded);
 

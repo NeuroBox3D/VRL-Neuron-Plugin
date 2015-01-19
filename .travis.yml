@@ -8,3 +8,9 @@ env:
 
 after_success:
 - ./gradlew jacocoTestReport coveralls
+
+notifications:
+  email:
+    - stephan@syntaktischer-zucker.de
+  on_success: always
+  on_failure: always
