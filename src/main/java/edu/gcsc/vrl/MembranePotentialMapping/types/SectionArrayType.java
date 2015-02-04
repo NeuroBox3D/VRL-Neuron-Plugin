@@ -6,13 +6,14 @@ import edu.gcsc.vrl.MembranePotentialMapping.userdata.Section;
 import edu.gcsc.vrl.userdata.types.UserDataArrayBaseType;
 import eu.mihosoft.vrl.annotation.TypeInfo;
 import eu.mihosoft.vrl.lang.VLangUtils;
+import eu.mihosoft.vrl.types.ArrayBaseType;
 
 /**
  * @brief a section array type
  * @author stephan
  */
 @TypeInfo(type = Section[].class, input = true, output = false, style = "array")
-public class SectionArrayType extends UserDataArrayBaseType {
+public class SectionArrayType extends ArrayBaseType {
 
 	private static final long serialVersionUID = 1L;
 
