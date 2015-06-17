@@ -12,6 +12,7 @@ import edu.gcsc.vrl.MembranePotentialMapping.types.SectionArrayType;
 import edu.gcsc.vrl.MembranePotentialMapping.types.SectionType;
 import edu.gcsc.vrl.MembranePotentialMapping.userdata.Clamp;
 import edu.gcsc.vrl.MembranePotentialMapping.hoc.HOCGeometryLoader;
+import edu.gcsc.vrl.MembranePotentialMapping.hoc.HOCInterpreter;
 import edu.gcsc.vrl.MembranePotentialMapping.hoc.HOCMembraneMechanismInserter;
 import edu.gcsc.vrl.MembranePotentialMapping.hoc.HOCStimulationLoader;
 import edu.gcsc.vrl.MembranePotentialMapping.hoc.HOCTimeStepper;
@@ -102,6 +103,7 @@ public class MembranePotentialMappingPluginConfigurator extends VPluginConfigura
 
 			/// hoc
 			vapi.addComponent(HOCExecuteStatement.class);
+			vapi.addComponent(HOCInterpreter.class);
 			vapi.addComponent(HOCGeometryLoader.class);
 			vapi.addComponent(HOCStimulationLoader.class);
 			vapi.addComponent(HOCTimeStepper.class);

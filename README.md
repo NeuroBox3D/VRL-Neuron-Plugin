@@ -24,4 +24,5 @@ see also [NeuroBox](http://www.neurobox.eu), therefore the plugin is also refere
 
 
 # Notes
-Latest working UG API: ug4.0.2, head revision 'r16898' tested and working with version v0.5 of the VRL-Neuron-Plugin.
+Latest suspected working UG API:  ug4.0.2, head revision 'r18644' needs to be tested with version v0.5. of the VRL-Neuron-Plugin.
+Previously tested working UG API: ug4.0.2, head revision 'r16898' tested and working with version v0.5 of the VRL-Neuron-Plugin.

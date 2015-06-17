@@ -84,7 +84,7 @@ public class MembranePotentialMappingSolver implements Serializable {
 		@ParamGroupInfo(group = "Problem Setup|false")
 		@ParamInfo(name = "Domain Disc", style = "default") I_DomainDiscretization domainDisc,
 		@ParamGroupInfo(group = "Problem Setup|false")
-		@ParamInfo(name = "VDCC Disc", style = "default") I_OneSidedBorgGrahamFV1WithVM2UGNEURON vdccDisc,
+		@ParamInfo(name = "VDCC Disc", style = "default") I_VDCC_BG_VM2UG3d vdccDisc,
 		@ParamGroupInfo(group = "Problem Setup|false")
 		@ParamInfo(name = "Approximation Space", style = "default") I_ApproximationSpace approxSpace,
 		@ParamGroupInfo(group = "Problem Setup|false")
@@ -372,7 +372,7 @@ public class MembranePotentialMappingSolver implements Serializable {
 		}
 
 		// create new grid function for old value (const bug fixed, then we can use it here as const__clone();
-		I_GridFunction uOld = u.clone();  // TODO: was clone() => this is supposed to fail -> now not any more
+		I_GridFunction uOld = u.const__clone();  // TODO: was clone() => this is supposed to fail -> now not any more
 
 		// store grid function in vector of old solutions
 		I_SolutionTimeSeries solTimeSeries = new SolutionTimeSeries();

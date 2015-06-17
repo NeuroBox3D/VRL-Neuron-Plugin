@@ -27,6 +27,7 @@ public class HOCExecuteStatement extends HOCCommand implements Serializable {
 	public void set_transformator(
 		@ParamInfo(name = "HOC Interpreter", typeName="The NEURON interpreter") I_Transformator transformator) {
 		super.set_transformator(transformator);
+		
 	}
 
 	@Override
