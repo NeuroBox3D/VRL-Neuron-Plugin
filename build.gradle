@@ -39,6 +39,7 @@ dependencies {
     testCompile group: 'org.easymock', name: 'easymock', version: '3.3.1'
     compile fileTree(dir: vrldir+"/plugins/", includes:['*.jar'])
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile fileTree(dir: vrldir+"/plugins/", includes:['*.jar'])
 }
 
 // compiles and installs the vrl plugin to the specified folder

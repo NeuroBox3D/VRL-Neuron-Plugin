@@ -224,9 +224,18 @@ public class MembranePotentialMapping implements Serializable {
 		// set density function and init, then add to domainDisc
 		vdccDisc.set_density_function(vdccDensityFct);
 		vdcc.set_transformator(trans);
+		
 		trans.extract_vms(1, 3);
-		I_MembranePotentialMapper mapper = new MembranePotentialMapper(trans);
-		vdcc.set_mapper(mapper);
+		
+
+		/**
+		 * @TODO this needs adjustments!
+		 */
+		//Mapper mapper = new Mapper();
+		//I_MembranePotentialMapper mapper = new MembranePotentialMapper(trans);
+		NeuronMPM m = new NeuronMPM();
+		m.set_transformator(trans);
+		vdcc.set_mapper(m.const__get_mapper());
 		/**
 		 * this works: I_MembranePotentialMapper mapper = new
 		 * MembranePotentialMapper(trans); System.err.println("get
