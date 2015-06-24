@@ -10,16 +10,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 /**
- * @brief Testsuite for MembranePotentialMapping
+ * @brief Testsuite for MembranePotentialMapping (unit and integration tests)
  * @author stephanmg <stephan@syntaktischer-zucker.de>
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses(value={MPMTest.class, MPMIntegration.class})
+@Suite.SuiteClasses(value = {MPMTest.class, MPMIntegration.class})
 public class MembranePotentialMappingTestSuite {
 
 	/**
 	 * @brief static setup classes
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@BeforeClass
 	public static void setUpClass() throws Exception {
@@ -27,7 +27,7 @@ public class MembranePotentialMappingTestSuite {
 
 	/**
 	 * @brief static teardown classes
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@AfterClass
 	public static void tearDownClass() throws Exception {
@@ -35,7 +35,7 @@ public class MembranePotentialMappingTestSuite {
 
 	/**
 	 * @brief non-static setup classes
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
@@ -43,10 +43,10 @@ public class MembranePotentialMappingTestSuite {
 
 	/**
 	 * @brief non-static teardown classes
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@After
 	public void tearDown() throws Exception {
 	}
-	
+
 }

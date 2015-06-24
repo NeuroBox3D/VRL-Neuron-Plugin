@@ -17,58 +17,53 @@ import org.junit.Test;
  * @author stephanmg <stephan@syntaktischer-zucker.de>
  */
 public class MPMIntegration {
-	private final static String CONSOLE_APP_EXE = 
-		"/Users/stephan/Temp/console_apps/export_console_app/run.sh";
-	
+	/// private static members
+	private final static String CONSOLE_APP_EXE
+		= "/Users/stephan/Temp/console_apps/export_console_app/run.sh";
+
 	/**
-	 * @brief ctor
+	 * @brief def ctor
 	 */
 	public MPMIntegration() {
 	}
-	
+
 	/**
-	 * 
+	 * @brief setup static classes
 	 */
 	@BeforeClass
 	public static void setUpClass() {
 	}
-	
+
 	/**
-	 * 
+	 * @brief teardown static classes
 	 */
 	@AfterClass
 	public static void tearDownClass() {
 	}
-	
+
 	/**
-	 * 
+	 * @brief setup non-static classes
 	 */
 	@Before
 	public void setUp() {
 	}
-	
+
 	/**
-	 * 
+	 * @brief teardown non-static classes
 	 */
 	@After
 	public void tearDown() {
 	}
-	
-	@Test
-	public void test() {
-		
-	}
 
 	/**
-	 * @brief integration test
-	 * @author stephan <stephan@syntaktischer-zucker.de>
+	 * @brief simple integration test
 	 */
 	@Test
 	@SuppressWarnings("CallToPrintStackTrace")
 	public void integration() {
 		try {
 			Process ps = Runtime.getRuntime().exec(CONSOLE_APP_EXE);
-			try {  
+			try {
 				ps.waitFor();
 			} catch (InterruptedException ex) {
 				Logger.getLogger(MPMTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -80,5 +75,4 @@ public class MPMIntegration {
 			Logger.getLogger(MPMTest.class.getName()).log(Level.SEVERE, null, ioe.getStackTrace());
 		}
 	}
-
 }
