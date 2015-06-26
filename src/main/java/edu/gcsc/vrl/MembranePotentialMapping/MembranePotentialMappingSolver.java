@@ -84,7 +84,7 @@ public class MembranePotentialMappingSolver implements Serializable {
 		@ParamGroupInfo(group = "Problem Setup|false")
 		@ParamInfo(name = "Domain Disc", style = "default") I_DomainDiscretization domainDisc,
 		@ParamGroupInfo(group = "Problem Setup|false")
-		@ParamInfo(name = "VDCC Disc", style = "default") I_VDCC_BG_VM2UG3d vdccDisc,
+		@ParamInfo(name = "VDCC Disc", style = "default") I_MembraneTransportFV1 vdccDisc,
 		@ParamGroupInfo(group = "Problem Setup|false")
 		@ParamInfo(name = "Approximation Space", style = "default") I_ApproximationSpace approxSpace,
 		@ParamGroupInfo(group = "Problem Setup|false")
@@ -440,6 +440,7 @@ public class MembranePotentialMappingSolver implements Serializable {
 			timeDisc.prepare_step_elem(solTimeSeries, dt);
             ///timeDisc.prepare_step(solTimeSeries, dt);
 
+			System.err.println("prepare newton solver!");
 			// prepare Newton solver
 			if (!newtonSolver.prepare(u)) {
 				F_Print.invoke("Newton solver failed at point in time "
@@ -447,7 +448,9 @@ public class MembranePotentialMappingSolver implements Serializable {
 				errorExit("Newton solver failed at point in time "
 					+ Math.floor((time + dt) / dt + 0.5) * dt + ".");
 			}
+			System.err.println("prepare newton solver end!");
 
+			System.err.println("Apply newton solver!");
 			// apply Newton solver
 			if (!newtonSolver.apply(u)) {
 				// in case of failure:
@@ -456,6 +459,7 @@ public class MembranePotentialMappingSolver implements Serializable {
 					+ " with time step " + dt + ".");
 
 			} else {
+				System.err.println("Before generating vtkoutput!");
 				// update new time
 				time = solTimeSeries.const__time(0) + dt;
 
@@ -478,7 +482,10 @@ public class MembranePotentialMappingSolver implements Serializable {
 				F_Print.invoke("++++++ POINT IN TIME  " + Math.floor(time / dt + 0.5) * dt + "s  END ++++++++");
 				time = solTimeSeries.const__time(0) + dt;
 			}
+			
 		}
+		
+			System.err.println("End newton solver!");
 
 		// end timeseries, produce gathering file
 		if (generateVTKoutput) {

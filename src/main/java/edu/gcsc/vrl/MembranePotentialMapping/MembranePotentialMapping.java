@@ -53,7 +53,7 @@ public class MembranePotentialMapping implements Serializable {
 	@OutputInfo(
 		style = "multi-out",
 		elemNames = {"Domain Disc", "VDCC Disc", "Approximation Space", "Initial Solution", "NEURON Setup"},
-		elemTypes = {I_DomainDiscretization.class, I_VDCC_BG_VM2UG_NEURON3d.class, I_ApproximationSpace.class, UserDataTuple[].class, I_Transformator.class}
+		elemTypes = {I_DomainDiscretization.class, I_MembraneTransportFV1.class, I_ApproximationSpace.class, UserDataTuple[].class, I_Transformator.class}
 	)
 	public Object[] invoke(
 		@ParamGroupInfo(group = "Domain")
@@ -187,7 +187,7 @@ public class MembranePotentialMapping implements Serializable {
 		String[] vdccSelSs = ((UserDependentSubsetModel.FSDataType) vdccData.getData(0)).getSelSs();
 		String vdccSsString = "";
 		if (vdccSelSs.length == 0) {
-			throw new RuntimeException("No subset definition in ER leakage definition!");
+			throw new RuntimeException("No subset definition in VDCC definition!");
 		}
 		for (String s : vdccSelSs) {
 			vdccSsString = vdccSsString + ", " + s;
@@ -203,7 +203,8 @@ public class MembranePotentialMapping implements Serializable {
 
 		I_Transformator trans2 = new Transformator();
 		/// prepare elem disc
-		I_VDCC_BG_VM2UG_NEURON3d vdcc = new VDCC_BG_VM2UG_NEURON3d(vdccFcts, vdccSsString, approxSpace, trans2, "", "", "", false);
+		I_VDCC_BG_VM2UG_NEURON3d vdcc = new VDCC_BG_VM2UG_NEURON3d(vdccFcts, vdccSsString, approxSpace, trans, "", "", "", false);
+		System.out.println("setting up VDCC BG VM2UG NEURON3d!");
 
 		// set appropriate channel type
 		if ("L".equals(vdccChannelType)) {
@@ -218,24 +219,34 @@ public class MembranePotentialMapping implements Serializable {
 		trans.execute_hoc_stmt("dt = 0.1");
 		trans.execute_hoc_stmt("tstart = 0");
 		trans.execute_hoc_stmt("tstop = 1");
-		trans.setup_hoc(0d, 1d, 0.1d, -75d);
+		System.err.println("Before setup hoc");
+		///trans.setup_hoc(0d, 1d, 0.1d, -75d);
+		System.err.println("After setup hoc");
 
+		System.err.println("before membrane transport");
 		I_MembraneTransportFV1 vdccDisc = new MembraneTransportFV1(vdccSelSs, vdcc);
+		System.err.println("after membrane transport");
 		// set density function and init, then add to domainDisc
+		System.err.println("before setting vdcc density fct");
 		vdccDisc.set_density_function(vdccDensityFct);
+		System.err.println("after setting vdcc density fct");
+		System.err.println("before setting the transformator");
 		vdcc.set_transformator(trans);
+		System.err.println("after setting the transformator");
 		
 		trans.extract_vms(1, 3);
 		
 
+		System.err.println("setting mapper!");
 		/**
 		 * @TODO this needs adjustments!
 		 */
 		//Mapper mapper = new Mapper();
 		//I_MembranePotentialMapper mapper = new MembranePotentialMapper(trans);
-		NeuronMPM m = new NeuronMPM();
+		I_NeuronMPM m = new NeuronMPM();
 		m.set_transformator(trans);
-		vdcc.set_mapper(m.const__get_mapper());
+		vdcc.set_mapper(m);
+
 		/**
 		 * this works: I_MembranePotentialMapper mapper = new
 		 * MembranePotentialMapper(trans); System.err.println("get
@@ -253,7 +264,14 @@ public class MembranePotentialMapping implements Serializable {
 		 */
 		vdcc.init(0.0d); /// a hoc geometry must be loaded already to transformator! and the timesteps must be extracted already for the first timestep...
 		System.err.println("after init");
-		domainDisc.add(vdccDisc);
+		
+		/**
+		 * @todo to test vdccDisc and introduce update method!)
+		 */
+
+		System.err.println("before domain disc add 2");
+		//domainDisc.add(vdccDisc);
+		System.err.println("after domain disc add");
 
 		// Neumann boundaries
 		int i = 0;
